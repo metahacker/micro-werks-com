@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>micro.werks · Old buses. New tricks.</title>
+<meta name="description" content="micro.werks builds better VW buses in San Diego, California. Gear calculator, custom Westfalia solar panels and bolt-on engineering kits.">
+<meta property="og:title" content="micro.werks · Old buses. New tricks.">
+<meta property="og:description" content="Better VW buses, built in San Diego, California.">
+<meta property="og:image" content="https://micro-werks.com/img/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#111011">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111011;--ink2:#1b191a;--cyan:#55c8e8;--paper:#f4f1ea;--mute:#a7a3a0;--line:#2c292a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:Inter,system-ui,sans-serif;font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%}
+.d{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.005em;line-height:.88}
+.wrap{width:min(1280px,100% - 48px);margin-inline:auto}
+
+/* nav */
+nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:linear-gradient(#111011ee,#11101100)}
+nav .mark{width:96px}
+nav ul{display:flex;gap:22px;list-style:none;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+nav a{text-decoration:none;opacity:.85}
+nav a:hover{opacity:1;color:var(--cyan)}
+
+/* hero */
+.hero{min-height:100svh;display:grid;place-items:center;padding:110px 24px 48px;position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 38%,#55c8e81f,transparent 60%)}
+.hero .logo{width:min(1000px,88vw,92svh);margin-inline:auto;filter:drop-shadow(0 30px 60px #000a)}
+.hero .tag{margin-top:clamp(24px,4vh,48px);text-align:center;font-size:clamp(3.4rem,min(13.5vw,14.5svh),12.5rem)}
+.hero .tag span{color:var(--cyan)}
+.hero .sub{margin-top:22px;text-align:center;color:var(--mute);font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(12px,1.4vw,15px)}
+.scroll{position:absolute;bottom:22px;left:50%;translate:-50% 0;width:2px;height:46px;background:linear-gradient(var(--cyan),transparent)}
+
+/* full bleed photo */
+.bleed{position:relative;height:min(88vh,960px);overflow:hidden}
+.bleed img{width:100%;height:100%;object-fit:cover}
+.bleed .cap{position:absolute;left:24px;bottom:22px;font-size:clamp(2.2rem,7vw,6rem);text-shadow:0 6px 30px #000c}
+
+/* sections */
+section.block{padding:clamp(72px,11vw,150px) 0;border-top:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.kicker::before{content:"";width:28px;height:3px;background:var(--cyan)}
+.pill{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:7px 12px;border:2px solid currentColor;border-radius:99px}
+.pill.live{color:#7dffb0}.pill.soon{color:var(--cyan)}.pill.dev{color:#ffcf5c}
+h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
+.lede{font-size:clamp(19px,2vw,24px);max-width:36ch;color:#dcd7cf}
+.btn{display:inline-flex;align-items:center;gap:12px;margin-top:34px;padding:18px 28px;background:var(--cyan);color:var(--ink);font-weight:800;text-decoration:none;text-transform:uppercase;letter-spacing:.1em;font-size:15px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.btn:hover{background:var(--paper)}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,80px);align-items:center}
+.split.rev{grid-template-columns:.95fr 1.05fr}
+.split.rev .media{order:-1}
+.media{position:relative}
+.media img{width:100%;aspect-ratio:4/5;object-fit:cover;clip-path:polygon(9% 0,100% 0,91% 100%,0 100%)}
+.media.wide img{aspect-ratio:4/3}
+.calc-art{display:block;margin-top:56px}
+.calc-art img{width:100%;border-radius:8px;box-shadow:0 30px 80px #000c;transition:transform .4s}
+.calc-art:hover img{transform:scale(1.01)}
+
+/* calculator stats */
+.stats{display:flex;flex-wrap:wrap;gap:34px;margin-top:34px}
+.stats b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(2.6rem,5vw,4.2rem);line-height:1;color:var(--paper)}
+.stats span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:600}
+
+/* solar */
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px}
+.panel{background:var(--ink2);border:1px solid var(--line);padding:22px 20px}
+.panel b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(2.4rem,4.4vw,3.8rem);line-height:1;color:var(--cyan)}
+.panel p{font-size:14px;color:var(--mute);margin-top:8px}
+.fine{margin-top:18px;font-size:15px;color:var(--mute);max-width:56ch}
+
+/* kits */
+.kits{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+.kit{background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
+.kit::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;background:var(--cyan);opacity:.08;transform:rotate(20deg)}
+.kit h3{font-size:clamp(2.4rem,4.6vw,4.2rem);margin:16px 0 14px}
+.kit ul{list-style:none;margin-top:16px}
+.kit li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:44px}
+.gallery img{width:100%;height:100%;object-fit:cover}
+.g1{grid-column:span 7;aspect-ratio:16/10}.g2{grid-column:span 5}.g3{grid-column:span 4;aspect-ratio:1}.g4{grid-column:span 4}.g5{grid-column:span 4}
+
+/* merch */
+.merch{background:var(--cyan);color:var(--ink);border:0}
+.merch .kicker{color:var(--ink)}.merch .kicker::before{background:var(--ink)}
+.merch h2.d{font-size:clamp(4rem,15vw,14rem)}
+.merch .lede{color:#111011cc}
+
+footer{padding:48px 0 60px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+footer img{width:120px}
+footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing:.06em}
+
+@media (max-width:860px){
+  nav ul{gap:14px;font-size:11px}
+  nav .hide-sm{display:none}
+  .split,.split.rev{grid-template-columns:1fr}
+  .split.rev .media{order:0}
+  .panels{grid-template-columns:1fr}
+  .kits{grid-template-columns:1fr}
+  .g1,.g2,.g3,.g4,.g5{grid-column:span 12;aspect-ratio:4/3}
+}
+@media (prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease}
+  .rise.in{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top" aria-label="micro.werks home"><img class="mark" src="img/logo.svg" alt="micro.werks"></a>
+  <ul>
+    <li><a href="gear-calculator/" target="_blank" rel="noopener">Gear Calc</a></li>
+    <li><a href="#solar">Solar</a></li>
+    <li class="hide-sm"><a href="#kits">Kits</a></li>
+    <li class="hide-sm"><a href="#merch">Merch</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <img class="logo" src="img/logo.svg" alt="micro.werks">
+    <h1 class="tag d">Old buses.<br><span>New tricks.</span></h1>
+    <p class="sub">VW bus engineering · San Diego, California</p>
+  </div>
+</header>
+
+<div class="bleed">
+  <img src="img/hero-hightop.jpg" alt="Blue and white VW high-top bus at speed on the freeway">
+  <div class="cap d">Built to be driven.</div>
+</div>
+
+<section class="block" id="gear-calc">
+  <div class="wrap">
+    <div class="rise">
+      <span class="pill live">Live now</span>
+      <h2 class="d">The Bus Gear Calculator</h2>
+      <p class="lede">Gearing for every VW bus, side by side. Pick a bus, then its gearbox, gears and tires. Stack up as many setups as you like and compare.</p>
+      <div class="stats">
+        <div><b>1950–2013</b><span>Every VW bus</span></div>
+        <div><b>Free</b><span>Always</span></div>
+      </div>
+      <a class="btn" href="gear-calculator/" target="_blank" rel="noopener">Open the calculator →</a>
+    </div>
+    <a class="calc-art rise" href="gear-calculator/" target="_blank" rel="noopener"><img src="img/gear-calc-hero.jpg" alt="Illustration of VW buses on a coastal highway, from the Bus Gear Calc header" loading="lazy"></a>
+  </div>
+</section>
+
+<section class="block" id="solar">
+  <div class="wrap split rev">
+    <div class="rise">
+      <span class="pill soon">Coming soon</span>
+      <h2 class="d">Westy Solar</h2>
+      <p class="lede">Solar panels made for the T3 Westfalia. Shaped to the roof and the cargo rack, so they look like they came from the factory.</p>
+      <div class="panels">
+        <div class="panel"><b>150W</b><p>Roof panel</p></div>
+        <div class="panel"><b>118W</b><p>Roof panel</p></div>
+        <div class="panel"><b>80W</b><p>Flexible cargo-rack panel</p></div>
+      </div>
+      <p class="fine">348 watts total. Grade-A SunPower cells. Marine, walk-on construction. All three are current-matched, so they wire together cleanly.</p>
+    </div>
+    <div class="media rise"><img src="img/solar-westy.jpg" alt="Light blue Westfalia with solar panels on the roof, parked in the woods" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="block" id="kits">
+  <div class="wrap">
+    <div class="rise">
+      <span class="pill dev">In development</span>
+      <h2 class="d">Kits for the Bay</h2>
+      <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
+    </div>
+    <div class="kits">
+      <article class="kit rise">
+        <span class="kicker">Cooling</span>
+        <h3 class="d">Underbelly radiator kit</h3>
+        <p>Cooling for a real water-cooled engine, tucked under the bus.</p>
+        <ul>
+          <li>Full-size radiator and A/C condenser, laid under the floor</li>
+          <li>Sealed scoop, puller fans and a road screen</li>
+          <li>No cutting into the nose</li>
+        </ul>
+      </article>
+      <article class="kit rise">
+        <span class="kicker">Suspension</span>
+        <h3 class="d">Vanagon front end</h3>
+        <p>Bolt-on Vanagon front suspension for the Bay, with an upgraded cooling pack.</p>
+        <ul>
+          <li>Vanagon control arms and knuckles on a bolt-in subframe</li>
+          <li>Sized for 15-inch Fuchs on 215/70R15</li>
+          <li>Upright radiator and matched A/C condenser in the subframe</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="builds">
+  <div class="wrap">
+    <div class="rise">
+      <span class="kicker">From the shop</span>
+      <h2 class="d">Our buses</h2>
+    </div>
+    <div class="gallery">
+      <img class="g1 rise" src="img/westy-cliff.jpg" alt="Westfalia parked on a cliff above the ocean" loading="lazy">
+      <img class="g2 rise" src="img/camp-night.jpg" alt="VW buses at a campout at night" loading="lazy">
+      <img class="g3 rise" src="img/walnut.jpg" alt="Walnut cabinetry inside a Vanagon" loading="lazy">
+      <img class="g4 rise" src="img/ez36.jpg" alt="Subaru EZ36 flat six engine" loading="lazy">
+      <img class="g5 rise" src="img/westy-trees.jpg" alt="Westfalia parked below a hillside of trees" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="block merch" id="merch">
+  <div class="wrap rise">
+    <span class="kicker">Merch</span>
+    <h2 class="d">Shirts soon.</h2>
+    <p class="lede">micro.werks tees and stickers are on the way. Follow along on <a href="https://www.instagram.com/micro.werks/" target="_blank" rel="noopener" style="font-weight:800">Instagram @micro.werks</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="img/logo.svg" alt="micro.werks">
+    <a class="ig" href="https://www.instagram.com/micro.werks/" rel="me noopener" target="_blank">Instagram @micro.werks</a>
+    <span>San Diego, California · © 2026 micro.werks</span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
