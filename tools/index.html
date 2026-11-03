@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Free VW Tools: Bus Gear Calculator and Beetle No-Start Guide · micro.werks</title>
+<meta name="description" content="Free VW tools from micro.werks in San Diego. A gear ratio and RPM calculator for every VW bus from 1950 to 2013, and a step-by-step guide for a Type 1 Beetle that won't start.">
+<link rel="canonical" href="https://micro-werks.com/tools/">
+<meta property="og:title" content="Free VW tools · micro.werks">
+<meta property="og:description" content="Bus Gear Calc for every VW bus, and a Type 1 no-start guide. Free, in your browser.">
+<meta property="og:image" content="https://micro-werks.com/img/gear-calc-hero.jpg">
+<meta property="og:url" content="https://micro-werks.com/tools/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="micro.werks">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#111011">
+<link rel="icon" href="../img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111011;--ink2:#1b191a;--cyan:#55c8e8;--paper:#f4f1ea;--mute:#a7a3a0;--line:#2c292a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:Inter,system-ui,sans-serif;font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%}
+.d{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.005em;line-height:.88}
+.wrap{width:min(1280px,100% - 48px);margin-inline:auto}
+
+/* nav */
+nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:linear-gradient(#111011ee,#11101100)}
+nav .mark{width:96px}
+nav ul{display:flex;gap:22px;list-style:none;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+nav a{text-decoration:none;opacity:.85}
+nav a:hover{opacity:1;color:var(--cyan)}
+
+/* hero */
+.hero{min-height:100svh;display:grid;place-items:center;padding:110px 24px 48px;position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 38%,#55c8e81f,transparent 60%)}
+.hero .logo{width:min(1000px,88vw,92svh);margin-inline:auto;filter:drop-shadow(0 30px 60px #000a)}
+.hero .tag{margin-top:clamp(24px,4vh,48px);text-align:center;font-size:clamp(3.4rem,min(13.5vw,14.5svh),12.5rem)}
+.hero .tag span{color:var(--cyan)}
+.hero .sub{margin-top:22px;text-align:center;color:var(--mute);font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(12px,1.4vw,15px)}
+.scroll{position:absolute;bottom:22px;left:50%;translate:-50% 0;width:2px;height:46px;background:linear-gradient(var(--cyan),transparent)}
+
+/* full bleed photo */
+.bleed{position:relative;height:min(88vh,960px);overflow:hidden}
+.bleed img{width:100%;height:100%;object-fit:cover}
+.bleed .cap{position:absolute;left:24px;bottom:22px;font-size:clamp(2.2rem,7vw,6rem);text-shadow:0 6px 30px #000c}
+
+/* sections */
+section.block{padding:clamp(72px,11vw,150px) 0;border-top:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.kicker::before{content:"";width:28px;height:3px;background:var(--cyan)}
+.pill{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:7px 12px;border:2px solid currentColor;border-radius:99px}
+.pill.live{color:#7dffb0}.pill.soon{color:var(--cyan)}.pill.dev{color:#ffcf5c}
+h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
+.lede{font-size:clamp(19px,2vw,24px);max-width:36ch;color:#dcd7cf}
+.btn{display:inline-flex;align-items:center;gap:12px;margin-top:34px;padding:18px 28px;background:var(--cyan);color:var(--ink);font-weight:800;text-decoration:none;text-transform:uppercase;letter-spacing:.1em;font-size:15px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.btn:hover{background:var(--paper)}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,80px);align-items:center}
+.split.rev{grid-template-columns:.95fr 1.05fr}
+.split.rev .media{order:-1}
+.media{position:relative}
+.media img{width:100%;aspect-ratio:4/5;object-fit:cover;clip-path:polygon(9% 0,100% 0,91% 100%,0 100%)}
+.media.wide img{aspect-ratio:4/3}
+.calc-art{display:block;margin-top:56px}
+.calc-art img{width:100%;border-radius:8px;box-shadow:0 30px 80px #000c;transition:transform .4s}
+.calc-art:hover img{transform:scale(1.01)}
+
+/* calculator stats */
+.stats{display:flex;flex-wrap:wrap;gap:34px;margin-top:34px}
+.stats b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(2.6rem,5vw,4.2rem);line-height:1;color:var(--paper)}
+.stats span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:600}
+
+/* solar */
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px}
+.panel{background:var(--ink2);border:1px solid var(--line);padding:22px 20px}
+.panel b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(2.4rem,4.4vw,3.8rem);line-height:1;color:var(--cyan)}
+.panel p{font-size:14px;color:var(--mute);margin-top:8px}
+.fine{margin-top:18px;font-size:15px;color:var(--mute);max-width:56ch}
+
+/* kits */
+.kits{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+.kit{background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
+.kit::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;background:var(--cyan);opacity:.08;transform:rotate(20deg)}
+.kit h3{font-size:clamp(2.4rem,4.6vw,4.2rem);margin:16px 0 14px}
+.kit ul{list-style:none;margin-top:16px}
+.kit li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:44px}
+.gallery img{width:100%;height:100%;object-fit:cover}
+.g1{grid-column:span 7;aspect-ratio:16/10}.g2{grid-column:span 5}.g3{grid-column:span 4;aspect-ratio:1}.g4{grid-column:span 4}.g5{grid-column:span 4}
+
+/* merch */
+.merch{background:var(--cyan);color:var(--ink);border:0}
+.merch .kicker{color:var(--ink)}.merch .kicker::before{background:var(--ink)}
+.merch h2.d{font-size:clamp(4rem,15vw,14rem)}
+.merch .lede{color:#111011cc}
+
+footer{padding:48px 0 60px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+footer img{width:120px}
+footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing:.06em}
+
+@media (max-width:860px){
+  nav ul{gap:14px;font-size:11px}
+  nav .hide-sm{display:none}
+  .split,.split.rev{grid-template-columns:1fr}
+  .split.rev .media{order:0}
+  .panels{grid-template-columns:1fr}
+  .kits{grid-template-columns:1fr}
+  .g1,.g2,.g3,.g4,.g5{grid-column:span 12;aspect-ratio:4/3}
+}
+@media (prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease}
+  .rise.in{opacity:1;transform:none}
+}
+</style>
+<style>
+.tools-hero{padding:clamp(130px,16vw,190px) 0 clamp(40px,6vw,70px)}
+.tools-hero h1.d{font-size:clamp(4.4rem,16vw,13rem);margin:18px 0 26px}
+.tools-hero .lede{max-width:44ch}
+.toc{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;list-style:none}
+.toc a{display:inline-block;padding:12px 18px;border:2px solid var(--line);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.toc a:hover{border-color:var(--cyan);color:var(--cyan)}
+.tool h2.d{font-size:clamp(3.2rem,9vw,8rem)}
+.tool .art{display:block;margin:44px 0 0}
+.tool .art img{width:100%;height:auto;border-radius:8px;box-shadow:0 30px 80px #000c;transition:transform .4s}
+.tool .art:hover img{transform:scale(1.01)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);margin-top:44px}
+.cols h3{font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+.cols p{color:#dcd7cf;font-size:17px;margin-bottom:14px;max-width:60ch}
+.cols ul{list-style:none}
+.cols li{padding:11px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
+.cols li b{color:var(--paper)}
+.newwin{font-size:13px;color:var(--mute);margin-top:12px}
+.faq details{border-top:1px solid var(--line);padding:18px 0}
+.faq summary{cursor:pointer;font-weight:800;font-size:clamp(17px,2vw,20px);list-style:none}
+.faq summary::after{content:"+";float:right;color:var(--cyan)}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin-top:12px;color:#dcd7cf;max-width:70ch;font-size:17px}
+@media (max-width:860px){.cols{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "CollectionPage", "name": "VW tools by micro.werks", "url": "https://micro-werks.com/tools/", "description": "Free VW tools: a gear ratio calculator for every VW bus and a step-by-step Type 1 no-start troubleshooting guide.", "publisher": {"@type": "Organization", "name": "micro.werks", "url": "https://micro-werks.com/", "sameAs": ["https://www.instagram.com/micro.werks/"]}, "mainEntity": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "WebApplication", "name": "Bus Gear Calc", "url": "https://micro-werks.com/gear-calculator/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Gear ratio and RPM calculator for every VW bus, 1950 to 2013. Compare gearboxes, ring and pinion ratios and tire sizes side by side."}}, {"@type": "ListItem", "position": 2, "item": {"@type": "WebApplication", "name": "Type 1 no-start guide", "url": "https://micro-werks.com/no-start/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Step-by-step troubleshooting for an air-cooled VW Beetle that won't start: battery, starter, spark, fuel and timing."}}]}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the Bus Gear Calc free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Both tools are free and run in your browser. No sign-up."}}, {"@type": "Question", "name": "Which VW buses does the gear calculator cover?", "acceptedAnswer": {"@type": "Answer", "text": "Every air-cooled and water-cooled VW bus from 1950 to 2013: Split Window, Bay Window (including the Brazilian buses built through 2013), Vanagon and Syncro. You can also add custom engines, gearboxes and ratios for swapped buses."}}, {"@type": "Question", "name": "Can it tell me my RPM at highway speed?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Pick your bus, gearbox, ring and pinion and tire size, and it shows engine RPM at any road speed in every gear, plus your speedometer error."}}, {"@type": "Question", "name": "My Beetle cranks but won't start. Where do I begin?", "acceptedAnswer": {"@type": "Answer", "text": "Open the no-start guide and answer the first question. If the engine cranks at normal speed, it checks for spark first, then fuel, then timing."}}, {"@type": "Question", "name": "Does the no-start guide work for other air-cooled VWs?", "acceptedAnswer": {"@type": "Answer", "text": "It is written for the carbureted Type 1 engine with points ignition. Most of the steps also apply to Type 2 buses and Karmann Ghias with the same upright engine. Check your own engine's specs before adjusting."}}]}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "micro.werks", "item": "https://micro-werks.com/"}, {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://micro-werks.com/tools/"}]}]</script>
+</head>
+<body>
+
+<nav>
+  <a href="../" aria-label="micro.werks home"><img class="mark" src="../img/logo.svg" alt="micro.werks"></a>
+  <ul>
+    <li><a href="./" aria-current="page" style="color:var(--cyan);opacity:1">Tools</a></li>
+    <li><a href="../#solar">Solar</a></li>
+    <li class="hide-sm"><a href="../#kits">Kits</a></li>
+    <li class="hide-sm"><a href="../#merch">Merch</a></li>
+  </ul>
+</nav>
+
+<main>
+<header class="tools-hero">
+  <div class="wrap">
+    <span class="kicker">Free VW tools</span>
+    <h1 class="d">Tools.</h1>
+    <p class="lede">We built these for our own buses and Bugs at the shop in San Diego. They are free, they run in your browser, and they work on your phone in the driveway.</p>
+    <ul class="toc">
+      <li><a href="#gear-calc">Bus Gear Calc</a></li>
+      <li><a href="#no-start">Type 1 no-start guide</a></li>
+      <li><a href="#faq">Questions</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="block tool" id="gear-calc">
+  <div class="wrap">
+    <span class="pill live">Live now</span>
+    <h2 class="d">Bus Gear Calc</h2>
+    <p class="lede">A VW bus gear ratio calculator. See your speed and RPM in every gear before you spend money on a gearbox, a ring and pinion or new tires.</p>
+    <a class="btn" href="../gear-calculator/" target="_blank" rel="noopener">Open the gear calculator →</a>
+    <p class="newwin">Opens in a new window.</p>
+    <a class="art" href="../gear-calculator/" target="_blank" rel="noopener"><img src="../img/gear-calc-hero.jpg" alt="Painted illustration of VW buses from every generation on a coastal highway" loading="lazy" width="1800" height="663"></a>
+    <div class="cols">
+      <div>
+        <h3>What it does</h3>
+        <p>Pick a bus, then its gearbox, gears and tires. The calculator shows your road speed and engine RPM in each gear. Stack up as many setups as you like and compare them side by side.</p>
+        <p>It covers every VW bus from 1950 to 2013: Split Window, Bay Window, Vanagon and Syncro, including the Brazilian buses built through 2013. It also handles swapped buses, with custom engines, gearboxes and ratios.</p>
+        <p>Thinking about a taller fourth, a different ring and pinion, or bigger tires? Try it here first and see what it does to your cruising RPM.</p>
+      </div>
+      <div>
+        <h3>What you get</h3>
+        <ul>
+          <li><b>Speed in each gear</b> at any engine RPM, in mph or km/h</li>
+          <li><b>RPM at road speed</b>, so you know your highway cruise</li>
+          <li><b>Speedometer error</b> after a tire or gearing change</li>
+          <li><b>Hill climbs</b> on real grades like the Grapevine, Cajon Pass and Donner Summit</li>
+          <li><b>Side-by-side compare</b> for stock and modified setups</li>
+          <li><b>A shareable link</b> that opens with your exact setups</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block tool" id="no-start">
+  <div class="wrap">
+    <span class="pill live">Live now</span>
+    <h2 class="d">Bug won't start?</h2>
+    <p class="lede">A step-by-step no-start guide for the air-cooled VW Type 1. Answer one question at a time. It narrows the problem down from battery to spark to fuel to timing.</p>
+    <a class="btn" href="../no-start/" target="_blank" rel="noopener">Start troubleshooting →</a>
+    <p class="newwin">Opens in a new window.</p>
+    <a class="art" href="../no-start/" target="_blank" rel="noopener"><img src="../img/no-start-hero.jpg" alt="Painted illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" loading="lazy" width="1800" height="663"></a>
+    <div class="cols">
+      <div>
+        <h3>How it works</h3>
+        <p>Turn the key and tell it what happens. Does the engine crank normally, crank slowly, just click, or do nothing at all? Each answer leads to the next check, until you reach a likely cause and a fix.</p>
+        <p>It is written for the carbureted Type 1 engine with points ignition and a Solex 30, 31 or 34 PICT carburetor. Specs are shown where you need them, with safety notes for the steps that need care.</p>
+      </div>
+      <div>
+        <h3>What it checks</h3>
+        <ul>
+          <li><b>Battery and cables</b>, including the gearbox ground strap</li>
+          <li><b>Starter and solenoid</b>: clicks, slow cranking, no cranking</li>
+          <li><b>Spark</b>: coil, points, condenser, rotor and cap</li>
+          <li><b>Fuel</b>: pump, lines, accelerator pump and choke</li>
+          <li><b>Timing</b> and the other usual suspects</li>
+          <li><b>The whole flow chart</b> on one page, if you want to see it all</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block faq" id="faq">
+  <div class="wrap">
+    <span class="kicker">Questions</span>
+    <h2 class="d">FAQ</h2>
+      <details><summary>Is the Bus Gear Calc free?</summary><p>Yes. Both tools are free and run in your browser. No sign-up.</p></details>
+      <details><summary>Which VW buses does the gear calculator cover?</summary><p>Every air-cooled and water-cooled VW bus from 1950 to 2013: Split Window, Bay Window (including the Brazilian buses built through 2013), Vanagon and Syncro. You can also add custom engines, gearboxes and ratios for swapped buses.</p></details>
+      <details><summary>Can it tell me my RPM at highway speed?</summary><p>Yes. Pick your bus, gearbox, ring and pinion and tire size, and it shows engine RPM at any road speed in every gear, plus your speedometer error.</p></details>
+      <details><summary>My Beetle cranks but won't start. Where do I begin?</summary><p>Open the no-start guide and answer the first question. If the engine cranks at normal speed, it checks for spark first, then fuel, then timing.</p></details>
+      <details><summary>Does the no-start guide work for other air-cooled VWs?</summary><p>It is written for the carbureted Type 1 engine with points ignition. Most of the steps also apply to Type 2 buses and Karmann Ghias with the same upright engine. Check your own engine's specs before adjusting.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="../"><img src="../img/logo.svg" alt="micro.werks"></a>
+    <a class="ig" href="https://www.instagram.com/micro.werks/" rel="me noopener" target="_blank">Instagram @micro.werks</a>
+    <span>San Diego, California · © 2026 micro.werks</span>
+  </div>
+</footer>
+</body>
+</html>

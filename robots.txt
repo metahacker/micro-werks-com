@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://micro-werks.com/sitemap.xml
