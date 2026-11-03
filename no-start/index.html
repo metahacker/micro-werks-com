@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en"><head><!-- pear-widgets-off: data-pear-talk data-pear-static-chat-launcher data-pear-whisper-chip (Alex: no PEAR widgets on bus tools) -->
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Won't start. · Type 1 no-start guide · micro.werks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VW print theme: paper white, thin rules, Futura (Jost), VW blue accent */
+:root{--bg:#f3f1ec;--pn:#fff;--ln:#d2cec4;--tx:#1d1d1b;--mu:#65625b;--vw:#1f4a96;--ok:#2f7a3b;--warn:#a26a00;--bad:#b23a26;--kick:#7a2f1d}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 "Jost","Futura","Avenir Next",-apple-system,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:720px;margin:0 auto;padding:14px 14px 60px}
+header{border-bottom:1.5px solid var(--tx);padding:6px 0 12px;margin-bottom:14px}
+.kick{font:600 10.5px/1.2 "Jost",sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--kick)}
+h1{font-weight:700;font-size:clamp(34px,8vw,52px);line-height:.98;letter-spacing:-.025em;margin:6px 0 6px}
+.sub{color:var(--mu);font-size:14.5px;margin:0}
+.trail{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;font-size:12.5px}
+.trail button{background:none;border:1px solid var(--ln);border-radius:6px;padding:3px 8px;color:var(--mu);max-width:100%;text-align:left}
+.trail button:hover{border-color:var(--tx);color:var(--tx)}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:18px 18px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.step{font:600 11px/1 "Jost";letter-spacing:.18em;text-transform:uppercase;color:var(--mu);margin-bottom:8px}
+.q{font-size:clamp(22px,5vw,28px);font-weight:700;line-height:1.15;letter-spacing:-.01em;margin:0 0 8px}
+.how{color:var(--tx);font-size:15px;margin:0 0 6px}
+.how li{margin:3px 0}
+.note{font-size:13.5px;color:var(--mu);border-left:3px solid var(--ln);padding:2px 0 2px 10px;margin:10px 0 0}
+.note.safe{border-color:var(--bad);color:#6a2a1e}
+.opts{display:grid;gap:8px;margin-top:16px}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:#fff;border:1px solid #b9b5ab;border-radius:8px;padding:12px 14px;font-weight:600}
+.opt:hover{border-color:var(--vw);box-shadow:inset 0 0 0 1px var(--vw)}
+.opt.yes{border-color:var(--vw)}
+.opt span{font-weight:400;color:var(--mu);font-size:13px}
+.opt::after{content:"›";color:var(--vw);font-size:22px;line-height:1}
+.fix .q{color:var(--vw)}
+.badge{display:inline-block;font:600 10.5px/1 "Jost";letter-spacing:.14em;text-transform:uppercase;border:1px solid currentColor;border-radius:4px;padding:4px 6px;margin-bottom:10px}
+.badge.fix{color:var(--ok)}
+.specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin:12px 0 0}
+.spec{border:1px solid var(--ln);border-radius:6px;padding:7px 9px;font-size:13px}
+.spec b{display:block;font-size:15px}
+.nav{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn{background:#fff;border:1px solid var(--ln);border-radius:6px;padding:8px 13px;font-weight:600}
+.btn.pri{background:var(--vw);border-color:var(--vw);color:#fff}
+.btn:hover{border-color:var(--tx)}
+details.map{margin-top:26px;border-top:1px solid var(--ln);padding-top:10px}
+details.map summary{cursor:pointer;font-weight:600;color:var(--vw)}
+.tree{font-size:13.5px;margin-top:10px}
+.tree ul{list-style:none;margin:0;padding-left:16px;border-left:1px solid var(--ln)}
+.tree>ul{padding-left:0;border:0}
+.tree li{margin:4px 0}
+.tree .lbl{color:var(--mu);font-size:12px;margin-right:4px}
+.tree a{color:var(--tx);text-decoration:none;border-bottom:1px dotted var(--mu)}
+.tree a.fx{color:var(--ok)}
+footer{margin-top:28px;font-size:12.5px;color:var(--mu)}
+@media(max-width:600px){.wrap{padding:10px 12px 50px}.card{padding:15px 14px 14px}}
+/* hero: same VW print-ad header as Bus Gear Calc */
+.hero{position:relative;max-width:1100px;margin:10px auto 0;border:1px solid var(--ln);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.10);overflow:hidden;min-height:clamp(170px,30vw,380px);background:#cfe3ea}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 55%}
+.hero .inner{position:relative;margin:14px 16px;padding:12px 16px;max-width:min(400px,58%);background:rgba(255,255,255,.94);border:1px solid var(--ln);border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.hero h1{margin:6px 0 0}
+.hero p{margin:7px 0 0;padding:6px 0 0;border-top:1.5px solid var(--tx);font:500 13.5px/1.3 "Jost","Futura",sans-serif;color:var(--tx)}
+.home{display:block;max-width:1100px;margin:0 auto;padding:10px 12px 0;font:600 10.5px/1 "Jost";letter-spacing:.22em;text-transform:uppercase;color:var(--mu);text-decoration:none}
+.home:hover{color:var(--tx)}
+.hero-wrap{padding:0 12px}
+@media(max-width:700px){.hero{min-height:0;background:var(--pn)}.hero img{position:relative;display:block;height:150px;object-position:72% 60%;border-bottom:1px solid var(--ln)}.hero .inner{margin:10px 12px 12px;padding:0;max-width:none;background:none;border:0;box-shadow:none}.hero h1{font-size:36px}.hero .kick{font-size:9.5px;letter-spacing:.2em}}
+</style></head>
+<body>
+<a class="home" href="https://micro-werks.com/">micro.werks · San Diego</a>
+<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">Volkswagen Type 1 · carbureted · air-cooled</div><h1>Won't start.</h1><p>Answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
+<div class="wrap" style="padding-top:16px">
+<div class="trail" id="trail"></div>
+<div id="view"></div>
+<details class="map"><summary>See the whole flow chart</summary><div class="tree" id="tree"></div></details>
+<footer>Specs are typical for a stock 1600 Type 1 with points ignition and a Solex 30/31/34 PICT. Check your engine's own numbers (tag on the fan shroud or the Bentley manual) before adjusting.</footer>
+</div>
+<script>
+// Each node: q = question, how = list of steps, note, a = [[label, next, hint]], or fix = result.
+const N={
+start:{q:"Turn the key to start. Does the engine turn over?",how:["Gearbox in neutral, handbrake on.","Listen: is the starter spinning the engine, or nothing, or just a click?"],
+  a:[["Yes, it cranks at normal speed","cranks"],["It cranks, but slowly","slow"],["Just a click","click"],["Nothing at all","dead"]]},
+
+dead:{q:"With the key on, do the red charge light and green oil light come on?",how:["Key to 'on', engine off. Both dash lights should glow.","Try the horn or headlights too."],
+  a:[["No lights, no horn","nopower"],["Lights work, starter does nothing","nostarter"]]},
+nopower:{fix:"No power: battery or main cables",how:["Measure the battery: 12.4 V or more is charged (6.2 V on a 6-volt car). Charge or jump it.","Clean and tighten both battery terminals.","Check the braided ground strap from the gearbox to the body. A broken strap is a classic no-start.","Check the thick battery cable at the starter (terminal 30)."],
+  specs:[["Battery, charged","12.4–12.7 V"],["Under cranking","no lower than 9.6 V"]],note:"The Type 1 battery sits under the rear seat. Make sure the seat springs can't touch the + terminal."},
+nostarter:{q:"Jump the starter: bridge terminal 30 to terminal 50 on the solenoid. Does it crank now?",how:["Neutral, handbrake on, key on.","Bridge the big terminal (30, battery cable) to the small spade (50) with a screwdriver or remote starter button."],
+  note:"Stay clear of the fan belt and pulley. The engine may start.",cls:"safe",
+  a:[["Yes, it cranks","fix_50"],["Still nothing","fix_starter"]]},
+fix_50:{fix:"Starter signal isn't arriving: ignition switch or the terminal 50 wire",how:["The starter is fine. The 'start' signal from the ignition switch isn't getting to terminal 50.","Check the wire from the ignition switch to the solenoid (red/black on most years) for breaks or a loose spade.","Test the ignition switch's start contacts; worn switches are common.","Automatic Stick Shift cars: check the neutral safety switch."]},
+fix_starter:{fix:"Starter or solenoid",how:["Tap the starter body with a hammer handle while someone holds the key on 'start'. If it then cranks, the brushes or solenoid contacts are worn.","Check for 12 V at terminal 30 while cranking.","Remove and bench-test the starter, or swap a known-good one."]},
+
+click:{q:"One click and nothing? Check the voltage at the battery while you turn the key.",how:["Meter on the battery posts, have someone turn the key to 'start'."],
+  a:[["Drops below about 9.6 V","fix_batt_weak"],["Stays above 10 V","fix_click"]]},
+fix_batt_weak:{fix:"Weak battery or bad connections",how:["Charge the battery and test it under load.","Clean the terminals and the gearbox-to-body ground strap.","A battery that shows 12.4 V resting but collapses when cranking is worn out."]},
+fix_click:{fix:"Solenoid contacts, starter, or the bushing",how:["The solenoid clicks but its internal contacts don't pass current. Rebuild or replace the solenoid/starter.","A worn starter bushing in the gearbox bellhousing lets the starter bind. Replace it when you pull the starter (grease it lightly).","Hot-start clicks only? Add a hot-start relay so the solenoid gets full voltage."]},
+
+slow:{fix:"Slow cranking",how:["Charge and load-test the battery.","Clean every heavy connection: both battery posts, the starter terminal 30, and the gearbox ground strap.","Starter bushing worn or dry: replace it.","Very thick oil in the cold slows cranking. Use the right grade for the season.","A slow crank can also mean the spark is too weak to start: fix the cranking first."]},
+
+cranks:{q:"Pull one plug wire, plug in a spare spark plug or spark tester, and ground it. Crank. Is there a strong blue spark?",how:["Ground the spare plug's body against the engine tin or a cylinder-head nut.","Blue and snapping is good. Thin, orange or none is not."],
+  note:"Do this away from the carb and any fuel smell. Keep a fire extinguisher handy.",cls:"safe",
+  a:[["Strong blue spark","fuel"],["Weak or no spark","nospark"]]},
+
+nospark:{q:"Now test at the coil: pull the centre wire out of the distributor cap, hold its end 1/4 in from ground, and crank. Spark?",how:["This is the thick wire from the coil tower to the middle of the distributor cap."],
+  a:[["Good spark at the coil wire","fix_cap"],["No spark at the coil wire","coil12"]]},
+fix_cap:{fix:"Distributor cap, rotor or plug wires",how:["Pop the cap. Look for cracks, carbon tracks, moisture or burnt contacts. Dry it or replace it.","Check the rotor: a cracked rotor, or a failed rev-limiter rotor, grounds out the spark.","Check plug wires and the plug connectors. Replace wet or cracked wires.","Make sure the plug wires go to the right cylinders: firing order 1-4-3-2."],
+  specs:[["Firing order","1-4-3-2"],["Rotation","counter-clockwise (from the top)"]]},
+coil12:{q:"Key on. Is there 12 V at the coil's + terminal (15)?",how:["Meter between coil terminal 15 and ground, key in the 'on' position."],
+  a:[["Yes, 12 V","points"],["No power","fix_15"]]},
+fix_15:{fix:"No power to the coil",how:["The coil feed comes from the ignition switch (terminal 15, usually a black wire).","Check the wire and its connector at the coil.","Test the ignition switch's 'on' contacts.","If someone fitted a ballast resistor or an electronic ignition, check its wiring too."]},
+points:{q:"Take off the distributor cap. Bump the engine over. Do the points open and close, and are they clean?",how:["Bump the starter or turn the engine with a wrench on the pulley nut.","Watch the points: they should open as each cam lobe passes, and the contact faces should be clean and flat."],
+  a:[["Points look good and open","coilcheck"],["Burnt, pitted, dirty, or never open","fix_points"],["Electronic ignition fitted (no points)","fix_elec"]]},
+fix_points:{fix:"Points: clean, gap or replace",how:["File or replace burnt points. Wipe them with a clean card.","Set the gap at the highest point of a cam lobe, then check the dwell when it runs.","Check the condenser and the small wire from coil terminal 1 to the points: if its insulation is cut, it grounds out the spark. This is a very common fault.","After setting the points, recheck the timing."],
+  specs:[["Point gap","0.016 in (0.4 mm)"],["Dwell","44–50°"]]},
+fix_elec:{fix:"Electronic ignition",how:["Check the module's power and ground wires.","Make sure the magnet sleeve/trigger is seated on the distributor shaft.","Leaving the key on with the engine stopped can burn some modules out.","Carry the old points and condenser in the glovebox: a five-minute roadside fix."]},
+coilcheck:{fix:"Coil, condenser or the internal ground",how:["Measure the coil: primary between 15 and 1, secondary between 15 and the tower.","Replace the condenser: it's cheap and fails often.","Check the thin wire inside the distributor body and the points' ground: a short there kills spark even when the points look fine.","Swap in a known-good coil if the readings are off."],
+  specs:[["Coil primary (12 V)","about 3.0–3.5 Ω"],["Coil secondary","about 7–12 kΩ"]]},
+
+fuel:{q:"Look down the carburetor throat and work the throttle by hand. Do you see fuel squirt from the accelerator pump?",how:["Air cleaner off. Engine off.","Open the throttle by hand at the carb linkage and watch for a squirt of fuel into the throat."],
+  note:"No smoking, no sparks nearby.",cls:"safe",
+  a:[["Yes, a good squirt","fuelok"],["No squirt","nofuel"]]},
+nofuel:{q:"Pull the fuel line off the carb, point it into a jar, and crank. Does fuel pulse out?",how:["Have a helper crank for a few seconds. The mechanical pump should pulse fuel with every turn."],
+  note:"Catch every drop. Fuel on a hot engine is a fire risk.",cls:"safe",
+  a:[["Yes, fuel pulses out","fix_float"],["No fuel","fix_pump"]]},
+fix_float:{fix:"Fuel reaches the carb but not the bowl: float needle or inlet",how:["The float needle valve is stuck closed, or the inlet is clogged.","Take off the carb top and check the needle and float. Clean the inlet.","Check the little filter screen at the carb inlet, if fitted."]},
+fix_pump:{fix:"No fuel from the pump",how:["Is there fuel in the tank? Gauges lie.","Check the inline filter and the hose at the tank outlet. Old hoses swell shut inside.","Check the tank outlet screen for rust or debris.","Check the fuel pump: diaphragm, valves and pushrod. The pushrod must be the right length and move when the engine turns.","Replace old rubber hoses with SAE J30R9. Leaking hoses at the pump are the classic Type 1 fire."],
+  note:"Hose leaks near the pump and carb cause most Type 1 engine fires. Replace any hose that's cracked or soft.",cls:"safe"},
+
+fuelok:{q:"Spark and fuel are both there. Is the engine flooded? Pull a plug: is it wet with fuel, or does the engine stink of fuel?",how:["Wet, fuel-smelling plugs mean too much fuel.","Dry plugs mean not enough is getting in."],
+  a:[["Wet plugs, strong smell","fix_flood"],["Dry plugs","dry"],["Starts, then dies straight away","startsdies"]]},
+fix_flood:{fix:"Flooded",how:["Floor the throttle and hold it there while you crank. Don't pump it.","Or wait 10–15 minutes and try again.","If it floods again: check the choke isn't stuck closed (it should open as the engine warms).","Check the float needle for leaking, and the float level.","Check the fuel pump isn't pushing too much pressure. Fit a regulator if it is."],
+  specs:[["Fuel pressure","about 3–5 psi"]]},
+dry:{q:"Does a very small shot of starting fluid in the carb throat make it fire for a moment?",how:["One short burst only, air cleaner off. Crank right away."],
+  note:"Starting fluid can backfire. Use very little and keep your face away from the carb.",cls:"safe",
+  a:[["Fires, then dies","fix_idlecut"],["Doesn't even fire","timing"]]},
+startsdies:{fix:"Starts, then dies: idle cut-off valve, idle jet or choke",how:["Idle cut-off solenoid: with the key on, unplug and replug its wire. You should hear a click. No click = no fuel at idle. Check its 12 V supply.","Clogged idle jet (inside the cut-off valve or on the carb): clean it with a thin wire or replace it.","Automatic choke: on a cold engine the choke plate should be nearly closed. Check its heater wire if it opens too fast.","An ignition switch that only feeds the coil in the 'start' position does this too: check for 12 V at coil terminal 15 with the key back on 'on'."]},
+fix_idlecut:{fix:"Fuel isn't getting through the carb: idle cut-off or jets",how:["Check the idle cut-off solenoid clicks with the key on and has 12 V.","Clean the idle jet and the main jet. Old fuel varnish blocks them.","Check the float level.","If the car sat a long time, rebuild or clean the carb."]},
+timing:{fix:"Timing, compression or a big air leak",how:["Timing: if the distributor was moved, set the static timing. Turn the engine to the timing mark with no. 1 at TDC on compression and set the points to just open.","Is the rotor pointing to the no. 1 mark on the distributor body at TDC? If it points to no. 3, you're 180° out: turn the crank one full turn.","Compression: if the valves are adjusted too tight they won't close. Check the valve clearance with the engine cold.","Do a compression test. Low readings across all four mean a deeper problem.","A big intake leak (cracked boot, loose manifold) can stop it starting at all."],
+  specs:[["Valve clearance (cold)","0.006 in (0.15 mm)"],["Firing order","1-4-3-2"],["Compression","about 100–130 psi, even"],["Static timing","typically 7.5° BTDC (check yours)"]]}
+};
+
+const $=s=>document.querySelector(s);
+let path=['start'];
+function title(id){const n=N[id];return n.q||n.fix}
+function render(){
+  const id=path[path.length-1],n=N[id];
+  $('#trail').innerHTML=path.length>1?path.slice(0,-1).map((p,i)=>`<button data-back="${i}">${i+1}. ${short(title(p))}</button>`).join(''):'';
+  let h=`<div class="card${n.fix?' fix':''}">`;
+  if(n.fix)h+=`<div class="badge fix">Likely cause</div>`;else h+=`<div class="step">Step ${path.length}</div>`;
+  h+=`<p class="q">${n.q||n.fix}</p>`;
+  if(n.how)h+=n.fix?`<ol class="how">${n.how.map(x=>`<li>${x}</li>`).join('')}</ol>`:`<ul class="how">${n.how.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+  if(n.specs)h+=`<div class="specs">${n.specs.map(([k,v])=>`<div class="spec">${k}<b>${v}</b></div>`).join('')}</div>`;
+  if(n.note)h+=`<p class="note${n.cls?' '+n.cls:''}">${n.note}</p>`;
+  if(n.a)h+=`<div class="opts">${n.a.map(([l,to],i)=>`<button class="opt${i===0?' yes':''}" data-go="${to}">${l}</button>`).join('')}</div>`;
+  h+=`<div class="nav">${path.length>1?'<button class="btn" data-act="back">‹ Back</button>':''}${path.length>1?'<button class="btn" data-act="restart">Start over</button>':''}${n.fix?'<button class="btn pri" data-act="restart">Fixed it? Try again from the top</button>':''}</div></div>`;
+  $('#view').innerHTML=h;
+  history.replaceState(null,'','#'+path.join('.'));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+const short=s=>s.length>46?s.slice(0,44)+'…':s;
+document.addEventListener('click',e=>{const t=e.target.closest('button,a[data-node]');if(!t)return;
+  if(t.dataset.go){path.push(t.dataset.go);render();}
+  else if(t.dataset.back!=null){path=path.slice(0,+t.dataset.back+1);render();}
+  else if(t.dataset.act==='back'){path.pop();render();}
+  else if(t.dataset.act==='restart'){path=['start'];render();}
+  else if(t.dataset.node){e.preventDefault();path=findPath(t.dataset.node)||['start'];render();}
+});
+function findPath(target,id='start',p=[]){p=[...p,id];if(id===target)return p;for(const [,to] of (N[id].a||[])){const r=findPath(target,to,p);if(r)return r}return null}
+function tree(id,label){const n=N[id];return `<li>${label?`<span class="lbl">${label} →</span>`:''}<a href="#" data-node="${id}" class="${n.fix?'fx':''}">${n.fix?'✓ '+n.fix:n.q}</a>${n.a?`<ul>${n.a.map(([l,to])=>tree(to,l)).join('')}</ul>`:''}</li>`}
+$('#tree').innerHTML=`<ul>${tree('start')}</ul>`;
+const h=location.hash.slice(1).split('.').filter(x=>N[x]);if(h[0]==='start')path=h;
+render();
+</script>
+</body></html>
