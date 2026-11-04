@@ -2,8 +2,8 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="canonical" href="https://micro-werks.com/no-start/">
-<meta name="description" content="Step-by-step troubleshooting for any carbureted VW with a Type 1 engine that won't start: Beetle, Karmann Ghia, early bus, Thing, Baja or buggy. Battery, starter, spark, fuel and timing, one question at a time. Free from micro.werks.">
-<title>Won't start. · VW Type 1 engine no-start guide · micro.werks</title>
+<meta name="description" content="Step-by-step troubleshooting for any air-cooled VW that won't start, carbureted or fuel-injected: Beetle, Karmann Ghia, Type 2 bus, Thing, Type 3, 411/412, 914, air-cooled Vanagon, Kübelwagen, Baja and buggy. Battery, starter, spark, fuel and timing, one question at a time. Free from micro.werks.">
+<title>Won't start. · Air-cooled VW no-start guide · micro.werks</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -78,12 +78,12 @@ footer{margin-top:28px;font-size:12.5px;color:var(--mu)}
 </style></head>
 <body>
 <div class="mwbar"><a class="mw" href="/" aria-label="micro.werks home"><img src="/img/logo.svg" alt="micro.werks"></a><nav><a href="/tools/">&larr; All tools</a><a class="hide-xs" href="/">micro-werks.com</a></nav></div>
-<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">VW Type 1 engine · carbureted · air-cooled</div><h1>Won't start.</h1><p>For any carbureted VW with the upright Type 1 engine: Beetle, Karmann Ghia, early bus, Thing, Baja or buggy. Answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
+<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">Air-cooled VW · carburetor or fuel injection</div><h1>Won't start.</h1><p>For every air-cooled VW: Beetle, Karmann Ghia, Type 2 bus, Thing, Type 3, 411/412, 914, air-cooled Vanagon, Kübelwagen, Baja and buggy. Answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
 <div class="wrap" style="padding-top:16px">
 <div class="trail" id="trail"></div>
 <div id="view"></div>
 <details class="map"><summary>See the whole flow chart</summary><div class="tree" id="tree"></div></details>
-<footer>Specs are typical for a stock carbureted Type 1 engine (1200 to 1600) with points ignition and a Solex carburetor, in a Beetle, Karmann Ghia, Type 2 bus, Thing, Baja or buggy. Most VWs built before the 1967 model year are 6-volt; use the 6-volt numbers where shown. Check your engine's own numbers (tag on the fan shroud or the Bentley manual) before adjusting.</footer>
+<footer>Covers every air-cooled VW, carbureted or fuel-injected, with the Type 1, Type 3 or Type 4 engine. Specs are typical for stock engines with points ignition; year, engine and model change some numbers. Most VWs built before the 1967 model year are 6-volt; use the 6-volt numbers where shown. Check your engine's own numbers (tag on the fan shroud or the Bentley manual) before adjusting.</footer>
 </div>
 <script>
 // Each node: q = question, how = list of steps, note, a = [[label, next, hint]], or fix = result.
@@ -94,7 +94,7 @@ start:{q:"Turn the key to start. Does the engine turn over?",how:["Gearbox in ne
 dead:{q:"With the key on, do the red charge light and green oil light come on?",how:["Key to 'on', engine off. Both dash lights should glow.","Try the horn or headlights too."],
   a:[["No lights, no horn","nopower"],["Lights work, starter does nothing","nostarter"]]},
 nopower:{fix:"No power: battery or main cables",how:["Measure the battery: 12.4 V or more is charged (6.2 V on a 6-volt car). Charge or jump it.","Clean and tighten both battery terminals.","Check the braided ground strap from the gearbox to the body. A broken strap is a classic no-start.","Check the thick battery cable at the starter (terminal 30)."],
-  specs:[["Battery, charged","12.4–12.7 V"],["Under cranking","no lower than 9.6 V"],["6-volt car, cranking","no lower than about 4.8 V"]],note:"Where's the battery? Beetle, Super Beetle and Thing: under the rear seat. Karmann Ghia and Type 2 bus: in the engine bay, right side. Bajas and buggies: wherever the builder put it. Under a seat, make sure the springs can't touch the + terminal."},
+  specs:[["Battery, charged","12.4–12.7 V"],["Under cranking","no lower than 9.6 V"],["6-volt car, cranking","no lower than about 4.8 V"]],note:"Where's the battery? Beetle, Super Beetle, Thing, Type 3 and Kübelwagen: under the rear seat. 411/412: under the driver's seat. Air-cooled Vanagon: under the right front seat. Karmann Ghia, Type 2 bus and 914: in the engine bay, right side. Bajas and buggies: wherever the builder put it. Under a seat, make sure the springs can't touch the + terminal."},
 nostarter:{q:"Jump the starter: bridge terminal 30 to terminal 50 on the solenoid. Does it crank now?",how:["Neutral, handbrake on, key on.","Bridge the big terminal (30, battery cable) to the small spade (50) with a screwdriver or remote starter button."],
   note:"Stay clear of the fan belt and pulley. The engine may start.",cls:"safe",
   a:[["Yes, it cranks","fix_50"],["Still nothing","fix_starter"]]},
@@ -110,7 +110,7 @@ slow:{fix:"Slow cranking",how:["Charge and load-test the battery.","Clean every 
 
 cranks:{q:"Pull one plug wire, plug in a spare spark plug or spark tester, and ground it. Crank. Is there a strong blue spark?",how:["Ground the spare plug's body against the engine tin or a cylinder-head nut.","Blue and snapping is good. Thin, orange or none is not."],
   note:"Do this away from the carb and any fuel smell. Keep a fire extinguisher handy.",cls:"safe",
-  a:[["Strong blue spark","fuel"],["Weak or no spark","nospark"]]},
+  a:[["Strong blue spark","fuelsys"],["Weak or no spark","nospark"]]},
 
 nospark:{q:"Now test at the coil: pull the centre wire out of the distributor cap, hold its end 1/4 in from ground, and crank. Spark?",how:["This is the thick wire from the coil tower to the middle of the distributor cap."],
   a:[["Good spark at the coil wire","fix_cap"],["No spark at the coil wire","coil12"]]},
@@ -123,11 +123,28 @@ points:{q:"Take off the distributor cap. Bump the engine over. Do the points ope
   a:[["Points look good and open","coilcheck"],["Burnt, pitted, dirty, or never open","fix_points"],["Electronic ignition fitted (no points)","fix_elec"]]},
 fix_points:{fix:"Points: clean, gap or replace",how:["File or replace burnt points. Wipe them with a clean card.","Set the gap at the highest point of a cam lobe, then check the dwell when it runs.","Check the condenser and the small wire from coil terminal 1 to the points: if its insulation is cut, it grounds out the spark. This is a very common fault.","After setting the points, recheck the timing."],
   specs:[["Point gap","0.016 in (0.4 mm)"],["Dwell","44–50°"]]},
-fix_elec:{fix:"Electronic ignition",how:["Check the module's power and ground wires.","Make sure the magnet sleeve/trigger is seated on the distributor shaft.","Leaving the key on with the engine stopped can burn some modules out.","Carry the old points and condenser in the glovebox: a five-minute roadside fix."]},
+fix_elec:{fix:"Electronic ignition",how:["Check the module's power and ground wires.","Make sure the magnet sleeve/trigger is seated on the distributor shaft.","Leaving the key on with the engine stopped can burn some modules out.","Carry the old points and condenser in the glovebox: a five-minute roadside fix.","Some late cars, like fuel-injected Mexican Beetles, came with electronic ignition from the factory. Check the Hall sender in the distributor and its plug."]},
 coilcheck:{fix:"Coil, condenser or the internal ground",how:["Measure the coil: primary between 15 and 1, secondary between 15 and the tower.","Replace the condenser: it's cheap and fails often.","Check the thin wire inside the distributor body and the points' ground: a short there kills spark even when the points look fine.","Swap in a known-good coil if the readings are off."],
   specs:[["Coil primary (12 V)","about 3.0–3.5 Ω"],["Coil secondary","about 7–12 kΩ"]]},
 
-fuel:{q:"Look down the carburetor throat and work the throttle by hand. Do you see fuel squirt from the accelerator pump?",how:["Air cleaner off. Engine off.","Open the throttle by hand at the carb linkage and watch for a squirt of fuel into the throat.","Dual carbs: check each one."],
+fuelsys:{q:"Good spark. Now fuel: does your engine have a carburetor or fuel injection?",how:["Carburetor: one carb on top of the engine under a round air cleaner, or two carbs, one on each side. Most Beetles, Karmann Ghias, Things, Kübelwagens and buggies, US buses through 1974, and Type 3s before 1968.","Fuel injection: an air box with a runner to each cylinder head, an injector with a wire plug at each intake port, and an electric fuel pump. US Type 3s from 1968, 411/412, 914, US Beetles and buses from 1975, air-cooled Vanagons and late Mexican Beetles.","Many cars sold outside the US kept carburetors. Look at the engine to be sure."],
+  a:[["Carburetor","fuel"],["Fuel injection","fi_pump"]]},
+fi_pump:{q:"Turn the key and listen near the fuel tank and under the car. Do you hear the electric fuel pump run, at least while cranking?",how:["Many systems run the pump only while cranking, or for a second or two after key-on. Have a helper crank while you listen.","Gauges lie: make sure there's fuel in the tank."],
+  a:[["Yes, the pump runs","fi_press"],["No pump sound","fix_fi_pump"]]},
+fix_fi_pump:{fix:"Electric fuel pump not running",how:["Check the fuel pump fuse, if fitted.","Check the fuel pump relay (the double relay on L-Jetronic and Digifant cars). Relays and their sockets corrode and fail often. Swap in a known-good relay.","Check for 12 V and a good ground at the pump plug while cranking.","Tap the pump body while someone cranks. If it starts, the pump is worn out.","L-Jetronic: once the engine runs, a switch in the air flow meter keeps the pump on. If it starts and then dies, check that switch too."],
+  note:"Never run the pump with a fuel line off. Injection pressure sprays fuel hard.",cls:"safe"},
+fi_press:{q:"Is there fuel pressure? Fit a gauge at the test port or in the supply line, then run the pump.",how:["No gauge? With the pump running, the supply hose should feel hard and you should hear fuel returning to the tank. A gauge is the real test."],
+  specs:[["D-Jetronic","about 28–30 psi"],["L-Jetronic, vacuum hose on","about 28–30 psi"],["L-Jetronic, vacuum hose off","about 35–36 psi"],["Holds after shutdown","about 18–20 psi"]],
+  a:[["Good pressure","fi_inj"],["Low or no pressure","fix_fi_press"]]},
+fix_fi_press:{fix:"Low fuel pressure",how:["Replace the fuel filter. A clogged filter is the most common cause.","Check the hose from the tank to the pump. Old hoses collapse inside.","Check the pressure regulator. If pressure is low and fuel returns to the tank hard, the regulator may be stuck open.","A weak pump can run but not make pressure. Test its delivery volume against your manual.","Use only fuel-injection hose (SAE J30R9) and fuel-injection clamps."],
+  note:"Injection hoses run at high pressure. A leak sprays fuel onto a hot engine. Replace any hose that's old, cracked or soft.",cls:"safe"},
+fi_inj:{q:"Do the injectors click while cranking?",how:["Hold a long screwdriver on an injector with your ear on the handle, or plug a noid light into an injector connector, and have someone crank."],
+  a:[["Yes, they click","fi_mix"],["No click","fix_fi_pulse"]]},
+fix_fi_pulse:{fix:"No injector pulse: trigger signal, control unit power or wiring",how:["Check the main relay and the power feed to the control unit (the 'brain').","Check every ground at the engine. A loose engine ground stops injection.","D-Jetronic: the trigger points sit in the base of the distributor. Check them and their plug for dirt, wear and broken wires.","L-Jetronic and Digifant: the control unit reads engine speed from coil terminal 1. Check that wire.","Check the injector plugs and the big plug at the control unit for corrosion.","Still nothing? Try a known-good control unit."]},
+fi_mix:{fix:"Pressure and pulse are good: sensors, air leaks or cold start",how:["Check the cylinder head temperature sensor and its wire. A broken wire or bad sensor makes the mixture far too lean or too rich to start.","D-Jetronic: check the vacuum hose to the manifold pressure sensor. If it's off or cracked, the mixture is wrong.","L-Jetronic: the flap in the air flow meter must swing freely. Check the big intake boot for cracks.","On a cold engine, check the cold start valve and its thermo-time switch.","Look for air leaks: intake boots, injector seals and vacuum hoses. Fuel injection is far more sensitive to them than a carb.","Wet plugs and a strong fuel smell? A leaking injector or cold start valve may be flooding it.","If all of that checks out, go on to timing and compression."],
+  a:[["Check timing and compression","timing"]]},
+
+fuel:{q:"Carburetor: look down the carburetor throat and work the throttle by hand. Do you see fuel squirt from the accelerator pump?",how:["Air cleaner off. Engine off.","Open the throttle by hand at the carb linkage and watch for a squirt of fuel into the throat.","Dual carbs: check each one."],
   note:"No smoking, no sparks nearby.",cls:"safe",
   a:[["Yes, a good squirt","fuelok"],["No squirt","nofuel"],["My carb has no accelerator pump (early 1200)","nofuel"]]},
 nofuel:{q:"Pull the fuel line off the carb, point it into a jar, and crank. Does fuel pulse out?",how:["Have a helper crank for a few seconds. The mechanical pump should pulse fuel with every turn."],
@@ -147,7 +164,7 @@ dry:{q:"Does a very small shot of starting fluid in the carb throat make it fire
 startsdies:{fix:"Starts, then dies: idle cut-off valve, idle jet or choke",how:["Idle cut-off solenoid (most Solex carbs from the mid-1960s on): with the key on, unplug and replug its wire. You should hear a click. No click = no fuel at idle. Check its 12 V supply.","Clogged idle jet (inside the cut-off valve or on the carb): clean it with a thin wire or replace it.","Automatic choke: on a cold engine the choke plate should be nearly closed. Check its heater wire if it opens too fast. Early cars with a manual choke knob: pull it for a cold start.","An ignition switch that only feeds the coil in the 'start' position does this too: check for 12 V at coil terminal 15 with the key back on 'on'."]},
 fix_idlecut:{fix:"Fuel isn't getting through the carb: idle cut-off or jets",how:["If fitted, check the idle cut-off solenoid clicks with the key on and has battery voltage.","Clean the idle jet and the main jet. Old fuel varnish blocks them.","Check the float level.","If the car sat a long time, rebuild or clean the carb."]},
 timing:{fix:"Timing, compression or a big air leak",how:["Timing: if the distributor was moved, set the static timing. Turn the engine to the timing mark with no. 1 at TDC on compression and set the points to just open.","Is the rotor pointing to the no. 1 mark on the distributor body at TDC? If it points to no. 3, you're 180° out: turn the crank one full turn.","Compression: if the valves are adjusted too tight they won't close. Check the valve clearance with the engine cold.","Do a compression test. Low readings across all four mean a deeper problem.","A big intake leak (cracked boot, loose manifold) can stop it starting at all."],
-  specs:[["Valve clearance (cold)","0.006 in (0.15 mm) on most; some early engines differ"],["Firing order","1-4-3-2"],["Compression","about 100–130 psi, even"],["Static timing","10° BTDC to 5° ATDC, by engine (check yours)"]]}
+  specs:[["Valve clearance (cold)","0.006 in (0.15 mm) on most solid-lifter engines; 1978-on 2.0 bus and Vanagon engines have hydraulic lifters"],["Firing order","1-4-3-2"],["Compression","about 100–130 psi, even"],["Timing","varies by engine and year: check the sticker or your manual"]]}
 };
 
 const $=s=>document.querySelector(s);
