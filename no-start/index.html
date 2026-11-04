@@ -238,7 +238,7 @@ const HALLCHECK=(extra)=>({k:'hall',next:'hall',label:'Bosch Hall-effect electro
  checks:L('The distributor has a Hall sender inside instead of points. It has a 3-wire plug on the side of the distributor.',
   'Pull the plug off the distributor. Key ON. Measure between the two outer wires in the plug: you should see about 5 V or more. No voltage: the control unit is not powering the sender. Check its plug and ground.',
   'With the plug back on, clip a test light between coil terminal 15 and coil terminal 1, then crank. It should flicker. No flicker: the Hall sender or the control unit has failed.',
-  'The rotor is a special 1,000 Ω (1 kΩ) rotor. A plain rotor or a cracked one stops the spark.',extra)});
+  extra)});
 
 // ---------- fuel systems ----------
 // Carburetor profiles are built from the car's carb facts (fx) and the pump answer.
@@ -268,9 +268,9 @@ function carbF(c){
    :x.choke==='none'?'These carburetors have no choke. For a cold start, pump the gas pedal 2 or 3 times before you crank, so the accelerator pumps squirt fuel in.'
    :two?`Each carburetor has its own automatic choke cover. The left and right covers are different parts; make sure each is on its own carb. Cold engine: open the throttle once by hand and both choke flaps should close. Key ON: both covers warm up and the flaps open together over a few minutes. They get ${volt} from coil terminal 15. A cover that stays cold has no power or a broken heater.`
    :`The automatic choke is the round cover on the right side of the carburetor top. Cold engine: open the throttle once by hand and the choke flap at the top of the throat should close almost fully. Key ON: the cover warms up and the flap opens over about 3 to 5 minutes. It gets ${volt} on a black wire from coil terminal 15. A cover that stays cold has no power or a broken heater.`;
-  const cut=x.cut==='look'?`Look on the ${x.cutWhere||'side of the carburetor body'} for a small round solenoid with one wire: the idle cut-off valve.${x.lookNote?' '+x.lookNote:''} A valve that is there must click when you pull its wire off and push it back on with the key ON, and needs ${volt} on that wire. A dead valve shuts off the idle fuel.`
-   :x.cut?(two?`Idle cut-off valves: each carburetor has a small one-wire solenoid screwed into its body. Key ON, pull each wire off and push it back on. You should hear and feel a click. No click: check for ${volt} on the wire. Voltage there but no click: replace that valve. A dead valve shuts off the idle fuel.`
-     :`Idle cut-off valve: the small one-wire solenoid screwed into the ${x.cutWhere||'side of the carburetor'}. Key ON, pull its wire off and push it back on. You should hear and feel a click. No click: check for ${volt} on the wire, which comes from coil terminal 15. Voltage there but no click: replace the valve. A dead valve shuts off the idle fuel and the engine will not start or idle.`):null;
+  const cut=x.cut==='look'?`Look on the ${x.cutWhere||'side of the carburetor body'} for a small round solenoid with one wire: the idle cut-off valve.${x.lookNote?' '+x.lookNote:''} A valve that is there must click when you pull its wire off and push it back on with the key ON. A dead valve shuts off the idle fuel.`
+   :x.cut?(two?`Idle cut-off valves: each carburetor has a small one-wire solenoid screwed into its body. Key ON, pull each wire off and push it back on. You should hear and feel a click. ${c.kit==='h'?'No click: push its wire on firmly. Still no click: that valve or its wire has failed.':'No click: check for '+volt+' on the wire. Voltage there but no click: replace that valve.'} A dead valve shuts off the idle fuel.`
+     :`Idle cut-off valve: the small one-wire solenoid screwed into the ${x.cutWhere||'side of the carburetor'}. Key ON, pull its wire off and push it back on. You should hear and feel a click. ${c.kit==='h'?'No click: push its wire on firmly and follow it back to coil terminal 15. Still no click: the valve or its wire has failed.':'No click: check for '+volt+' on the wire, which comes from coil terminal 15. Voltage there but no click: replace the valve.'} A dead valve shuts off the idle fuel and the engine will not start or idle.`):null;
   return {label:x.label||(two?'two '+x.carb+' carburetors':'one '+x.carb+' carburetor'),hint:x.hint,fi:false,first:x.accel===false?'c_line':'c_squirt',
    carbThe:the,n,aircleaner:two?'Take off both air cleaners.':'Undo the clamp and lift the air cleaner off the top of the carburetor.',
    pump:ploc,pumpElec:pk==='elec',pumpFix:p.fix,pumpSpec:x.psi?[['Pressure at the carburetor',x.psi]]:(c.pumpSpecBR||p.spec),alc:c.alc?ALC:null,
@@ -278,7 +278,7 @@ function carbF(c){
    choke,cutoff:cut,
    jets:`Take out the idle jet${two?'s':''} (small brass jet${two?'s':''} screwed into the side of the carburetor body) and the main jet${two?'s':''}. Blow them clear with compressed air or carb cleaner. Old fuel varnish blocks them.`,
    floatHow:'Take the top off the carburetor. Check that the float needle valve in the fuel inlet slides freely and the inlet strainer is clear.',
-   pressHi:c.fromFI&&pk==='elec'?'The factory fuel-injection pump makes about 35 psi. It must be replaced with a low-pressure pump, not just turned down, and the old return line capped at the tank.':pk==='t1'?'A wrong pump pushrod length makes too much pressure and floods it. See the pushrod spec below.':pk==='elec'?'An electric pump with no regulator floods carburetors. Fit a regulator and set it with a gauge to the figure below.':null,
+   pressHi:c.fromFI&&pk==='elec'?(c.kit==='h'?'The factory fuel-injection pump makes ten times the pressure carburetors need. It must':'The factory fuel-injection pump makes about 35 psi. It must')+' be replaced with a low-pressure pump, not just turned down, and the old return line capped at the tank.':pk==='t1'?'A wrong pump pushrod length makes too much pressure and floods it. See the pushrod spec below.':pk==='elec'?(c.kit==='h'?'An electric pump with no regulator floods carburetors. Look for a small regulator in the fuel line after the pump.':'An electric pump with no regulator floods carburetors. Fit a regulator and set it with a gauge to the figure below.'):null,
    diesTitle:x.cut?'Starts, then dies: idle cut-off valve, idle jet or choke':'Starts, then dies: idle jet or choke'}}
 const CARB_AFT={
  k:c=>({carb:'Solex or Brosol 34 PICT-3 type',n:1,accel:true,choke:'auto',cut:true,cutWhere:'left side of the carburetor, just below the idle mixture (volume) screw'}),
@@ -287,15 +287,55 @@ const CARB_AFT={
  w:c=>({carb:'Weber 32/36 progressive',n:1,accel:true,choke:'weber',cut:false,psi:'about 3 psi, never over 3.5 psi',label:'one Weber 32/36 progressive carburetor'}),
 };
 
+// Minimal-kit (hands, paperclip, noid light) versions of the L-Jetronic checks.
+const NOID='Use a noid light that fits the Bosch injector plug. Watch for repeated flashes; how bright it glows depends on the light, so brightness alone means nothing.';
+function LJH(o,c){return{
+ pumpFixH:L(o.pumpFixH||L(
+  `Flap switch test with the paperclip. Key OFF. Unplug the air flow meter plug: squeeze its wire clip and pull the rubber-booted plug off the meter. The terminal numbers are molded on the meter next to its pins; find 36 and 39. On the harness plug, bridge the two matching sockets with the paperclip U, keeping it clear of the meter body and any metal. This circuit only carries the small relay trigger current. Key ON.`,
+  'The relay clicks and the pump runs: the pump, its power and the relay pump half work. The flap switch inside the meter, or the plug contacts, are at fault. Engines with this fault fire on the starter and die as soon as you let the key go.',
+  'Key OFF, take the paperclip out and plug the meter back in before you try to start the engine.',
+  `Nothing with the bridge: ${o.relay?'feel the double relay ('+(o.relayShort||o.relay)+') while the bridge is in. ':''}No second click: the relay, its plugs or its ground. Pull the relay off its plugs, look for green corrosion or water on the pins, and push it back on firmly.`,
+  'Do not bridge the relay socket terminals with the paperclip. Socket 88y is an unfused battery feed that carries the full pump current; that test needs a proper fused jumper.',
+  `A second click but no pump: if you can reach the pump without tools (${o.pump.replace(/\.$/,'')}), put your hand on it while the helper holds the flap open; a running pump buzzes. Push its plug and ground wire home and tap the pump body with the heel of your hand. If it then starts, the pump is worn out.`,
+  o.fuseNoteH)),
+ pressFeel:L('You can tell pressure from no pressure by hand and ear. It will not show the exact figure, so a weak pump can still pass.',
+  'Key ON, hold the air flow meter flap open (or bridge terminals 36 and 39) so the pump runs.',
+  `Press the short fuel hoses on the injectors gently between finger and thumb${o.hoses?': '+o.hoses:''}. With pressure they feel hard, like a fully pumped bicycle tire. Soft or squashy means little or no pressure. Do not squeeze old, cracked hoses.`,
+  `Listen at the pressure regulator and its return hose${o.ret?': '+o.ret:''}. Good pressure makes a steady hiss or trickle of fuel going back to the tank.`,
+  'This only tells pressure from no pressure. It cannot show a weak pump or a pressure that leaks away; those need a pressure gauge.',
+  'If you see or smell leaking fuel, key OFF and stop. Do not pinch the return hose shut: blocking it pushes the pressure far above normal.'),
+ pressFixH:L(`The fuel filter is ${o.filter} A clogged filter is the most common cause. Replacing it needs a new filter and hose clamps.`,
+  'Squeeze the hose from the tank to the filter and pump. Old hose collapses inside or splits.',
+  'A pump that runs but sounds grinding can spin without making pressure. Low fuel in the tank or a blocked filter also makes a pump growl.',
+  'Measuring the pressure, and how well it holds, needs a fuel pressure gauge.'),
+ injHowH:L(`The four injectors sit where each intake runner meets a cylinder head, two on each side. All four fire together.`,
+  'Have the helper crank. Rest a fingertip on each injector body in turn and put your ear close: you should feel and hear a sharp, steady tick on every one, all in time.',
+  `Noid light: unplug one injector (squeeze its wire clip and pull the plug straight off) and push the noid light into the plug. ${NOID} Crank and watch: a steady flicker is good. Refit the plug afterwards.`),
+ pulseFixH:L('No flicker and no tick on any injector: the control unit is not firing them.',
+  'The control unit gets its engine-speed signal from coil terminal 1. If the points (or the electronic trigger) are not switching the coil, there is no trigger and no injection. A fault after the coil (cap, rotor, plug wires) kills the spark but leaves injection working.',
+  o.relay?'Key ON, feel the double relay: one click means its power half pulls in (its contacts are not proven). No click: the relay, its ground or its feed from coil terminal 15.':null,o.resistorH,
+  `Push every injector plug and the big control unit plug firmly home. The control unit is ${o.ecu} Look for water and green corrosion on its plug.`,
+  o.grounds,
+  'One injector silent but the others tick: move the noid light to its plug. Flicker there means the signal arrives, so suspect that injector or its plug contacts.'),
+ stuckFix:'A noid light that stays fully lit, with no flicker at all, means the injector ground is held on all the time. Look along the injector wiring, from the injectors at the cylinder heads back to the control unit, for a wire rubbed through to metal. If the wiring is sound, the control unit has failed inside.',
+ mixFixH:L(`Temperature sensor II, by ear: it is a one-wire sensor screwed into ${o.ts2} Pull its plug off and try to start the engine.`,
+  'Unplugged, the control unit thinks the engine is extremely cold and adds the most fuel. A cold engine that will not start, but fires with the sensor unplugged, was too lean: look at the sensor and its wire, air leaks, and fuel delivery. A warm engine runs very rich and black with it unplugged; that is normal. Key OFF and plug it back in.',
+  'Warm engine that will not start: key OFF, push one end of the paperclip into the socket of the wire plug (the harness side, not the sensor) and touch the other end to a bare metal bolt. Now the control unit thinks the engine is hot and cuts the extra fuel. If it then starts, it was too rich: suspect the sensor or its connection. A break in the wire further back toward the control unit is not bypassed by this. Key OFF before you take the clip out.',
+  `Cold start valve, by feel: ${o.csvFeel||'it is a fifth small injector on the intake air distributor'}. Engine cold (below about 35 °C, 95 °F): rest a fingertip on it while the helper cranks. It is held open for a few seconds, not pulsed, so you may feel a click as it opens and again as it closes. Feeling nothing is not proof it failed; repeated cranking also warms its thermo-time switch and stops it. Wet fuel or a strong fuel smell around the intake: key OFF and stop testing, it is a fire risk, and find the leak before you crank again.`,
+  'Air flow meter flap: with the air cleaner off, push it through its full travel with a finger. It must move smoothly, never catch, and spring fully shut by itself. A flap that sticks shut means the pump stops as soon as the starter stops.',
+  'Air leaks: with the engine cranking or running, listen for a hiss at the big rubber boot, the intake runner boots and every vacuum hose. Squeeze the boots: cracks open up when you bend them.'),
+ mixSpecH:null}}
+
 // L-Jetronic (AFC): pump runs only while cranking or while the air flow meter flap is open.
 function LJ(o){return c=>({label:'Bosch L-Jetronic fuel injection',hint:'Air flow meter box at the air cleaner, an injector at each intake port',fi:true,first:'fi_pump',
  pumpQ:'Key ON, engine not cranking: push the air flow meter flap open. Does the fuel pump run?',
  pumpHow:L('Turn the key to ON. Do not crank. On this '+o.car+' the pump stays off until the engine turns or the air flow meter flap opens.',
+  o.relayEar?`Relay check first: ${o.relayEar} Key ON: you should feel one click (the power half). The pump half stays off.`:null,
   `Find the air flow meter: ${o.afm}`,
   o.flapHow||'Take off the air cleaner lid and lift out the paper element. Reach in and push the flap inside the meter (the leaf that the incoming air pushes open) inward with a finger or a wooden stick. It should swing smoothly and spring back.',
-  `Listen at ${o.listen}. You should hear the pump whir as soon as the flap moves off its stop${o.relayClick?', and a click from the relay '+o.relayClick:''}.`,
-  'Let the flap go. The pump should stop.'),
- pumpNote:'Gauges lie. Make sure there is fuel in the tank before you go further.',
+  `Listen at ${o.listen}. As soon as the flap moves off its stop you should feel a second click at the relay and hear the pump: a smooth, steady whine.`,
+  'Let the flap go. The pump should stop at once. Grinding, growling, or a whine that cuts in and out is not normal: a worn pump, low fuel, a blocked filter, or a loose connection.'),
+ pumpNote:'Do not trust the fuel needle on the dash. Make sure there is fuel in the tank before you go further.',
  pumpYes:'Yes, the pump runs while the flap is open',
  pumpFix:L(`The double relay (the fuel pump relay, two relays in one box) is ${o.relay}`,
   'Flap switch test: unplug the air flow meter plug. Key ON, bridge its terminals 36 and 39 with a paper clip. The pump runs: the switch inside the meter is dirty or broken.',
@@ -323,14 +363,23 @@ function LJ(o){return c=>({label:'Bosch L-Jetronic fuel injection',hint:'Air flo
   'The air flow meter flap must swing freely and spring shut. A cracked rubber boot between the meter and the throttle body lets in air the meter does not see. The engine will not run.',
   `Cold engine: the cold start valve is a fifth small injector on the intake air distributor${o.csv?', '+o.csv:''}. It sprays only while you crank a cold engine (below about 35 °C, 95 °F), for a few seconds, when the thermo-time switch lets it. To test it: engine cold, pull the thick coil wire out of the centre of the distributor cap and clip it to bare metal so nothing can spark. Unbolt the valve, keep its fuel hose on, hold it inside a closed glass jar, and crank for a few seconds: it should spray. With the key just ON it must never drip.`,
   'Look for air leaks at the intake runner boots, the injector seals and every vacuum hose.'),
- mixSpec:[['Temp sensor II at 20 °C (68 °F)','2,100–2,900 Ω'],['at −10 °C (14 °F)','7,000–11,600 Ω'],['at 80 °C (176 °F)','270–390 Ω']]})}
+ mixSpec:[['Temp sensor II at 20 °C (68 °F)','2,100–2,900 Ω'],['at −10 °C (14 °F)','7,000–11,600 Ω'],['at 80 °C (176 °F)','270–390 Ω']],...LJH(o,c)})}
+
+// Minimal-kit pressure feel for systems that prime the pump at key ON or run it from a relay bridge.
+const FEEL=(run)=>L('You can tell pressure from no pressure by hand and ear. It will not show the exact figure, so a weak pump can still pass.',
+  run,'Pinch the short fuel hoses on the injectors between finger and thumb while the pump runs. With pressure they feel rock hard, like a fully pumped bicycle tire. Soft or squashy means little or no pressure.',
+  'Listen at the pressure regulator and the hose leaving it: good pressure makes a steady hiss or trickle of fuel going back to the tank.',
+  'Do not pinch the return hose shut. Blocking it pushes the pressure far above normal.');
+const RELAYCLIP=(sock)=>`Bend the paperclip into a short U that fits both sockets. Socket ${sock} is live from the battery even with the key out. Bridge only the two sockets named, for 2 seconds at a time. If the clip touches metal or another socket, it sparks and gets red hot.`;
+const INJTICK=(pairs)=>L(`Have the helper crank. Rest a fingertip on each injector body in turn and put your ear close: you should feel and hear a sharp, steady tick${pairs?'. They fire in pairs, cylinders 1 and 4 together, then 2 and 3':''}.`,
+  'Noid light: unplug one injector (squeeze its wire clip and pull the plug straight off), push the noid light into the plug, and crank. A steady flicker is good. Try one injector on each side. Refit the plugs afterwards.');
 
 // D-Jetronic: the control unit runs the pump for 1 to 2 seconds at key ON.
 function DJ(o){return c=>({label:'Bosch D-Jetronic fuel injection',hint:'Round pressure sensor with a vacuum hose, trigger points in the distributor',fi:true,first:'fi_pump',
  pumpQ:'Turn the key to ON. Does the fuel pump run for 1 to 2 seconds?',
  pumpHow:L('Turn the key to ON. Do not crank. On this '+o.car+' the control unit runs the pump for about 1 to 2 seconds, then switches it off until the engine turns.',
   `Listen at ${o.listen} the moment you turn the key. Turn it OFF and ON again to repeat. A helper makes this easier.`),
- pumpNote:'Gauges lie. Make sure there is fuel in the tank before you go further.',
+ pumpNote:'Do not trust the fuel needle on the dash. Make sure there is fuel in the tank before you go further.',
  pumpYes:'Yes, it buzzes for a second or two',
  pumpFix:L(o.relays,
   `Run the pump without the control unit: ${o.force}`,
@@ -350,7 +399,22 @@ function DJ(o){return c=>({label:'Bosch D-Jetronic fuel injection',hint:'Round p
  mixFix:L(`Head temperature sensor: ${o.ts2} Unplug it and measure from its pin to clean engine metal. Open circuit: no start.`,
   o.csvNote,`Cold engine: the cold start valve is a fifth small injector on the intake air distributor${o.csv?', '+o.csv:''}. It sprays only while cranking a cold engine (below about 35 °C, 95 °F). To test it: pull the thick coil wire out of the centre of the distributor cap and clip it to bare metal so nothing can spark. Unbolt the valve, keep its fuel hose on, hold it inside a closed glass jar, and crank for a few seconds: it should spray. Warm engine: it must not.`,
   'Look for air leaks at the intake runner boots, the injector seals and every vacuum hose. The pressure sensor reads the vacuum, so any leak throws the mixture off.'),
- mixSpec:[['Head sensor at 20 °C (68 °F)','about 2,500 Ω'],['at 80 °C (176 °F)','about 325 Ω'],['at 100 °C (212 °F)','about 190 Ω']]})}
+ mixSpec:[['Head sensor at 20 °C (68 °F)','about 2,500 Ω'],['at 80 °C (176 °F)','about 325 Ω'],['at 100 °C (212 °F)','about 190 Ω']],
+ pumpFixH:L(o.relaysH||o.relays,`Key ON: put your fingers on the pump relay. ${o.relayEarH||'It should click and the pump should buzz for 1 to 2 seconds.'} No click: the relay, its fuse, or the control unit is not switching it.`,
+  'Pull the pump relay, look for green corrosion on its pins and in the socket, and push it back in firmly. Swap it with another relay of the same type on the car if one is fitted.',
+  'Do not bridge the relay socket with the paperclip. Socket 30 is an unfused battery feed that carries the full pump current; that test needs a proper fused jumper.',
+  `Relay clicks but no pump: if you can reach the pump without tools (${o.pump.replace(/\.$/,'')}), put your hand on it while the helper turns the key ON; a running pump buzzes. Push its plug and brown ground wire home, and tap the pump body. If it then runs, it is worn out.`,o.fuseNote),
+ pressFeel:FEEL('Run the pump: have the helper turn the key OFF and ON so the pump primes for 1 to 2 seconds each time, and feel during the prime.'),
+ pressFixH:L(`The fuel filter is ${o.filter} A clogged filter is the most common cause.`,'Squeeze the hose from the tank to the filter and pump. Old hose collapses inside or splits.','Hoses firm but soft again at once when the pump stops: a leaking injector, the cold start valve or the regulator lets pressure escape. Smell for fuel at each.'),
+ injHowH:INJTICK(true),
+ pulseFixH:L('No flicker on any injector: the control unit is not firing them.',
+  'Trigger points: the small second contact set in the base of the distributor, with a 3-pin plug. Pull that plug, look for green corrosion or a broken wire, and push it home. Flicker on cylinders 1 and 4 but not 2 and 3 (or the other way): one half of the trigger points is worn or dirty.',
+  `Manifold pressure sensor: ${o.mps} Pull its vacuum hose off at the intake end and suck on it gently: it should hold like a sealed straw. A hose that leaks or a sensor that will not hold stops the engine.`,
+  `Push the big control unit plug home. The control unit is ${o.ecu}`,o.grounds),
+ stuckFix:'A noid light that stays fully lit, with no flicker at all, means the injector ground is held on all the time. Look along the injector wiring, from the injectors at the cylinder heads back to the control unit, for a wire rubbed through to metal. If the wiring is sound, the control unit has failed inside.',
+ mixFixH:L(`Head temperature sensor: ${o.ts2} Pull its plug, look for corrosion or a broken wire, and push it back on firmly.`,
+  `Cold start valve, by feel: ${o.csvFeel||'it is a fifth small injector on the intake air distributor'}. Engine cold: rest a fingertip on it while the helper cranks. You should feel it buzz while cranking. Buzz with a warm engine, or a strong fuel smell: it leaks and floods the engine.`,
+  'Listen for a hiss at the intake runner boots and every vacuum hose while cranking. Squeeze the boots: cracks open up when you bend them. The pressure sensor reads the vacuum, so any leak throws the mixture off.')})}
 
 // ---------- shared text ----------
 const TANK_FRONT='The tank is under the front hood. Its outlet screen sits where the fuel line leaves the bottom of the tank. Clamp the hose, pull it off the tank outlet, then open the clamp over a can: fuel should run out freely. A slow trickle means the screen is blocked with rust or old fuel.';
@@ -432,7 +496,7 @@ def('y72',null,{name:'Bay-window bus, 1972–1974 (Type 4, two carburetors)',fam
  known:'Vacuum leaks at the balance tube between the carbs and at the brake booster hose stop these engines idling.',
  swap:[['1','A Type 1 engine was swapped in','Upright fan housing, one carb or two','t1']]});
 // US bay-window, L-Jetronic
-const LJ_BUS={car:'bus',afm:'the alloy box bolted to the air cleaner housing, at the end of the big rubber S-shaped boot on top of the engine.',
+const LJ_BUS={car:'bus',relayEar:'Open the engine lid. The double relay is on the left side of the engine compartment front wall, below the finned resistor pack. Rest your hand flat on it.',hoses:'cylinders 3 and 4, on the left side, are easiest to reach',ret:'at the right front of the engine, where the return hose leaves the regulator through the front engine tin',csvFeel:'it sits in the centre of the intake air distributor, on its rear face, with the fuel line running through it',resistorH:'Look at the finned resistor pack above the relay: its four wires must be tight, not broken or burnt.',afm:'the alloy box bolted to the air cleaner housing, at the end of the big rubber S-shaped boot on top of the engine.',
  listen:'the left side of the bus, under the floor just in front of the left rear wheel, where the pump is clamped to the frame',relayClick:'on the left of the engine compartment front wall',
  relay:'on the left side of the engine compartment front wall (the firewall), just below the injector resistor pack. Two plugs connect to its bottom.',
  relayPart:'11-pin, VW 071 906 059, Bosch 0 332 514 120',relayGround:'The relay is grounded through its terminal 85. Check that wire and its ground point.',
@@ -448,7 +512,7 @@ const LJ_BUS={car:'bus',afm:'the alloy box bolted to the air cleaner housing, at
  ts2:'the left cylinder head next to the cylinder 3 intake port, in the forward corner. It is not the easy-to-reach hole near the back of the head.',
  csv:'at the left rear, next to the distributor'};
 const FUEL_LJ_BUS=LJ(LJ_BUS);
-const FUEL_LJ_BUS_CA=LJ({...LJ_BUS,relayPart:'13-pin, VW 071 906 059 A, Bosch 0 332 514 125. The 11-pin relay will not run this bus',relayGround:'On this California bus the control unit grounds the relay coil through its pin 28. Check the control unit plug.',
+const FUEL_LJ_BUS_CA=LJ({...LJ_BUS,resistorH:null,relayEar:'Open the engine lid. The double relay (13-pin) is on the left side of the engine compartment front wall. This California bus has no resistor pack above it. Rest your hand flat on it.',relay:'on the left side of the engine compartment front wall (the firewall). It is the 13-pin California relay; there is no resistor pack above it. Two plugs connect to its bottom.',relayPart:'13-pin, VW 071 906 059 A, Bosch 0 332 514 125. The 11-pin relay will not run this bus',relayGround:'On this California bus the control unit grounds the relay coil through its pin 28. Check the control unit plug.',
  resistor:'This 1979 California bus has no injector resistor pack. The resistance is inside the control unit. Do not fit a resistor pack.',resSpec:null,hallNote:' The Hall ignition module is powered through the same double relay.'});
 def('y75a',null,{name:'Bay-window bus (US), 1975–1977',fam:'bus',lay:'t4bus',eng:'t4',volts:12,fuel:'lj_bus',auto:AUTO_SHIFTER,autoNote:'Automatic',
  fiPumpLoc:'under the left side of the bus, clamped to the frame just in front of the left rear wheel',ign:'pts',
@@ -466,7 +530,7 @@ def('kombi',null,{name:'Bay-window bus outside the US, or Brazilian Kombi (1600,
  valves:'Valve clearance: '+V_T1_71,comp:C_T1_LATE});
 
 // Air-cooled Vanagon
-const LJ_VAN={car:'Vanagon',afm:'the alloy box bolted to the air cleaner housing, with the big rubber boot running to the throttle body on top of the engine.',
+const LJ_VAN={car:'Vanagon',relayEar:'Lift the engine lid. The double relay is on the upper left of the engine compartment front wall, below the resistor pack. Rest your hand on it.',hoses:'cylinders 3 and 4, on the left side, are easiest to reach',ret:'where the return hose leaves the regulator on the engine, on its way to the left side',csvFeel:'it sits in the centre of the intake air distributor, at the left rear next to the distributor',resistorH:'Look at the resistor pack above the relay: its wires must be tight, not broken.',afm:'the alloy box bolted to the air cleaner housing, with the big rubber boot running to the throttle body on top of the engine.',
  listen:'the right side of the van, under the floor below the sliding door, where the pump hangs from the frame rail',relayClick:'on the left of the engine compartment front wall',
  relay:'on the upper left of the engine compartment front wall (the firewall), just below the injector resistor pack.',relayPart:'11-pin, VW 071 906 059',
  relayGround:'A corroded ground under the relay mounting screw stops it. Clean it.',
@@ -481,7 +545,7 @@ const LJ_VAN={car:'Vanagon',afm:'the alloy box bolted to the air cleaner housing
  ecu:'in the engine compartment on the right side, on the roof of the cubby directly behind the right taillight.',
  ts2:'the left cylinder head, near the cylinder 3 spark plug.',csv:'at the left rear, next to the distributor'};
 const FUEL_LJ_VAN=LJ(LJ_VAN);
-const FUEL_LJ_VAN_CA=LJ({...LJ_VAN,relayPart:'13-pin, VW 071 906 059 A. It also powers the ignition module',resistor:'California vans have no injector resistor pack. The resistance is inside the control unit.',resSpec:null,hallNote:' The Hall ignition module on the left firewall is powered through the same double relay.'});
+const FUEL_LJ_VAN_CA=LJ({...LJ_VAN,resistorH:null,relayEar:'Lift the engine lid. The double relay (13-pin) is on the upper left of the engine compartment front wall. California vans have no resistor pack there. Rest your hand on it.',relay:'on the upper left of the engine compartment front wall (the firewall). It is the 13-pin California relay; there is no resistor pack above it.',relayPart:'13-pin, VW 071 906 059 A. It also powers the ignition module',resistor:'California vans have no injector resistor pack. The resistance is inside the control unit.',resSpec:null,hallNote:' The Hall ignition module on the left firewall is powered through the same double relay.'});
 def('v80us',null,{name:'Air-cooled Vanagon (US, Canada), 1980–1983, 49-state',fam:'van',volts:12,fuel:'lj_van',auto:AUTO_SHIFTER,autoNote:'Automatic',
  fiPumpLoc:'under the right side of the van, below the sliding door',ign:'pts',
  ignx:{gap:'0.016 in (0.40 mm)',timing:'7.5° BTDC at 850–950 rpm (900–1000 automatic), engine warm, strobe light, vacuum hose connected (distributor 022 905 205 S).',timingSpec:['Timing, hose on','7.5° BTDC'],coilR:COIL12},
@@ -508,7 +572,7 @@ def('t361b','t361a',{name:'Type 3, 1963–1965, 1500 S (two carburetors)',fx:{ca
  ignx:{timing:'Static, at the right-hand notch on the crank pulley. A pulley with two notches: the right one is 10° BTDC. A pulley with three notches: the right one is 12.5° BTDC. Turn the distributor body until the points just open at that notch.',timingSpec:['Timing','10° BTDC (two-notch pulley) or 12.5° BTDC (three-notch)']}});
 def('t361c','t361b',{name:'Type 3, 1966–1967, 1600 (two carburetors)',volts:0,valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold.',
  ignx:{timing:'10° BTDC, set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','10° BTDC']}});
-const DJ_T3={car:'Type 3',listen:'the front of the car, under the left side near the front axle beam, where the pump hangs',
+const DJ_T3={car:'Type 3',relayEarH:'The pump relay is the cube under the dash on the driver’s side, in front of the fuse box. It should click at key ON and the pump should buzz for 1 to 2 seconds.',listen:'the front of the car, under the left side near the front axle beam, where the pump hangs',
  relays:L('This car has two cube relays. The main (power) relay is under the rear seat, on the right side. The pump relay is under the dash on the driver’s side, in front of the fuse box, on the bulkhead.','The pump relay contacts fail often. Swap in a known-good cube relay of the same type.'),
  force:'key ON, ground terminal 85 of the pump relay under the dash, or pull the relay and bridge its socket terminals 30 and 87. The pump should run.',
  forceSpec:[['Bridge at the pump relay socket','30 to 87'],['Or ground','pump relay terminal 85, key ON']],
@@ -521,7 +585,7 @@ const DJ_T3={car:'Type 3',listen:'the front of the car, under the left side near
  mps:'the round can under the left lip of the engine compartment floor, with a vacuum hose to the intake air distributor. Its letter (A, B, C or D) must match the control unit.',
  grounds:'Check the injection grounds: the control unit ground on the crankcase, and the injector ground screws on top of the cooling tin. Each injector pair grounds under one tin screw; a rusty screw kills that pair.',
  ecu:'behind the left upholstered panel in the rear cargo area, on a black plate (Squareback and Fastback). Two screws hold the panel.',
- ts2:'the left cylinder head (1970–73 on top of the head; 1968–69 low on the head near the exhaust port). One wire.'};
+ ts2:'it screws into the left cylinder head (1970–73 on top of the head; 1968–69 low on the head near the exhaust port) and has one wire.'};
 const FUEL_DJ_T3=DJ(DJ_T3);
 def('t368a',null,{name:'Type 3 (US), 1968–1971, fuel injection',fam:'t3',volts:12,fuel:'dj_t3',auto:{...AUTO_SHIFTER,autoFix:'Automatic: it cranks only with the selector in N (or P). The switch is in the selector. Move the lever through N while a helper turns the key; if it cranks in one spot, adjust or replace the switch.'},autoNote:'Automatic',
  fiPumpLoc:'under the front of the car, on the driver’s side of the front axle beam',ign:'pts',
@@ -531,7 +595,7 @@ def('t368b','t368a',{name:'Type 3 (US), 1972–1973, fuel injection',
  ignx:{timing:'5° BTDC at 800–950 rpm, strobe, both vacuum hoses off and plugged. Reset the idle with the hoses back on.',timingSpec:['Timing, hoses off','5° BTDC']}});
 
 // 411 / 412
-const DJ_411={car:'411/412',listen:'the front of the car, underneath, a little left of centre behind the spare wheel well',
+const DJ_411={car:'411/412',relayEarH:'The pump relay is the cube under the dash by the brake pedal. It should click at key ON and the pump should buzz for 1 to 2 seconds.',listen:'the front of the car, underneath, a little left of centre behind the spare wheel well',
  relays:L('The power relay is screwed to the control unit. The pump relay is under the dash, down by the brake pedal. Both are the same cube relay.'),
  force:'key ON, ground terminal 85 of the pump relay by the brake pedal, or pull it and bridge its socket terminals 30 and 87. The pump should run.',
  forceSpec:[['Bridge at the pump relay socket','30 to 87'],['Or ground','pump relay terminal 85, key ON']],
@@ -541,7 +605,7 @@ const DJ_411={car:'411/412',listen:'the front of the car, underneath, a little l
  mps:'bolted to the floor of the engine compartment on the left side, with a vacuum hose to the intake manifold.',
  grounds:'Check the injection ground wires on the engine and the battery − cable under the driver’s seat.',
  ecu:'in a sedan, under the oval lid on the left side of the engine compartment. In a wagon, behind the right rear armrest.',
- ts2:'a cylinder head, with one wire.'};
+ ts2:'it screws into a cylinder head and has one wire.'};
 const FUEL_DJ_411=DJ(DJ_411);
 def('t4dj',null,{name:'411 or 412 (US), 1971–1973, fuel injection (1.7)',fam:'t4car',volts:12,fuel:'dj_411',auto:AUTO_SHIFTER,autoNote:'Automatic',
  fiPumpLoc:'under the front of the car, behind the spare wheel well',ign:'pts',
@@ -549,22 +613,18 @@ def('t4dj',null,{name:'411 or 412 (US), 1971–1973, fuel injection (1.7)',fam:'
  valves:'Valve clearance: '+V_T4,comp:C_FI_T4});
 def('t4lj','t4dj',{name:'412 (US), 1974, fuel injection (1.8, L-Jetronic)',fuel:'lj_412',startExtra:BELT74,
  ignx:{timing:'5° BTDC at 900–1000 rpm, strobe, vacuum hose off and plugged (distributor 022 905 205 S). Line the mark on the fan up with the V notch through the hole in the fan housing.',timingSpec:['Timing, hose off','5° BTDC']}});
-const FUEL_LJ_412=c=>{const f=LJ({car:'412',afm:'the black box in the engine compartment that the air intake boot clamps to.',listen:'the front of the car, underneath, behind the spare wheel well',
+const FUEL_LJ_412=LJ({car:'412',relayEar:'The double relay and the control unit sit behind the right (passenger side) rear seat trim panel. If the panel is screwed on, you can still feel or hear the relay click through it. Rest your hand there.',
+ relay:'behind the right (passenger side) rear seat trim panel, next to the control unit.',relayShort:'behind the right rear seat trim panel',
+ hoses:'two on each side of the engine',csvFeel:'it is a fifth small injector on the intake air distributor',
+ afm:'the black box in the engine compartment that the air intake boot clamps to.',listen:'the front of the car, underneath, behind the spare wheel well',
  pump:'under the front of the car, behind the spare wheel well, a little left of centre.',
  port:'Tee a fuel-injection pressure gauge into the hose to the cold start valve.',filter:'next to the pump under the front of the car, in the hose from the tank.',reg:'sits in the engine fuel line and',
- grounds:'Check the injection ground wires on the engine and the battery − cable under the driver’s seat.',ecu:'in a sedan, under the oval lid on the left side of the engine compartment; in a wagon, behind the right rear armrest.',ts2:'a cylinder head, with one wire.',relay:''})(c);
- f.pumpFix=L('This 412 uses two cube relays, not a double relay. The power relay is on top of the control unit. The pump relay is under the dash, down by the brake pedal. The flap switch and the starter signal close the pump relay.',
-  'Flap switch test: unplug the air flow meter plug. Key ON, bridge its terminals 36 and 39 with a paper clip. The pump runs: the switch inside the meter is bad.',
-  'Relay test: pull the pump relay and bridge its socket terminals 30 and 87. The pump should run. It does: replace the relay.',
-  'Nothing with the bridge: go to the pump under the front of the car and check for 12 V and a good ground on its plug while the bridge is in.');
- f.pumpFixSpec=[['Bridge at the pump relay socket','30 to 87'],['Flap switch','AFM plug terminals 36 and 39']];
- f.pulseFix=L('Unplug an injector and measure across its two pins: 2–3 Ω.','The control unit counts engine turns from coil terminal 1. Check that wire.','Check the injection ground wires on the engine.','The control unit is in a sedan under the oval lid on the left of the engine compartment; in a wagon behind the right rear armrest. Check its plug for corrosion.');
- return f};
+ grounds:'Check the injection ground wires on the engine and the battery − cable under the driver’s seat.',ecu:'behind the right rear seat trim panel, next to the double relay.',ts2:'a cylinder head, with one wire.'});
 
 // 914 four-cylinder
 const P914_REAR='under the right side of the car, below and in front of the engine, on the passenger side under the engine shelf (the hell hole). Reach it only from underneath';
 const P914_FRONT='at the front of the car, up under the fuel tank near the front axle. Its wires run back through the centre tunnel';
-function DJ914(front){return DJ({car:'914',listen:front?'the front of the car, under the nose near the front axle':'the right side of the car, under the engine shelf in front of the engine',
+function DJ914(front){return DJ({car:'914',relayEarH:'The fuel pump relay is J17, the third relay from the front on the relay board in the engine compartment. It should click at key ON and the pump should buzz for 1 to 2 seconds.',bridgeH:'30 to 87 (relay J17)',listen:front?'the front of the car, under the nose near the front axle':'the right side of the car, under the engine shelf in front of the engine',
  relays:L('The relays and fuses are on the relay board in the engine compartment, on the shelf at the firewall under a black cover. From front to rear: rear window defroster, injection power (J16), fuel pump (J17), heater blower. All four are the same relay, so you can swap J17 with the blower relay to test it.','The rear fuse on the relay board (25 A) feeds the fuel pump relay. Check it and its holder for corrosion. Rivets on the board corrode and drop voltage.'),
  force:'pull relay J17 and bridge its socket terminals 30 and 87. The pump runs even with the key off, because the 25 A fuse is always live.',
  forceSpec:[['Bridge at relay J17 socket','30 to 87'],['Pump fuse','25 A, rear fuse on the relay board']],
@@ -576,8 +636,8 @@ function DJ914(front){return DJ({car:'914',listen:front?'the front of the car, u
  mps:'on a bracket near the battery, with a vacuum hose to the intake plenum. It must hold vacuum.',
  grounds:'Check the injection grounds on top of the engine, under the rear of the intake air distributor on the passenger side. Battery acid from the tray rots nearby grounds.',
  ecu:'bolted to the battery tray in the engine compartment, on the passenger side. Acid from a leaking battery eats its case.',
- ts2:'the cylinder head near the cylinder 3 spark plug. One wire.',csv:null})}
-const FUEL_LJ_914=front=>LJ({car:'914',afm:'the black box in the engine compartment between the air cleaner and the throttle hose.',
+ ts2:'it screws into the cylinder head near the cylinder 3 spark plug and has one wire.',csv:null})}
+const FUEL_LJ_914=front=>LJ({car:'914',relayEar:'The double relay is in the engine compartment, under the battery tray support on the right side. Reach in and rest your fingers on it.',hoses:'two on each side of the engine',csvFeel:'it is a fifth small injector on the intake air distributor',afm:'the black box in the engine compartment between the air cleaner and the throttle hose.',
  listen:front?'the front of the car, under the nose':'the right side of the car, under the engine shelf in front of the engine',
  relay:'in the engine compartment, mounted under the battery tray support on the right side. It is not on the relay board at the firewall, and the fuse on that board does not feed this pump.',
  relayGround:'Battery acid from the tray above rots its plugs and ground. Clean them.',
@@ -605,7 +665,7 @@ const FUEL_DIGI=c=>({label:'Digifant fuel injection with Hall ignition',hint:'Th
  pumpQ:'Turn the key to ON. Does the fuel pump run for about 1 second?',
  pumpHow:L('Turn the key to ON. Do not crank. The control unit runs the pump for about 1 second, then stops it until the distributor turns.',
   'Listen at the front of the car, at the left front wheel: the pump sits behind the left front shock absorber. Turn the key OFF and ON again to repeat.',
-  'Second test, distributor cap off, key ON: turn the engine slowly by the crank pulley (22 mm). The pump should chirp four times for each turn of the rotor. No chirps but a good first prime: the Hall sender in the distributor or its wiring.'),
+  'Second test, distributor cap off, key ON: turn the engine slowly by the crank pulley bolt. The pump should chirp four times for each turn of the rotor. No chirps but a good first prime: the Hall sender in the distributor or its wiring.'),
  pumpNote:'1996–2003 cars have an alarm or immobilizer that can block the pump. If the security light blinks, present the key fob (or the red transponder on Ultima Edición cars) and try again.',
  pumpYes:'Yes, it runs for about a second',
  pumpFix:L('The fuel pump relay (number 80 on its top) and the injection power relay (number 30) sit on a small carrier behind the dash, at the front of the car in the trunk area, left of centre. The pump fuse (S81) is on the same carrier.',
@@ -625,7 +685,21 @@ const FUEL_DIGI=c=>({label:'Digifant fuel injection with Hall ignition',hint:'Th
   'Check the grounds: brown wires on the engine, the battery to body strap, and the gearbox strap.',
   'On 2000–2003 cars the immobilizer can open the injector ground. Present the coded key or fob.'),
  mixFix:L('Engine temperature sensor (G27): screwed into the left cylinder head at cylinder 4, with a two-wire plug. A broken wire or corroded plug makes it flood or run lean.','Intake air temperature sensor: on the throttle body.','The idle valve beside the throttle body lets air in for idle. A stuck valve makes it start and die.','Look for air leaks at the intake runner boots, injector O-rings and the vacuum hose to the control unit.'),
- mixSpec:null});
+ mixSpec:null,
+ pumpFixH:L('Relay 80 (the fuel pump relay) sits on the small relay carrier behind the dash, reached from the front trunk, left of centre. Key ON: rest your fingers on it. It should click and the pump should run for about a second.',
+  'Pull relay 80, look for green corrosion on its pins, and push it back in firmly. Do not bridge its socket with the paperclip: socket 30 is an unfused battery feed carrying the full pump current; that test needs a proper fused jumper.',
+  'No prime: swap relay 80 and relay 30 (the power relay beside it) with known-good ones. 1996–2003: if the security light blinks, present the key fob or transponder; the alarm or immobilizer blocks the pump relay.',
+  'Relay clicks but no prime: put your hand on the pump behind the left front shock absorber and feel for a buzz while the helper turns the key ON. Push its plug home and tap the pump body. If it starts, it is worn out. Check fuse S81 on the relay carrier by pulling it and looking at the metal strip inside.'),
+ pressFeel:FEEL('Run the pump: have the helper turn the key OFF and ON so it primes each time, and feel during the prime.'),
+ pressFixH:L('The fuel filter is the metal can under the rear parcel shelf, above the rear torsion bar. A clogged filter is the most common cause.','The pump behind the left front shock can run and still make little pressure when it is worn.','Hoses firm but soft at once when the pump stops: an injector or the regulator lets pressure escape. Smell for fuel at each.'),
+ injHowH:INJTICK(false),
+ pulseFixH:L('No flicker on any injector: the control unit is not firing them. It fires them from the Hall sender in the distributor.',
+  'Pull the 3-wire plug off the side of the distributor, look for broken wires and green corrosion, and push it home.',
+  'Swap relay 30 (power relay) behind the dash with a known-good one. Cracked solder joints inside it are the classic Mexican Beetle no-start.',
+  'The control unit is under the rear seat on the left. Push its plug fully home. Feel its vacuum hose from the manifold: split or loose, the engine will not run.',
+  '2000–2003: the immobilizer can cut the injectors. Present the coded key or transponder.'),
+ stuckFix:'A noid light that stays fully lit, with no flicker at all, means the injector ground is held on all the time. Look along the injector wiring, from the injectors at the cylinder heads back to the control unit, for a wire rubbed through to metal. If the wiring is sound, the control unit has failed inside.',
+ mixFixH:L('Engine temperature sensor (G27): screwed into the left cylinder head at cylinder 4, with a two-wire plug. Squeeze its side clips, pull it, look for corrosion, and push it back on firmly.','The idle air valve beside the throttle body: with the key ON you can feel it hum faintly. A stuck valve makes the engine start and die.','Listen for a hiss at the intake runner boots, the injector O-rings and the vacuum hose to the control unit while cranking.')});
 def('bmxfi',null,{name:'Mexican Beetle, 1993–2003 (fuel injection)',fam:'beetle',volts:12,fuel:'digi',eng:'t1',coilWhere:'the ignition transformer (a coil with the power stage built in, VW 6N0 905 104) on the right side of the engine compartment',
  fiPumpLoc:'at the front of the car, behind the left front shock absorber',ign:'hall_digi',
  ignx:{timing:'6° BTDC, set by turning the distributor, engine fully warm, at about 1,500 rpm with a strobe and a diagnostic tool in basic settings. The only notch on the pulley is TDC; 6° is about 9.4 mm to the right of it. The control unit sets the timing as the engine runs, so a no-start is rarely timing unless the distributor was moved.',timingSpec:['Timing','6° BTDC (basic setting)']},
@@ -698,7 +772,7 @@ Object.assign(IGN,{
 });
 
 // Fuel profile map
-const FUEL={carb:carbF,lj_beetle:LJ({car:'Beetle',afm:'the alloy box under the round air cleaner, on the left side of the engine. The big rubber boot runs from it to the throttle body.',
+const FUEL={carb:carbF,lj_beetle:LJ({car:'Beetle',relayEar:'Fold the rear seat back forward and lift off the cardboard cover over the right rear wheel arch. The double relay sits there beside the larger control unit. Rest your hand on the relay.',hoses:'two on each side of the engine',ret:'the pressure regulator on the engine, and at the front of the car at the tank, where returning fuel can be heard bubbling',csvFeel:'it is a fifth small injector just below the big black rubber intake boot, on the intake air distributor',resistorH:'Look at the resistor pack on the right side panel of the engine compartment: its four wires must be tight, not broken or burnt.',afm:'the alloy box under the round air cleaner, on the left side of the engine. The big rubber boot runs from it to the throttle body.',
   listen:'the front of the car, under the right side of the fuel tank, near the front axle',relayClick:'behind the rear seat',
   relay:'behind the rear seat on the right side, strapped beside the control unit in the luggage well under the corner of the rear window. Water leaking past the rear window seal floods it.',
   relayPart:'11-pin, VW 071 906 059, Bosch 0 332 514 120',relayGround:'Check the small brown ground wire from the relay to the battery − post under the rear seat.',
@@ -767,6 +841,7 @@ function questions(v,cfg){
   qs.push({k:'f',q:'How does the engine get its fuel now?',sub:'Pick what is on the engine today. This sets every fuel check that follows.',o:fuelOpts(v,e,swapped).filter(o=>!(o[0]==='e'&&(cfg.v==='6'||(v.volts===6&&!cfg.v))))});
   if(['k','d','w','h'].includes(cfg.f)||(cfg.f==='s'&&swapped)){const po=[];if(e!=='t3')po.push(['m','The mechanical pump on the engine','Round pump bolted to the engine, driven by a pushrod']);po.push(['e','An electric pump','Under the car or near the tank, with two wires']);qs.push({k:'p',q:'Which fuel pump feeds the carburetors?',sub:'Follow the fuel hose back from the carburetor to the pump.',o:po})}
   qs.push({k:'i',q:'What ignition does it have now?',sub:'Not sure? Take the distributor cap off. Points are a small hinged contact with a gap. Electronic kits have a plastic module and no gap.',o:ignOpts(v,swapped)});
+  qs.push({k:'t',q:'What do you have with you?',sub:'Every step will use only what you pick here. A helper to turn the key makes most tests easier.',o:[['h','Just my hands, a paperclip and a noid light','No meter, no test light, no gauge'],['m','Plus a test light or multimeter','For voltage and resistance checks'],['g','Plus a fuel pressure gauge','For fuel-injection pressure tests, with a meter too']]});
   return qs}
 function fuelOpts(v,e,swapped){
   const fi=v.fuel!=='carb',o=[];
@@ -805,7 +880,7 @@ function ctx(){
   c.volts=CFG.v?+CFG.v:(f.volts||12);c.V6=c.volts===6;c.vv=(a,b)=>c.V6?b:a;
   if(CFG.b&&f.batt_opts)c.batt=f.batt_opts[CFG.b];
   if(CFG.b&&f.batt_opts)c.seatbatt=CFG.b==='s'||CFG.b==='r';
-  c.alc=CFG.a==='a';
+  c.alc=CFG.a==='a';c.kit=CFG.t||'g';
   if(CFG.g==='a'&&f.auto){c.neutral=f.auto.autoNeutral;c.neutralShort=f.auto.autoShort;c.inhibitFix=f.auto.autoFix}
   // fuel
   const fromFI=f.fuel!=='carb'&&!swapped;c.fromFI=fromFI&&CFG.f!=='s';
@@ -829,7 +904,7 @@ function ctx(){
 function EFI(c){return{label:'aftermarket fuel injection',fi:true,first:'fi_pump',
  pumpQ:'Turn the key to ON. Does the fuel pump run for 2 to 3 seconds?',
  pumpHow:L('Turn the key to ON. Do not crank. Megasquirt and similar systems prime the pump for about 2 seconds to build pressure, then stop it until they see the engine turning.','Listen at the pump. Turn the key OFF and ON again to repeat.'),
- pumpNote:'Gauges lie. Make sure there is fuel in the tank.',pumpYes:'Yes, it primes',
+ pumpNote:'Do not trust the fuel needle on the dash. Make sure there is fuel in the tank.',pumpYes:'Yes, it primes',
  pumpFix:L('Find the kit’s fuse and relay board, usually near the control box. Check the pump fuse and swap the pump relay with another relay of the same type on the board.','Pull the pump relay and bridge its socket terminals 30 and 87. The pump should run. Nothing: check for 12 V and ground at the pump plug.','Check the control box has power with the key ON (its power light or the laptop connection).'),
  pumpFixSpec:[['Bridge at the pump relay socket','30 to 87']],
  pressHow:L('Fit a pressure gauge to the test port on the fuel rail (a valve like a tire valve), or tee one into the feed line.','Key ON to prime, or bridge the pump relay. Read the gauge.'),
@@ -838,7 +913,15 @@ function EFI(c){return{label:'aftermarket fuel injection',fi:true,first:'fi_pump
  injHow:L('Hold a long screwdriver tip on an injector and press your ear to the handle, or plug a noid light into an injector plug. Have a helper crank.'),
  pulseTitle:'No injector pulse: crank signal, power or grounds',
  pulseFix:L('Connect a laptop or handheld to the control box and crank. It must show engine speed (rpm) while cranking. Zero rpm: the crank or distributor trigger signal is missing.','Crank trigger: check the sensor gap to the trigger wheel (usually about 0.5–1 mm) and that the wheel has not moved on the pulley.','Check the control box ground goes straight to the engine, and its main power feed.','Check the coolant or head temperature sensor reading on the laptop. A broken wire shows a wild value and the engine floods.'),
- mixFix:L('On the laptop, check the temperature, air temperature, throttle and manifold pressure readings make sense with the engine stopped.','Look for air leaks at the throttle bodies and manifolds.'),mixSpec:null}}
+ mixFix:L('On the laptop, check the temperature, air temperature, throttle and manifold pressure readings make sense with the engine stopped.','Look for air leaks at the throttle bodies and manifolds.'),mixSpec:null,
+ pumpFixH:L('Find the kit’s fuse and relay board, usually near the control box. Pull the pump fuse and look at the metal strip inside: broken means blown. Swap the pump relay with another relay of the same type on the board.',
+  'Do not bridge the relay socket with the paperclip: socket 30 is an unfused battery feed carrying the full pump current; that test needs a proper fused jumper. Put your hand on the pump while the helper turns the key ON and feel for a buzz; push its plug and ground home.'),
+ pressFeel:FEEL('Run the pump: have the helper turn the key OFF and ON so it primes each time, and feel during the prime.'),
+ pressFixH:L('Replace the fuel filter.','Squeeze the hoses from the tank to the pump for kinks and collapse.','Hoses firm but soft at once when the pump stops: the regulator or an injector lets pressure escape.'),
+ injHowH:INJTICK(false),
+ pulseFixH:L('No flicker on any injector: the control box is not firing them. It fires only when it sees the engine turning, from the crank or distributor sensor.','Look at the crank sensor beside the toothed wheel on the pulley: its plug must be tight and the wheel must not have moved.','Push the control box plug home and check its ground goes straight to the engine.','Checking what the control box sees needs the kit’s tuning software.'),
+ stuckFix:'A stuck-on noid light means the control box holds the injector ground on. Look along the injector wires, from the injectors at the cylinder heads back to the control box, for chafing. If the wiring is sound, the control box or its tune is at fault.',
+ mixFixH:L('Push every sensor plug home: the temperature sensor in the cylinder head, the air temperature sensor, and the throttle position and MAP sensors beside the throttle bodies.','Listen for a hiss at the throttle bodies and manifolds while cranking.')}}
 
 // ---------- the step cards ----------
 const N={
@@ -977,7 +1060,7 @@ c_line:c=>({q:c.F.pumpElec?'Does the electric fuel pump deliver fuel?':'Does the
 fix_c_float:c=>({fix:'Fuel reaches the carburetor but not the float bowl',
   how:L('The float needle valve is stuck shut, or the inlet is blocked.',c.F.floatHow,'Shake the float. If you hear fuel inside it, it has a hole. Replace it.','Old fuel leaves varnish. If the car sat for months, clean the whole carburetor.')}),
 fix_c_pump:c=>({fix:'Not enough fuel from the pump',
-  how:L('Check there is fuel in the tank. Gauges lie. Look in the filler.',c.tankOut,c.F.filter,
+  how:L('Check there is fuel in the tank. Do not trust the fuel needle on the dash. Look in the filler.',c.tankOut,c.F.filter,
    'Squeeze every rubber fuel hose. Old hose goes soft and collapses inside. Replace it with SAE J30R7 or R9 fuel hose and fuel-hose clamps.',c.F.pumpFix),
   specs:c.F.pumpSpec,note:'Leaking fuel hoses near the pump and carburetor cause most air-cooled VW engine fires. Replace any hose that is cracked or soft.',cls:'safe'}),
 c_plug:c=>({q:'Spark and fuel are there. Pull a spark plug. Is it wet with fuel?',
@@ -998,11 +1081,162 @@ fi_pump:c=>({q:c.F.pumpQ,how:L(c.F.pumpHow),note:c.F.pumpNote,cls:'tip',a:[[c.F.
 fix_fi_pump:c=>({fix:'The electric fuel pump is not running',how:L(c.F.pumpFix),specs:c.F.pumpFixSpec,note:'Injection fuel runs at high pressure. Never run the pump with a fuel line open.',cls:'safe'}),
 fi_press:c=>({q:'Is the fuel pressure in spec?',how:L(c.F.pressHow),specs:c.F.pressSpec,a:[['Pressure is in spec','fi_inj'],['Low or no pressure','fix_fi_press'],['No gauge: skip this test','fi_inj']]}),
 fix_fi_press:c=>({fix:'Low fuel pressure',how:L(c.F.pressFix),specs:c.F.pressSpec,note:'Use only fuel-injection hose (SAE J30R9) and fuel-injection clamps. A leak sprays fuel onto a hot engine.',cls:'safe'}),
-fi_inj:c=>({q:'Do the injectors click while cranking?',how:L(c.F.injHow),a:[['Yes, they click','fi_mix'],['No click','fix_fi_pulse']]}),
+fi_inj:c=>({q:'Do the injectors click while cranking?',how:L(c.F.injHow),a:[['Yes, they click','fi_mix'],['No click','fix_fi_pulse'],['A noid light stays lit the whole time','fix_fi_stuck']]}),
 fix_fi_pulse:c=>({fix:c.F.pulseTitle||'No injector pulse: power, trigger or grounds',how:L(c.F.pulseFix),specs:c.F.pulseSpec}),
 fi_mix:c=>({fix:'Pump, pressure and pulse are good: sensors, air leaks or cold start',how:L(c.F.mixFix),specs:c.F.mixSpec,a:[['Next: timing and compression','timing']]}),
 };
-function card(id,c){const fn=N[id];if(!fn)return null;const o=fn(c);if(o.how)o.how=L(o.how);if(o.specs)o.specs=o.specs.filter(Boolean);if(o.specs&&!o.specs.length)o.specs=null;return o}
+function card(id,c){const fn=(c.kit==='h'&&NH[id])||(c.kit!=='g'&&NP[id])||N[id];if(!fn)return null;const o=fn(c);if(o.how)o.how=L(o.how);if(o.specs)o.specs=o.specs.filter(Boolean);if(o.specs&&!o.specs.length)o.specs=null;return o}
+
+// ===== Minimal kit: hands, a helper, a paperclip and a noid light. No meter, test light or gauge. =====
+// NH replaces a card when the reader picked the minimal kit. NP replaces the pressure cards for anyone without a gauge.
+const PUSHSTART=c=>c.auto&&CFG.g==='a'?null:'Manual gearbox: you can push-start it. Key ON, second gear, clutch pedal down, have helpers push to a brisk walk, then let the clutch out quickly.';
+const PAPERCLIP='Bend the paperclip into a tight U with legs about 1 cm long. Touch only the two terminals named, and keep the clip off bare metal around them. Bridge for a few seconds at a time; the clip gets hot.';
+const HV='Do not hold it while the engine cranks: the ignition makes enough voltage to shock you through the insulation. Lay the boot on the engine tin so the paperclip tip rests about 6 mm (1/4 in) from a bare metal bolt, and take your hands away.';
+const NOLIFT=t=>t.replace(/ Reach terminals 30 and 50 from under the car, with the car safely on stands\./,' It is under the car; do not crawl under without stands.').replace(/ Raise the rear of the car safely on stands and reach it from underneath\./,' It is under the car; do not crawl under without stands.');
+const HANDGND=a=>a.map(x=>x.replace(/Undo it[^.]*\.[^.]*\.?|Clean both[^.]*\.|Clean both ends\.|Clean both ends to bright metal or replace the strap\./g,'Wiggle it by hand: it must not move. Look for rust or green corrosion under the ends.').replace(/(Wiggle it by hand: it must not move\. Look for rust or green corrosion under the ends\.\s*)+/,'Wiggle it by hand: it must not move. Look for rust or green corrosion under the ends. '));
+const NH={
+nopower:c=>({fix:'No power: battery, terminals or a ground strap',
+  how:L(`Find the battery: ${c.batt}.`,
+   'Switch on the headlights. Bright and steady: the battery has some charge. Dim, or nothing: it is flat or a connection is open.',
+   'Grab each battery clamp and try to twist it on its post by hand. A clamp that turns or lifts is a bad connection. White or green crust on a post is too.',
+   HANDGND(c.gnd),
+   `Follow the thick red cable from the battery + post toward the starter. ${NOLIFT(c.starter)} Where you can reach the cable end on the big stud (terminal 30), wiggle it by hand: it must not move.`,c.fam==='van'?'The battery cover plate is held by screws: reaching the posts needs a screwdriver.':null,
+   PUSHSTART(c),'Cleaning the posts and clamps to bright metal needs a wrench and a wire brush.'),
+  note:c.seatbatt?'This battery sits under a seat. Make sure the seat frame and springs cannot touch the + post. A short there can start a fire.':null,cls:c.seatbatt?'safe':''}),
+nostarter:c=>({q:'Feel the starter solenoid while a helper turns the key to START. Does it click?',
+  how:L(c.neutralShort,`Where: ${NOLIFT(c.starter)}`,'The solenoid is the small round cylinder on top of the starter. If you can reach it without crawling under the car, rest your fingers on it, clear of the fan belt. Otherwise listen close to that side of the car.','Have the helper turn the key to START and hold it for 2 seconds. Feel and listen for a solid click.'),
+  note:'The engine may start. Keep hands, hair and clothes away from the fan belt and pulleys.',cls:'safe',
+  a:[['No click at the solenoid','fix_50'],['It clicks, but the starter does not turn','fix_starter']]}),
+fix_50:c=>({fix:'The start signal is not reaching the starter',
+  how:L('The solenoid gets no start signal from the key, so it does not click.',
+   `Find the small spade terminal (50) on the solenoid with the ${c.w50} wire. Pull the wire off and push it back on firmly a few times to clean the contact. Squeeze it so it grips tightly. Try again.`,
+   'Hold the key at START and wiggle it in the switch. If the starter works in one spot, the ignition switch contacts are worn.',
+   c.inhibitFix,c.startExtra,PUSHSTART(c),
+   'A hot-start relay near the starter (a small square relay) can also fail. Pull it and push it back in firmly.')}),
+fix_starter:c=>({fix:'Starter motor, solenoid or battery current',
+  how:L('The signal arrives (the click), but the starter does not turn the engine.',
+   'Switch on the headlights and have the helper turn the key to START. Lights go almost out: the battery is flat or a big connection is bad. Go back to the battery and the ground straps.',
+   'Lights stay bright: the current is not getting through the solenoid contacts, or the starter is stuck.',
+   PUSHSTART(c),
+   'Starter pinion stuck in the ring gear: with the key OFF and the gearbox in 4th gear, rock the car back and forth by hand a little, then try again.',
+   'Removing the starter needs wrenches.')}),
+click:c=>({q:'One click and nothing? Watch the headlights while someone turns the key.',
+  how:L('Switch on the headlights. Have a helper turn the key to START while you watch them.'),
+  a:[['They go very dim or out','fix_batt_weak'],['They stay bright','fix_click']]}),
+fix_batt_weak:c=>({fix:'Weak battery or a bad connection',
+  how:L(`Battery: ${c.batt}.`,'Grab each battery clamp and try to twist it on its post. A clamp that moves is a bad connection.',HANDGND(c.gnd),
+   'After a few tries at START, feel each clamp and cable end. A warm one is a bad connection.',PUSHSTART(c),'A battery that dies when cranking needs charging or replacing.')}),
+fix_click:c=>({fix:'Solenoid contacts, starter or the starter bushing',
+  how:L('The battery holds up, so the current is not getting through the starter.',NOLIFT(c.starter),
+   'Feel the solenoid while a helper holds START: a click with no crank means the contacts inside the solenoid are burnt. The starter needs rebuilding or replacing.',
+   'Starter pinion stuck: with the key OFF and the gearbox in 4th gear, rock the car back and forth a little, then try again.',PUSHSTART(c),
+   'Clicks only when the engine is hot: a hot-start relay fixes it.')}),
+slow:c=>({fix:'Slow cranking',
+  how:L(`Battery: ${c.batt}.`,'Switch on the headlights and crank: if they go very dim, the battery is low or a big connection is bad.','Grab each battery clamp and cable end and try to move it. Any that moves is a bad connection.',HANDGND(c.gnd),
+   'After cranking, feel the clamps and the cable end on the starter. A warm one is a bad connection.',PUSHSTART(c),'Fix slow cranking before anything else. A slow crank also makes a weak spark.')}),
+cranks:c=>({q:'Check the ignition by eye and hand. Does it all look right?',
+  how:L('Seeing the high-voltage spark safely needs a spark tester, which you do not have. Do not hold a plug wire near metal while the engine cranks: it can shock you and light fuel vapour. Check what you can instead, key OFF.',
+   `The distributor is ${c.lay.dist}. Both spring clips must hold the cap down. Push the thick centre wire fully into the cap and into the coil (${c.lay.coil}).`,
+   `Push each plug wire boot firmly onto its spark plug and into the cap. ${c.lay.plugs}`,
+   'Unclip the cap and look inside: no cracks, no black carbon tracks, no moisture, contacts not burnt. The rotor must sit firmly on the shaft and not be cracked.',
+   c.I.k==='pts'?'Look at the points while the helper bumps the starter: they must open and close each time a cam lobe passes, with flat grey contact faces.':null,
+   /^lj_/.test(c.fuelId)?'This car gives you one more check later: the injection control unit takes its trigger from coil terminal 1. If the noid light flickers in an injector plug while cranking, the coil is being switched on and off. That does not prove spark at the plugs.':null),
+  a:[['Everything looks right',c.F.first],['Something is cracked, wet, loose or burnt','nospark']]}),
+nospark:c=>({q:'Which part looks wrong?',
+  how:L('Pick what you found. Each answer shows what it means and what to do.'),
+  a:L([['Cap, rotor or plug wires','fix_cap']],c.I.k==='pts'?[['Points burnt, dirty, or never open','fix_points'],['Wires at the coil or into the distributor loose or chafed','fix_15']]:[['The electronic ignition parts or their wires',c.I.next]],[['Nothing obvious, but it still will not fire','coilcheck']]).reduce((r,x,i,arr)=>i%2?r:r.concat([[arr[i],arr[i+1]]]),[])}),
+coil15:c=>({q:'Flick the points open with a fingernail. Do you see a small spark at the contacts?',
+  how:L('Unclip the two spring clips and lift off the distributor cap. Pull the rotor straight up off the shaft.',
+   'Have the helper turn the key to ON (not START). Turn the engine until the points are closed (bump the starter in short taps, or roll the car in 4th gear on a manual).',
+   'Push the moving point arm open with a fingernail or a dry matchstick and let it snap shut. Watch the contacts.',
+   'A small blue spark as they open means the coil gets power and the points switch it. No spark means no power to the coil, dirty points, or a short to ground.'),
+  a:[['Small spark at the points','coilcheck'],['No spark at the points','fix_15']]}),
+fix_15:c=>({fix:'No current through the coil and points',
+  how:L(`The coil feed is the ${c.w15} wire on coil terminal 15 (the + post). Wiggle it and push its connector on firmly. Do the same with the thin wire on terminal 1.`,
+   'Look at the points: black or pitted contact faces may not conduct. Cleaning them needs a points file or a strip of clean paper.',
+   'Follow the thin wire from coil terminal 1 into the distributor. Cut or chafed insulation touching metal grounds the spark. This fault is very common.',
+   'Hold the key at ON and wiggle it. If the dash lights flicker, the ignition switch is worn.',c.fuse)}),
+points:c=>({q:'Check the points. Do they open and close cleanly?',
+  how:L('Unclip the distributor cap and lift off the rotor.',c.lay.turn,
+   'Watch the points: they open each time a cam lobe passes. The contact faces should be flat and grey, not burnt black or pitted.'),
+  a:[['They open and close, faces clean','coilcheck'],['Burnt, dirty, or never open','fix_points']]}),
+fix_points:c=>({fix:'Points: clean them, or set the gap',
+  how:L('Dirty faces: cleaning them needs a points file or a strip of clean paper pulled through the closed points.',
+   `The gap should be ${c.I.gap} at full open: about the thickness of a matchbook cover. Points that never open, or open far wider, need resetting with a screwdriver.`,
+   'Look at the thin wire from coil terminal 1 into the distributor. If its insulation is cut or it touches the body, the spark goes to ground.',
+   'Burnt or pitted points need replacing with a new set and condenser.')}),
+coilcheck:c=>({fix:'Coil, condenser, or a short inside the distributor',
+  how:L('Nothing looks wrong, so the fault may be inside a part: the coil, the condenser, or a wire you cannot see.','The condenser is the small can on the side of the distributor. Check its wire is not chafed or loose. It fails often and is cheap to carry as a spare.',
+   'Check the thin ground wire inside the distributor, from the points plate to the body. A broken wire there kills the spark.',
+   'The coil can fail inside. The next test needs a spark tester (a few dollars) or a known-good coil.')}),
+fix_cap:c=>({fix:'Distributor cap, rotor or plug wires',
+  how:L('The coil makes spark, so it is being lost after the coil.','Unclip the cap. Look inside for cracks, black carbon tracks, moisture, or burnt contacts. Wipe it dry with a clean cloth.',
+   'Pull the rotor off the shaft and look for cracks.','Check every plug wire and boot. Push each one firmly onto its plug and into the cap.',
+   `Check the firing order: going counter-clockwise around the cap from the No. 1 tower, the wires go to cylinders 1, 4, 3, 2. ${c.lay.cyl1}`)}),
+px:c=>({fix:'Pertronix Ignitor: wiring or the module',
+  how:L('Red module wire to coil terminal 15 (+). Black module wire to coil terminal 1 (−). Push both on firmly. Reversed wires kill the module.',
+   'Pull the distributor cap. The magnet sleeve must be pushed fully down on the distributor shaft, and the module must not touch it.',
+   'An Ignitor I burns out if the key is left ON with the engine stopped. If that happened, refit the old points and condenser to get home.',
+   'The module plate inside the distributor must sit on clean, bare metal.')}),
+i123:c=>({fix:'123ignition distributor: wiring and the LED',
+  how:L('Red wire to coil terminal 15 (+). Black wire to coil terminal 1 (−). Push both on firmly.','The distributor body grounds through its clamp. The clamp must be tight on clean metal.',
+   'LED test: turn the engine to the timing mark with cylinder 1 on its firing stroke. Pull the black wire off the coil, key ON. Turn the distributor body slowly against rotor rotation by hand: the green LED inside should come on at one point. No LED at all: no power, a bad ground, or a failed unit.')}),
+elec:c=>({fix:'Electronic ignition kit: wiring and the trigger',
+  how:L('Find the module: in the distributor where the points were, or near the coil.','Push every wire on firmly: the power wire to coil terminal 15, the trigger wire to coil terminal 1, and the ground to clean metal.',
+   'Check the trigger ring or magnet in the distributor has not slipped on the shaft.','Carry the old points and condenser. They get you home.')}),
+hall:c=>({fix:c.I.fixTitle||'Electronic ignition: Hall sender and control unit',
+  how:L('The distributor has a Hall sender instead of points, with a 3-wire plug on its side. Pull the plug, check the pins for green corrosion, and push it back on firmly.',
+   c.fuelId==='digi'?'Cap off, key ON: turn the engine slowly by the crank pulley. The fuel pump should chirp four times per turn of the rotor. That proves the Hall sender works.':'Look at the plug wires where they enter the plug: broken wires there are common.',
+   c.I.checks?c.I.checks.filter(x=>/module|stabilizer|immobilizer|transformer|relay 30/i.test(x)&&!/[Mm]easure|test light|volt/.test(x)):null)}),
+timing:c=>({fix:'Timing, valves or compression',
+  how:L(`Rotor check: creep the engine round (manual: 4th gear, roll the car a little at a time; or have the helper bump the starter in very short taps) until ${c.lay.marks.replace(/^.*? until /,'').replace(/^turn the engine until /,'')}. With cylinder 1 on its firing stroke, the rotor points at the No. 1 mark on the rim of the distributor body. If it points the opposite way, turn the crank one more full turn and look again. If it points well away from the mark, the distributor has moved or was refitted wrong.`,
+   'Grab the distributor body and try to turn it by hand. It must not move. A loose clamp lets the timing wander.',
+   'Listen to the cranking rhythm. An even beat is normal. A cylinder with no compression makes the engine speed up at one point in every turn.',
+   'A big air leak (cracked intake boot, loose manifold) also stops it starting. Listen for a hiss and look for split rubber.',
+   'Timing with a strobe light, valve clearance and a compression test need tools you do not have with you.'),
+  specs:S([['Firing order','1-4-3-2']],c.I.timingSpec?[c.I.timingSpec]:null)}),
+// carburetor branch
+c_line:c=>({q:c.F.pumpElec?'Does the electric fuel pump deliver fuel?':'Does the fuel pump deliver fuel when you crank?',
+  how:c.F.pumpElec?L(`The fuel comes from ${c.F.pump}.`,'Key OFF. Pull the fuel hose off the carburetor inlet and put its end in a jar or can, held below the carburetor.','Turn the key to ON and listen for the pump. A pump wired through an oil pressure safety switch only runs while cranking: have the helper crank for 5 seconds instead. Fuel should flow steadily.','Key OFF before you refit the hose.')
+     :L(`The fuel comes from ${c.F.pump}.`,'Pull the fuel hose off the carburetor inlet and put its end in a jar or can.','So it cannot spark, pull the thick coil wire out of the centre of the distributor cap, push the paperclip into its end and hook the clip over a bare metal bolt.','Have the helper crank for 5 seconds. Fuel should spurt out in strong pulses.'),
+  note:'Catch every drop. Fuel on a hot engine is a fire risk.',cls:'safe',
+  a:[['Yes, fuel comes out','fix_c_float'],['Little or no fuel','fix_c_pump']]}),
+c_plug:c=>({q:'Spark and fuel are there. Crank for 10 seconds, then smell the tailpipe. Strong raw fuel smell?',
+  how:L('Hold the gas pedal still. Have the helper crank for 10 seconds.','Then sniff at the tailpipe and the carburetor. A strong raw fuel smell means plenty of fuel, maybe too much. No smell means fuel is not getting in.'),
+  a:[['Strong fuel smell','fix_c_flood'],['No fuel smell','fix_c_jets'],['It starts, then dies right away','fix_c_dies']]}),
+fix_c_float:c=>({fix:'Fuel reaches the carburetor but not the float bowl',
+  how:L('The float needle valve is stuck shut, or the inlet is blocked.','Tap the top of the carburetor firmly a few times with the heel of your hand. That often frees a stuck needle. Then try the squirt test again.',
+   'If the car sat for months, old fuel varnish blocks the needle and jets. Taking the carburetor apart needs tools.')}),
+fix_c_pump:c=>({fix:'Not enough fuel from the pump',
+  how:L('Check there is fuel in the tank. Do not trust the fuel needle on the dash. Look in the filler and rock the car: you should hear it slosh.',c.tankOut,c.F.filter,
+   'Squeeze every rubber fuel hose. Old hose goes soft and collapses inside, or is hard and cracked.',
+   c.F.pumpElec?'Put your hand on the electric pump with the key ON (or while cranking, if it is wired through an oil pressure switch). You should feel it buzz.':'Feel the pump while the helper cranks: you should feel a faint pulse. The pump and its pushrod come off with two nuts; that needs a wrench.'),
+  note:'Leaking fuel hoses near the pump and carburetor cause most air-cooled VW engine fires. Replace any hose that is cracked or soft.',cls:'safe'}),
+fix_c_flood:c=>({fix:'Flooded',
+  how:L('Push the gas pedal to the floor and hold it there while you crank. Do not pump it.','Or wait 15 minutes and try again.',c.F.choke,
+   'Tap the top of the carburetor with the heel of your hand. A float needle stuck open floods it.',c.F.pressHi)}),
+fix_c_jets:c=>({fix:'Fuel is not getting through the carburetor',how:L(c.F.alc,c.F.cutoff,c.F.choke,'Jets blocked by old fuel varnish need the carburetor taken apart: that needs tools.')}),
+fix_c_dies:c=>({fix:c.F.diesTitle,how:L(c.F.alc,c.F.cutoff,c.F.choke,c.F.pumpElec?'An electric pump wired through an oil pressure safety switch stops when the engine stalls.':null,'A blocked idle jet also does this. Cleaning it needs tools.')}),
+};
+// fuel-injection cards that change with the kit
+Object.assign(NH,{
+fix_fi_pump:c=>({fix:'The electric fuel pump is not running',how:L(c.F.pumpFixH||c.F.pumpFix),note:'Injection fuel runs at high pressure. Never run the pump with a fuel line open.',cls:'safe'}),
+fi_inj:c=>({q:'Do the injectors buzz, and does the noid light flicker, while cranking?',how:L(c.F.injHowH||c.F.injHow),
+  note:'A faint tick can be hidden by the starter noise. The noid light is the better test.',cls:'tip',
+  a:[['The noid light flickers (tick felt or not)','fi_mix'],['The noid light stays dark on two different injector plugs','fix_fi_pulse'],['The noid light stays fully lit, with no flicker at all','fix_fi_stuck']]}),
+fix_fi_pulse:c=>({fix:c.F.pulseTitle||'No injector pulse: power, trigger or grounds',how:L(c.F.pulseFixH||c.F.pulseFix)}),
+fi_mix:c=>({fix:'Pump, pressure and pulse are good: sensors, air leaks or cold start',how:L(c.F.mixFixH||c.F.mixFix),a:[['Next: timing and compression','timing']]}),
+});
+const NP={ // no pressure gauge: judge pressure by hand and ear
+fi_press:c=>({q:'Does the fuel pressure feel right by hand?',how:L(c.F.pressFeel||['Feel the fuel hoses on the injectors with the pump running: rock hard is pressure, soft is none.']),
+  a:[['Hard supply hose, return flow you can hear','fi_inj'],['Soft hose, or no return flow','fix_fi_press']]}),
+fix_fi_press:c=>({fix:'Low fuel pressure',how:L(c.F.pressFixH||c.F.pressFix),note:'Use only fuel-injection hose (SAE J30R9) and fuel-injection clamps. A leak sprays fuel onto a hot engine.',cls:'safe'}),
+};
+N.fix_fi_stuck=c=>({fix:'An injector is held open: the engine floods',
+  how:L('A noid light that stays lit while cranking means the control unit holds the injectors open all the time. The engine floods with fuel.',
+   c.F.stuckFix||'The control unit has failed inside, or the wire from an injector to the control unit touches ground. Look along the injector wiring, from the injectors on the cylinder heads back to the control unit, for chafed insulation.',
+   'Do not keep cranking. Raw fuel washes the oil off the cylinder walls and can fill a cylinder.'),
+  note:'A flooded engine with raw fuel in the exhaust is a fire risk. Let it air out before you try again.',cls:'safe'});
 
 // ===== Page: picker, setup questions, cards, browser history =====
 const $=s=>document.querySelector(s);
@@ -1066,7 +1300,7 @@ function readHash(){V=null;VP=null;CFG={};path=['start'];
   if(VEH[id])V=VEH[id];else if(PICK.some(([,l])=>l.some(x=>x[0]===id&&x[2])))VP=id;else if(id&&id.startsWith('start')){V=VEH.other}
   if(!V)return;
   let rest=parts.slice(1);
-  if(rest.length&&!rest[0].startsWith('start')){rest[0].split('-').forEach(kv=>{if(kv)CFG[kv[0]]=kv.slice(1)});rest=rest.slice(1)}
+  if(rest.length&&!rest[0].startsWith('start')){rest[0].split('-').forEach(kv=>{if(kv)CFG[kv[0]]=kv.slice(1)});rest=rest.slice(1);if(!('t' in CFG))CFG.t='g'} // links made before the tools question keep the full-kit cards
   // drop answers that are not valid for this car
   Object.keys(CFG).forEach(k=>{const q=questions(V,CFG).find(q=>q.k===k);if(!q||!q.o.some(o=>o[0]===CFG[k]))delete CFG[k]});
   if(rest.length){const p=rest[0].split('.').filter(x=>N[x]);if(p[0]==='start')path=p}}
