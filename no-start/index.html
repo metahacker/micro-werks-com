@@ -50,15 +50,6 @@ h1{font-weight:700;font-size:clamp(34px,8vw,52px);line-height:.98;letter-spacing
 .btn{background:#fff;border:1px solid var(--ln);border-radius:6px;padding:8px 13px;font-weight:600}
 .btn.pri{background:var(--vw);border-color:var(--vw);color:#fff}
 .btn:hover{border-color:var(--tx)}
-details.map{margin-top:26px;border-top:1px solid var(--ln);padding-top:10px}
-details.map summary{cursor:pointer;font-weight:600;color:var(--vw)}
-.tree{font-size:13.5px;margin-top:10px}
-.tree ul{list-style:none;margin:0;padding-left:16px;border-left:1px solid var(--ln)}
-.tree>ul{padding-left:0;border:0}
-.tree li{margin:4px 0}
-.tree .lbl{color:var(--mu);font-size:12px;margin-right:4px}
-.tree a{color:var(--tx);text-decoration:none;border-bottom:1px dotted var(--mu)}
-.tree a.fx{color:var(--ok)}
 footer{margin-top:28px;font-size:12.5px;color:var(--mu)}
 @media(max-width:600px){.wrap{padding:10px 12px 50px}.card{padding:15px 14px 14px}}
 /* hero: same VW print-ad header as Bus Gear Calc */
@@ -89,7 +80,6 @@ footer{margin-top:28px;font-size:12.5px;color:var(--mu)}
 <div class="wrap" style="padding-top:16px">
 <div class="trail" id="trail"></div>
 <div id="view"></div>
-<details class="map"><summary>See the whole flow chart</summary><div class="tree" id="tree"></div></details>
 <footer>Covers every air-cooled VW, carbureted or fuel-injected, with the Type 1, Type 3 or Type 4 engine. Specs are typical for stock engines with points ignition; year, engine and model change some numbers. Most VWs built before the 1967 model year are 6-volt; use the 6-volt numbers where shown. Check your engine's own numbers (tag on the fan shroud or the Bentley manual) before adjusting.</footer>
 </div>
 <script>
@@ -217,11 +207,11 @@ function tailor(id){const o={...N[id]};
 function picker(){
   $('#trail').innerHTML='';
   $('#view').innerHTML=`<div class="card"><div class="step">First</div><p class="q">Which VW is it?</p><p class="pick-sub">This sets the battery location, 6- or 12-volt numbers, and carburetor or fuel injection checks. Not listed? Pick the last one.</p>${VW.map(([g,l])=>`<div class="vg"><div class="vgh">${g}</div><div class="vopts">${l.map(([id,name])=>`<button class="opt" data-vw="${id}">${name}</button>`).join('')}</div></div>`).join('')}</div>`;
-  history.replaceState(null,'',location.pathname);
 }
 const $=s=>document.querySelector(s);
 let path=['start'];
 function title(id){const n=N[id];return T(n.q||n.fix)}
+const hashFor=()=>V?'#'+V.id+'/'+path.join('.'):location.pathname;
 function render(){
   if(!V)return picker();
   const id=path[path.length-1],n=tailor(id);
@@ -236,24 +226,24 @@ function render(){
   if(n.a)h+=`<div class="opts">${n.a.map(([l,to],i)=>`<button class="opt${i===0?' yes':''}" data-go="${to}">${l}</button>`).join('')}</div>`;
   h+=`<div class="nav">${path.length>1?'<button class="btn" data-act="back">‹ Back</button>':''}${path.length>1?'<button class="btn" data-act="restart">Start over</button>':''}${n.fix?'<button class="btn pri" data-act="restart">Fixed it? Try again from the top</button>':''}</div></div>`;
   $('#view').innerHTML=h;
-  history.replaceState(null,'','#'+V.id+'/'+path.join('.'));
-  window.scrollTo({top:0,behavior:'smooth'});
 }
+// Keep the new card in view without jumping to the top of the page.
+function keepInView(){const c=$('#view').firstElementChild;if(!c)return;const r=c.getBoundingClientRect();if(r.top<0||r.top>innerHeight*0.6)window.scrollTo({top:scrollY+r.top-12,behavior:'auto'})}
+// Every choice is a browser history entry, so the phone's Back gesture steps back through the guide.
+function go(){render();history.pushState(null,'',hashFor());keepInView()}
 const short=s=>s.length>46?s.slice(0,44)+'…':s;
-document.addEventListener('click',e=>{const t=e.target.closest('button,a[data-node]');if(!t)return;
-  if(t.dataset.vw){V=VBY[t.dataset.vw];path=['start'];render();}
-  else if(t.dataset.act==='pick'){V=null;path=['start'];render();}
-  else if(t.dataset.go){path.push(t.dataset.go);render();}
-  else if(t.dataset.back!=null){path=path.slice(0,+t.dataset.back+1);render();}
-  else if(t.dataset.act==='back'){path.pop();render();}
-  else if(t.dataset.act==='restart'){path=['start'];render();}
-  else if(t.dataset.node){e.preventDefault();if(!V)V=VBY.other;path=findPath(t.dataset.node)||['start'];render();}
+document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.vw){V=VBY[t.dataset.vw];path=['start'];go();}
+  else if(t.dataset.act==='pick'){V=null;path=['start'];go();}
+  else if(t.dataset.go){path.push(t.dataset.go);go();}
+  else if(t.dataset.back!=null){path=path.slice(0,+t.dataset.back+1);go();}
+  else if(t.dataset.act==='back'){history.length>1&&location.hash?history.back():(path.pop(),go());}
+  else if(t.dataset.act==='restart'){path=['start'];go();}
 });
-function findPath(target,id='start',p=[]){p=[...p,id];if(id===target)return p;for(const [,to] of (N[id].a||[])){const r=findPath(target,to,p);if(r)return r}return null}
-function tree(id,label){const n=N[id];return `<li>${label?`<span class="lbl">${label} →</span>`:''}<a href="#" data-node="${id}" class="${n.fix?'fx':''}">${n.fix?'✓ '+T(n.fix):T(n.q)}</a>${n.a?`<ul>${n.a.map(([l,to])=>tree(to,T(l))).join('')}</ul>`:''}</li>`}
-$('#tree').innerHTML=`<ul>${tree('start')}</ul>`;
-{const hs=decodeURIComponent(location.hash.slice(1)),i=hs.indexOf('/'),vp=i<0?'':hs.slice(0,i),pp=i<0?hs:hs.slice(i+1);if(VBY[vp])V=VBY[vp];const h=pp.split('.').filter(x=>N[x]);if(h[0]==='start'){path=h;if(!V)V=VBY.other}}
-render();
+function readHash(){V=null;path=['start'];const hs=decodeURIComponent(location.hash.slice(1)),i=hs.indexOf('/'),vp=i<0?'':hs.slice(0,i),pp=i<0?hs:hs.slice(i+1);if(VBY[vp])V=VBY[vp];const h=pp.split('.').filter(x=>N[x]);if(h[0]==='start'){path=h;if(!V)V=VBY.other}}
+history.scrollRestoration='manual';
+addEventListener('popstate',()=>{readHash();render();keepInView()});
+readHash();render();
 </script>
 <div class="mwfoot">A free tool from <a href="/">micro.werks</a>, VW bus engineering in San Diego. <a href="/tools/">More tools</a></div>
 </body></html>
