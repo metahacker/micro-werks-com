@@ -2,8 +2,8 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="canonical" href="https://micro-werks.com/no-start/">
-<meta name="description" content="Step-by-step troubleshooting for a VW Type 1 Beetle that won't start. Battery, starter, spark, fuel and timing, one question at a time. Free from micro.werks.">
-<title>Won't start. · Type 1 no-start guide · micro.werks</title>
+<meta name="description" content="Step-by-step troubleshooting for any carbureted VW with a Type 1 engine that won't start: Beetle, Karmann Ghia, early bus, Thing, Baja or buggy. Battery, starter, spark, fuel and timing, one question at a time. Free from micro.werks.">
+<title>Won't start. · VW Type 1 engine no-start guide · micro.werks</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -78,12 +78,12 @@ footer{margin-top:28px;font-size:12.5px;color:var(--mu)}
 </style></head>
 <body>
 <div class="mwbar"><a class="mw" href="/" aria-label="micro.werks home"><img src="/img/logo.svg" alt="micro.werks"></a><nav><a href="/tools/">&larr; All tools</a><a class="hide-xs" href="/">micro-werks.com</a></nav></div>
-<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">Volkswagen Type 1 · carbureted · air-cooled</div><h1>Won't start.</h1><p>Answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
+<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">VW Type 1 engine · carbureted · air-cooled</div><h1>Won't start.</h1><p>For any carbureted VW with the upright Type 1 engine: Beetle, Karmann Ghia, early bus, Thing, Baja or buggy. Answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
 <div class="wrap" style="padding-top:16px">
 <div class="trail" id="trail"></div>
 <div id="view"></div>
 <details class="map"><summary>See the whole flow chart</summary><div class="tree" id="tree"></div></details>
-<footer>Specs are typical for a stock 1600 Type 1 with points ignition and a Solex 30/31/34 PICT. Check your engine's own numbers (tag on the fan shroud or the Bentley manual) before adjusting.</footer>
+<footer>Specs are typical for a stock carbureted Type 1 engine (1200 to 1600) with points ignition and a Solex carburetor, in a Beetle, Karmann Ghia, Type 2 bus, Thing, Baja or buggy. Most VWs built before the 1967 model year are 6-volt; use the 6-volt numbers where shown. Check your engine's own numbers (tag on the fan shroud or the Bentley manual) before adjusting.</footer>
 </div>
 <script>
 // Each node: q = question, how = list of steps, note, a = [[label, next, hint]], or fix = result.
@@ -94,7 +94,7 @@ start:{q:"Turn the key to start. Does the engine turn over?",how:["Gearbox in ne
 dead:{q:"With the key on, do the red charge light and green oil light come on?",how:["Key to 'on', engine off. Both dash lights should glow.","Try the horn or headlights too."],
   a:[["No lights, no horn","nopower"],["Lights work, starter does nothing","nostarter"]]},
 nopower:{fix:"No power: battery or main cables",how:["Measure the battery: 12.4 V or more is charged (6.2 V on a 6-volt car). Charge or jump it.","Clean and tighten both battery terminals.","Check the braided ground strap from the gearbox to the body. A broken strap is a classic no-start.","Check the thick battery cable at the starter (terminal 30)."],
-  specs:[["Battery, charged","12.4–12.7 V"],["Under cranking","no lower than 9.6 V"]],note:"The Type 1 battery sits under the rear seat. Make sure the seat springs can't touch the + terminal."},
+  specs:[["Battery, charged","12.4–12.7 V"],["Under cranking","no lower than 9.6 V"],["6-volt car, cranking","no lower than about 4.8 V"]],note:"Where's the battery? Beetle, Super Beetle and Thing: under the rear seat. Karmann Ghia and Type 2 bus: in the engine bay, right side. Bajas and buggies: wherever the builder put it. Under a seat, make sure the springs can't touch the + terminal."},
 nostarter:{q:"Jump the starter: bridge terminal 30 to terminal 50 on the solenoid. Does it crank now?",how:["Neutral, handbrake on, key on.","Bridge the big terminal (30, battery cable) to the small spade (50) with a screwdriver or remote starter button."],
   note:"Stay clear of the fan belt and pulley. The engine may start.",cls:"safe",
   a:[["Yes, it cranks","fix_50"],["Still nothing","fix_starter"]]},
@@ -102,7 +102,7 @@ fix_50:{fix:"Starter signal isn't arriving: ignition switch or the terminal 50 w
 fix_starter:{fix:"Starter or solenoid",how:["Tap the starter body with a hammer handle while someone holds the key on 'start'. If it then cranks, the brushes or solenoid contacts are worn.","Check for 12 V at terminal 30 while cranking.","Remove and bench-test the starter, or swap a known-good one."]},
 
 click:{q:"One click and nothing? Check the voltage at the battery while you turn the key.",how:["Meter on the battery posts, have someone turn the key to 'start'."],
-  a:[["Drops below about 9.6 V","fix_batt_weak"],["Stays above 10 V","fix_click"]]},
+  a:[["Drops below about 9.6 V (4.8 V on 6-volt)","fix_batt_weak"],["Stays above 10 V (5 V on 6-volt)","fix_click"]]},
 fix_batt_weak:{fix:"Weak battery or bad connections",how:["Charge the battery and test it under load.","Clean the terminals and the gearbox-to-body ground strap.","A battery that shows 12.4 V resting but collapses when cranking is worn out."]},
 fix_click:{fix:"Solenoid contacts, starter, or the bushing",how:["The solenoid clicks but its internal contacts don't pass current. Rebuild or replace the solenoid/starter.","A worn starter bushing in the gearbox bellhousing lets the starter bind. Replace it when you pull the starter (grease it lightly).","Hot-start clicks only? Add a hot-start relay so the solenoid gets full voltage."]},
 
@@ -116,8 +116,8 @@ nospark:{q:"Now test at the coil: pull the centre wire out of the distributor ca
   a:[["Good spark at the coil wire","fix_cap"],["No spark at the coil wire","coil12"]]},
 fix_cap:{fix:"Distributor cap, rotor or plug wires",how:["Pop the cap. Look for cracks, carbon tracks, moisture or burnt contacts. Dry it or replace it.","Check the rotor: a cracked rotor, or a failed rev-limiter rotor, grounds out the spark.","Check plug wires and the plug connectors. Replace wet or cracked wires.","Make sure the plug wires go to the right cylinders: firing order 1-4-3-2."],
   specs:[["Firing order","1-4-3-2"],["Rotation","counter-clockwise (from the top)"]]},
-coil12:{q:"Key on. Is there 12 V at the coil's + terminal (15)?",how:["Meter between coil terminal 15 and ground, key in the 'on' position."],
-  a:[["Yes, 12 V","points"],["No power","fix_15"]]},
+coil12:{q:"Key on. Is there battery voltage (12 V, or 6 V on a 6-volt car) at the coil's + terminal (15)?",how:["Meter between coil terminal 15 and ground, key in the 'on' position."],
+  a:[["Yes, full battery voltage","points"],["No power","fix_15"]]},
 fix_15:{fix:"No power to the coil",how:["The coil feed comes from the ignition switch (terminal 15, usually a black wire).","Check the wire and its connector at the coil.","Test the ignition switch's 'on' contacts.","If someone fitted a ballast resistor or an electronic ignition, check its wiring too."]},
 points:{q:"Take off the distributor cap. Bump the engine over. Do the points open and close, and are they clean?",how:["Bump the starter or turn the engine with a wrench on the pulley nut.","Watch the points: they should open as each cam lobe passes, and the contact faces should be clean and flat."],
   a:[["Points look good and open","coilcheck"],["Burnt, pitted, dirty, or never open","fix_points"],["Electronic ignition fitted (no points)","fix_elec"]]},
@@ -127,9 +127,9 @@ fix_elec:{fix:"Electronic ignition",how:["Check the module's power and ground wi
 coilcheck:{fix:"Coil, condenser or the internal ground",how:["Measure the coil: primary between 15 and 1, secondary between 15 and the tower.","Replace the condenser: it's cheap and fails often.","Check the thin wire inside the distributor body and the points' ground: a short there kills spark even when the points look fine.","Swap in a known-good coil if the readings are off."],
   specs:[["Coil primary (12 V)","about 3.0–3.5 Ω"],["Coil secondary","about 7–12 kΩ"]]},
 
-fuel:{q:"Look down the carburetor throat and work the throttle by hand. Do you see fuel squirt from the accelerator pump?",how:["Air cleaner off. Engine off.","Open the throttle by hand at the carb linkage and watch for a squirt of fuel into the throat."],
+fuel:{q:"Look down the carburetor throat and work the throttle by hand. Do you see fuel squirt from the accelerator pump?",how:["Air cleaner off. Engine off.","Open the throttle by hand at the carb linkage and watch for a squirt of fuel into the throat.","Dual carbs: check each one."],
   note:"No smoking, no sparks nearby.",cls:"safe",
-  a:[["Yes, a good squirt","fuelok"],["No squirt","nofuel"]]},
+  a:[["Yes, a good squirt","fuelok"],["No squirt","nofuel"],["My carb has no accelerator pump (early 1200)","nofuel"]]},
 nofuel:{q:"Pull the fuel line off the carb, point it into a jar, and crank. Does fuel pulse out?",how:["Have a helper crank for a few seconds. The mechanical pump should pulse fuel with every turn."],
   note:"Catch every drop. Fuel on a hot engine is a fire risk.",cls:"safe",
   a:[["Yes, fuel pulses out","fix_float"],["No fuel","fix_pump"]]},
@@ -144,10 +144,10 @@ fix_flood:{fix:"Flooded",how:["Floor the throttle and hold it there while you cr
 dry:{q:"Does a very small shot of starting fluid in the carb throat make it fire for a moment?",how:["One short burst only, air cleaner off. Crank right away."],
   note:"Starting fluid can backfire. Use very little and keep your face away from the carb.",cls:"safe",
   a:[["Fires, then dies","fix_idlecut"],["Doesn't even fire","timing"]]},
-startsdies:{fix:"Starts, then dies: idle cut-off valve, idle jet or choke",how:["Idle cut-off solenoid: with the key on, unplug and replug its wire. You should hear a click. No click = no fuel at idle. Check its 12 V supply.","Clogged idle jet (inside the cut-off valve or on the carb): clean it with a thin wire or replace it.","Automatic choke: on a cold engine the choke plate should be nearly closed. Check its heater wire if it opens too fast.","An ignition switch that only feeds the coil in the 'start' position does this too: check for 12 V at coil terminal 15 with the key back on 'on'."]},
-fix_idlecut:{fix:"Fuel isn't getting through the carb: idle cut-off or jets",how:["Check the idle cut-off solenoid clicks with the key on and has 12 V.","Clean the idle jet and the main jet. Old fuel varnish blocks them.","Check the float level.","If the car sat a long time, rebuild or clean the carb."]},
+startsdies:{fix:"Starts, then dies: idle cut-off valve, idle jet or choke",how:["Idle cut-off solenoid (most Solex carbs from the mid-1960s on): with the key on, unplug and replug its wire. You should hear a click. No click = no fuel at idle. Check its 12 V supply.","Clogged idle jet (inside the cut-off valve or on the carb): clean it with a thin wire or replace it.","Automatic choke: on a cold engine the choke plate should be nearly closed. Check its heater wire if it opens too fast. Early cars with a manual choke knob: pull it for a cold start.","An ignition switch that only feeds the coil in the 'start' position does this too: check for 12 V at coil terminal 15 with the key back on 'on'."]},
+fix_idlecut:{fix:"Fuel isn't getting through the carb: idle cut-off or jets",how:["If fitted, check the idle cut-off solenoid clicks with the key on and has battery voltage.","Clean the idle jet and the main jet. Old fuel varnish blocks them.","Check the float level.","If the car sat a long time, rebuild or clean the carb."]},
 timing:{fix:"Timing, compression or a big air leak",how:["Timing: if the distributor was moved, set the static timing. Turn the engine to the timing mark with no. 1 at TDC on compression and set the points to just open.","Is the rotor pointing to the no. 1 mark on the distributor body at TDC? If it points to no. 3, you're 180° out: turn the crank one full turn.","Compression: if the valves are adjusted too tight they won't close. Check the valve clearance with the engine cold.","Do a compression test. Low readings across all four mean a deeper problem.","A big intake leak (cracked boot, loose manifold) can stop it starting at all."],
-  specs:[["Valve clearance (cold)","0.006 in (0.15 mm)"],["Firing order","1-4-3-2"],["Compression","about 100–130 psi, even"],["Static timing","typically 7.5° BTDC (check yours)"]]}
+  specs:[["Valve clearance (cold)","0.006 in (0.15 mm) on most; some early engines differ"],["Firing order","1-4-3-2"],["Compression","about 100–130 psi, even"],["Static timing","10° BTDC to 5° ATDC, by engine (check yours)"]]}
 };
 
 const $=s=>document.querySelector(s);
