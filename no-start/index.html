@@ -264,17 +264,18 @@ function carbF(c){
   const pk=c.pumpKind||'t1',p=PUMP[pk];
   const ploc=pk==='elec'&&c.fiPumpLoc&&c.fromFI?`the electric pump, ${c.fiPumpLoc}`:p.text;
   const volt=c.vv('12 V','6 V');
+  const chokeMins=x.chokeTime||'about 3 to 5 minutes';
   const choke=x.choke==='manual'?`This carburetor has a manual choke. Pull the choke knob${x.chokeKnob?' ('+x.chokeKnob+')':''} for a cold start. Lift the air cleaner off and check the cable actually closes the flap at the top of the carb throat, and that the flap opens fully when you push the knob in. A flap stuck shut floods the engine.`
    :x.choke==='weber'?`The Weber’s electric choke is the round black cover on the side of the carburetor with one wire. Cold engine: open the throttle once and the choke flaps should close. Key ON: the cover gets warm within a few minutes and the flaps open. It needs ${volt} with the key ON; check that wire.`
    :x.choke==='none'?'These carburetors have no choke. For a cold start, pump the gas pedal 2 or 3 times before you crank, so the accelerator pumps squirt fuel in.'
    :two?`Each carburetor has its own automatic choke cover. The left and right covers are different parts; make sure each is on its own carb. Cold engine: open the throttle once by hand and both choke flaps should close. Key ON: both covers warm up and the flaps open together over a few minutes. They get ${volt} from coil terminal 15. A cover that stays cold has no power or a broken heater.`
-   :`The automatic choke is the round cover on the right side of the carburetor top. Cold engine: open the throttle once by hand and the choke flap at the top of the throat should close almost fully. Key ON: the cover warms up and the flap opens over about 3 to 5 minutes. It gets ${volt} on a black wire from coil terminal 15. A cover that stays cold has no power or a broken heater.`;
-  const cut=x.cut==='look'?`Look on the ${x.cutWhere||'side of the carburetor body'} for a small round solenoid with one wire: the idle cut-off valve.${x.lookNote?' '+x.lookNote:''} A valve that is there must click when you pull its wire off and push it back on with the key ON. A dead valve shuts off the idle fuel.`
+   :`The automatic choke is the round cover on the right side of the carburetor top. Cold engine: open the throttle once by hand and the choke flap at the top of the throat should close almost fully. Key ON: the cover warms up and the flap opens over ${chokeMins}. It gets ${volt} on a black wire from coil terminal 15. A cover that stays cold has no power or a broken heater.`;
+  const cut=x.cutText?x.cutText:x.cut==='look'?`Look on the ${x.cutWhere||'side of the carburetor body'} for a small round solenoid with one wire: the idle cut-off valve.${x.lookNote?' '+x.lookNote:''} A valve that is there must click when you pull its wire off and push it back on with the key ON. A dead valve shuts off the idle fuel.`
    :x.cut?(two?`Idle cut-off valves: each carburetor has a small one-wire solenoid screwed into its body. Key ON, pull each wire off and push it back on. You should hear and feel a click. ${c.kit==='h'?'No click: push its wire on firmly. Still no click: that valve or its wire has failed.':'No click: check for '+volt+' on the wire. Voltage there but no click: replace that valve.'} A dead valve shuts off the idle fuel.`
      :`Idle cut-off valve: the small one-wire solenoid screwed into the ${x.cutWhere||'side of the carburetor'}. Key ON, pull its wire off and push it back on. You should hear and feel a click. ${c.kit==='h'?'No click: push its wire on firmly and follow it back to coil terminal 15. Still no click: the valve or its wire has failed.':'No click: check for '+volt+' on the wire, which comes from coil terminal 15. Voltage there but no click: replace the valve.'} A dead valve shuts off the idle fuel and the engine will not start or idle.`):null;
   return {label:x.label||(two?'two '+x.carb+' carburetors':'one '+x.carb+' carburetor'),hint:x.hint,fi:false,first:x.accel===false?'c_line':'c_squirt',
    carbThe:the,n,aircleaner:two?'Take off both air cleaners.':'Undo the clamp and lift the air cleaner off the top of the carburetor.',
-   pump:ploc,pumpElec:pk==='elec',pumpFix:p.fix,pumpSpec:x.psi?[['Pressure at the carburetor',x.psi]]:(c.pumpSpecBR||p.spec),alc:c.alc?ALC:null,
+   pump:ploc,pumpElec:pk==='elec',pumpFix:c.pumpFix||p.fix,pumpSpec:x.psi?[['Pressure at the carburetor',x.psi]]:(c.alc&&c.pumpSpecAlc?c.pumpSpecAlc:(c.pumpSpec||c.pumpSpecBR||p.spec)),alc:c.alc?ALC:null,
    tankOut:c.tankOut,filter:c.filterNote||'Factory carbureted VWs have no paper filter, only small screens at the tank outlet and in the pump. An added inline filter must sit before the pump or under the tank, never over the hot engine. Look for one full of rust or dirt.',
    choke,cutoff:cut,
    jets:`Take out the idle jet${two?'s':''} (small brass jet${two?'s':''} screwed into the side of the carburetor body) and the main jet${two?'s':''}. Blow them clear with compressed air or carb cleaner. Old fuel varnish blocks them.`,
@@ -322,7 +323,7 @@ function LJH(o,c){return{
  mixFixH:L(`Temperature sensor II, by ear: it is a one-wire sensor screwed into ${o.ts2} Pull its plug off and try to start the engine.`,
   'Unplugged, the control unit thinks the engine is extremely cold and adds the most fuel. A cold engine that will not start, but fires with the sensor unplugged, was too lean: look at the sensor and its wire, air leaks, and fuel delivery. A warm engine runs very rich and black with it unplugged; that is normal. Key OFF and plug it back in.',
   'Warm engine that will not start: key OFF, push one end of the paperclip into the socket of the wire plug (the harness side, not the sensor) and touch the other end to a bare metal bolt. Now the control unit thinks the engine is hot and cuts the extra fuel. If it then starts, it was too rich: suspect the sensor or its connection. A break in the wire further back toward the control unit is not bypassed by this. Key OFF before you take the clip out.',
-  `Cold start valve, by feel: ${o.csvFeel||'it is a fifth small injector on the intake air distributor'}. Engine cold (below about 35 °C, 95 °F): rest a fingertip on it while the helper cranks. It is held open for a few seconds, not pulsed, so you may feel a click as it opens and again as it closes. Feeling nothing is not proof it failed; repeated cranking also warms its thermo-time switch and stops it. Wet fuel or a strong fuel smell around the intake: key OFF and stop testing, it is a fire risk, and find the leak before you crank again.`,
+  `Cold start valve, by feel: ${o.csvFeel||'it is a fifth small injector on the intake air distributor'}. Engine cold (below about ${o.csvBelow||'35 °C, 95 °F'}): rest a fingertip on it while the helper cranks. It is held open for a few seconds, not pulsed, so you may feel a click as it opens and again as it closes. Feeling nothing is not proof it failed; repeated cranking also warms its thermo-time switch and stops it. Wet fuel or a strong fuel smell around the intake: key OFF and stop testing, it is a fire risk, and find the leak before you crank again.`,
   'Air flow meter flap: with the air cleaner off, push it through its full travel with a finger. It must move smoothly, never catch, and spring fully shut by itself. A flap that sticks shut means the pump stops as soon as the starter stops.',
   'Air leaks: with the engine cranking or running, listen for a hiss at the big rubber boot, the intake runner boots and every vacuum hose. Squeeze the boots: cracks open up when you bend them.'),
  mixSpecH:null}}
@@ -346,7 +347,7 @@ function LJ(o){return c=>({label:'Bosch L-Jetronic fuel injection',hint:'Air flo
   o.fuseNote),
  pumpFixSpec:[['Bridge to run the pump','relay socket 88y or 88z to 88d'],['Flap switch','AFM plug terminals 36 and 39']],
  pressHow:L(o.port,'Key ON, hold the air flow meter flap open (or bridge terminals 36 and 39) so the pump runs, engine off. Read the gauge.','Let the flap go and watch how well the pressure holds.'),
- pressSpec:[['Pump running, engine off','35–38 psi (2.5–2.7 bar)'],['Idle, vacuum hose on the regulator','28–31 psi (2.0–2.2 bar)'],['After shut-off','14.5 psi (1 bar) or more after 20 minutes']],
+ pressSpec:o.pressSpec||[['Pump running, engine off','35–38 psi (2.5–2.7 bar)'],['Idle, vacuum hose on the regulator','28–31 psi (2.0–2.2 bar)'],['After shut-off','14.5 psi (1 bar) or more after 20 minutes']],
  pressFix:L(`Replace the fuel filter: ${o.filter} A clogged filter is the most common cause.`,
   'Squeeze the hose from the tank to the filter and pump. Old hose collapses inside.',
   `The pressure regulator ${o.reg} has a small vacuum hose to the intake air distributor. Pull the vacuum hose off and plug it: pressure should rise about 7 psi. Fuel in that hose: replace the regulator.`,
@@ -362,9 +363,9 @@ function LJ(o){return c=>({label:'Bosch L-Jetronic fuel injection',hint:'Air flo
  pulseSpec:S([['Injector','2–3 Ω']],o.resSpec?[o.resSpec]:null),
  mixFix:L(`Temperature sensor II: a one-wire sensor screwed into ${o.ts2} Unplug it and measure from its pin to clean engine metal. Open or very high: the engine floods and will not start.`,
   'The air flow meter flap must swing freely and spring shut. A cracked rubber boot between the meter and the throttle body lets in air the meter does not see. The engine will not run.',
-  `Cold engine: the cold start valve is a fifth small injector on the intake air distributor${o.csv?', '+o.csv:''}. It sprays only while you crank a cold engine (below about 35 °C, 95 °F), for a few seconds, when the thermo-time switch lets it. To test it: engine cold, pull the thick coil wire out of the centre of the distributor cap and clip it to bare metal so nothing can spark. Unbolt the valve, keep its fuel hose on, hold it inside a closed glass jar, and crank for a few seconds: it should spray. With the key just ON it must never drip.`,
+  `Cold engine: the cold start valve is a fifth small injector on the intake air distributor${o.csv?', '+o.csv:''}. It sprays only while you crank a cold engine (below about ${o.csvBelow||'35 °C, 95 °F'}), for a few seconds, when the thermo-time switch lets it. To test it: engine cold, pull the thick coil wire out of the centre of the distributor cap and clip it to bare metal so nothing can spark. Unbolt the valve, keep its fuel hose on, hold it inside a closed glass jar, and crank for a few seconds: it should spray. With the key just ON it must never drip.`,
   'Look for air leaks at the intake runner boots, the injector seals and every vacuum hose.'),
- mixSpec:[['Temp sensor II at 20 °C (68 °F)','2,100–2,900 Ω'],['at −10 °C (14 °F)','7,000–11,600 Ω'],['at 80 °C (176 °F)','270–390 Ω']],...LJH(o,c)})}
+ mixSpec:o.mixSpec||[['Temp sensor II at 20 °C (68 °F)','2,100–2,900 Ω'],['at −10 °C (14 °F)','7,000–11,600 Ω'],['at 80 °C (176 °F)','270–390 Ω']],...LJH(o,c)})}
 
 // Minimal-kit pressure feel for systems that prime the pump at key ON or run it from a relay bridge.
 const FEEL=(run)=>L('You can tell pressure from no pressure by hand and ear. It will not show the exact figure, so a weak pump can still pass.',
@@ -375,47 +376,47 @@ const RELAYCLIP=(sock)=>`Bend the paperclip into a short U that fits both socket
 const INJTICK=(pairs)=>L(`Have the helper crank. Rest a fingertip on each injector body in turn and put your ear close: you should feel and hear a sharp, steady tick${pairs?'. They fire in pairs, cylinders 1 and 4 together, then 2 and 3':''}.`,
   'Noid light: unplug one injector (squeeze its wire clip and pull the plug straight off), push the noid light into the plug, and crank. A steady flicker is good. Try one injector on each side. Refit the plugs afterwards.');
 
-// D-Jetronic: the control unit runs the pump for 1 to 2 seconds at key ON.
-function DJ(o){return c=>({label:'Bosch D-Jetronic fuel injection',hint:'Round pressure sensor with a vacuum hose, trigger points in the distributor',fi:true,first:'fi_pump',
- pumpQ:'Turn the key to ON. Does the fuel pump run for 1 to 2 seconds?',
- pumpHow:L('Turn the key to ON. Do not crank. On this '+o.car+' the control unit runs the pump for about 1 to 2 seconds, then switches it off until the engine turns.',
+// D-Jetronic: the control unit runs the pump for about 1 second at key ON.
+function DJ(o){return c=>{const R=v=>typeof v==='function'?v(c):v;const port=R(o.port),ts2=R(o.ts2),mps=R(o.mps);return {label:'Bosch D-Jetronic fuel injection',hint:'Round pressure sensor with a vacuum hose, trigger points in the distributor',fi:true,first:'fi_pump',
+ pumpQ:'Turn the key to ON. Does the fuel pump run for about 1 second?',
+ pumpHow:L('Turn the key to ON. Do not crank. On this '+o.car+' the control unit runs the pump for about 1 second, then switches it off until the engine turns.',
   `Listen at ${o.listen} the moment you turn the key. Turn it OFF and ON again to repeat. A helper makes this easier.`),
  pumpNote:'Do not trust the fuel needle on the dash. Make sure there is fuel in the tank before you go further.',
- pumpYes:'Yes, it buzzes for a second or two',
+ pumpYes:'Yes, it buzzes for about 1 second',
  pumpFix:L(o.relays,
   `Run the pump without the control unit: ${o.force}`,
   `Pump runs with the bridge: the control unit is not switching it. Check the trigger points (next steps) and the control unit plug. Nothing with the bridge: go to the pump, ${o.pump} Check for 12 V on its feed and a good ground (brown wire). Voltage there but no run: tap the pump. If it starts, it is worn out.`,
   o.fuseNote),
  pumpFixSpec:o.forceSpec,
- pressHow:L(o.port,'Key ON, run the pump with the bridge from the last step, engine off. Read the gauge.'),
- pressSpec:[['System pressure','28.5–30.5 psi (2.0–2.1 bar)']],
+ pressHow:L(port,'Key ON, run the pump with the bridge from the last step, engine off. Read the gauge.'),
+ pressSpec:o.pressSpec||[['System pressure','28.5–30.5 psi (2.0–2.1 bar)']],
  pressFix:L(`Replace the fuel filter: ${o.filter}`,'Squeeze the hose from the tank to the filter and pump. Old hose collapses inside.',`The pressure regulator ${o.reg} Pressure low and fuel returning to the tank hard: the regulator is open or out of adjustment.`,'Pinch the return hose for a moment only. Pressure should jump. It does not: the pump is weak.'),
  injHow:L('The four injectors sit in the intake runners at the cylinder heads, two on each side. They fire in pairs: 1 and 4, then 2 and 3.','Hold a long screwdriver tip on an injector and press your ear to the handle, or plug a noid light into an injector plug. Have a helper crank.','You should hear or see a steady click.'),
  pulseTitle:'No injector pulse: trigger points, pressure sensor, power or grounds',
- pulseFix:L(`Trigger points: a second small contact set in the base of the distributor, under the ignition points, with a 3-pin plug. They tell the control unit when to fire each pair of injectors. Unplug them. Measure from the middle pin to each outer pin while someone turns the engine slowly: each side must switch between 0 Ω and open. Worn or dirty contacts stop injection. They have no gap setting.`,
-  `Manifold pressure sensor: ${o.mps} Its vacuum hose must be tight and uncracked. A leaking diaphragm stops the engine.`,
+ pulseFix:L('Trigger points: contacts on a holder in the lower part of the distributor, with a 3-pin plug. They tell the control unit when to fire each pair of injectors. They cannot be adjusted. With the starter turning, a meter between control unit terminal 12 and terminals 21 and 22 must alternate between infinity and 0 Ω. Worn or dirty contacts stop injection.',
+  `Manifold pressure sensor: ${mps} Its vacuum hose must be tight and uncracked. A leaking diaphragm stops the engine.`,
   'Unplug an injector and measure across its pins: about 2.4 Ω.',o.grounds,
   `The control unit is ${o.ecu}`),
  pulseSpec:[['Injector','about 2.4 Ω'],['Pressure sensor, primary (control unit pins 7–15)','about 90 Ω'],['Pressure sensor, secondary (pins 8–10)','about 350 Ω']],
- mixFix:L(`Head temperature sensor: ${o.ts2} Unplug it and measure from its pin to clean engine metal. Open circuit: no start.`,
+ mixFix:L(`Head temperature sensor: ${ts2} Unplug it and measure from its pin to clean engine metal. Open circuit: no start.`,
   o.csvNote,`Cold engine: the cold start valve is a fifth small injector on the intake air distributor${o.csv?', '+o.csv:''}. It sprays only while cranking a cold engine (below about 35 °C, 95 °F). To test it: pull the thick coil wire out of the centre of the distributor cap and clip it to bare metal so nothing can spark. Unbolt the valve, keep its fuel hose on, hold it inside a closed glass jar, and crank for a few seconds: it should spray. Warm engine: it must not.`,
   'Look for air leaks at the intake runner boots, the injector seals and every vacuum hose. The pressure sensor reads the vacuum, so any leak throws the mixture off.'),
  mixSpec:[['Head sensor at 20 °C (68 °F)','about 2,500 Ω'],['at 80 °C (176 °F)','about 325 Ω'],['at 100 °C (212 °F)','about 190 Ω']],
- pumpFixH:L(o.relaysH||o.relays,`Key ON: put your fingers on the pump relay. ${o.relayEarH||'It should click and the pump should buzz for 1 to 2 seconds.'} No click: the relay, its fuse, or the control unit is not switching it.`,
+ pumpFixH:L(o.relaysH||o.relays,`Key ON: put your fingers on the pump relay. ${o.relayEarH||'It should click and the pump should buzz for about 1 second.'} No click: the relay, its fuse, or the control unit is not switching it.`,
   'Pull the pump relay, look for green corrosion on its pins and in the socket, and push it back in firmly. Swap it with another relay of the same type on the car if one is fitted.',
   'Do not bridge the relay socket with the paperclip. Socket 30 is an unfused battery feed that carries the full pump current; that test needs a proper fused jumper.',
   `Relay clicks but no pump: if you can reach the pump without tools (${o.pump.replace(/\.$/,'')}), put your hand on it while the helper turns the key ON; a running pump buzzes. Push its plug and brown ground wire home, and tap the pump body. If it then runs, it is worn out.`,o.fuseNote),
- pressFeel:FEEL('Run the pump: have the helper turn the key OFF and ON so the pump primes for 1 to 2 seconds each time, and feel during the prime.'),
+ pressFeel:FEEL('Run the pump: have the helper turn the key OFF and ON so the pump primes for about 1 second each time, and feel during the prime.'),
  pressFixH:L(`The fuel filter is ${o.filter} A clogged filter is the most common cause.`,'Squeeze the hose from the tank to the filter and pump. Old hose collapses inside or splits.','Hoses firm but soft again at once when the pump stops: a leaking injector, the cold start valve or the regulator lets pressure escape. Smell for fuel at each.'),
  injHowH:INJTICK(true),
  pulseFixH:L('No flicker on any injector: the control unit is not firing them.',
   'Trigger points: the small second contact set in the base of the distributor, with a 3-pin plug. Pull that plug, look for green corrosion or a broken wire, and push it home. Flicker on cylinders 1 and 4 but not 2 and 3 (or the other way): one half of the trigger points is worn or dirty.',
-  `Manifold pressure sensor: ${o.mps} Pull its vacuum hose off at the intake end and suck on it gently: it should hold like a sealed straw. A hose that leaks or a sensor that will not hold stops the engine.`,
+  `Manifold pressure sensor: ${mps} Pull its vacuum hose off at the intake end and suck on it gently: it should hold like a sealed straw. A hose that leaks or a sensor that will not hold stops the engine.`,
   `Push the big control unit plug home. The control unit is ${o.ecu}`,o.grounds),
  stuckFix:'A noid light that stays fully lit, with no flicker at all, means the injector ground is held on all the time. Look along the injector wiring, from the injectors at the cylinder heads back to the control unit, for a wire rubbed through to metal. If the wiring is sound, the control unit has failed inside.',
- mixFixH:L(`Head temperature sensor: ${o.ts2} Pull its plug, look for corrosion or a broken wire, and push it back on firmly.`,
+ mixFixH:L(`Head temperature sensor: ${ts2} Pull its plug, look for corrosion or a broken wire, and push it back on firmly.`,
   `Cold start valve, by feel: ${o.csvFeel||'it is a fifth small injector on the intake air distributor'}. Engine cold: rest a fingertip on it while the helper cranks. You should feel it buzz while cranking. Buzz with a warm engine, or a strong fuel smell: it leaks and floods the engine.`,
-  'Listen for a hiss at the intake runner boots and every vacuum hose while cranking. Squeeze the boots: cracks open up when you bend them. The pressure sensor reads the vacuum, so any leak throws the mixture off.')})}
+  'Listen for a hiss at the intake runner boots and every vacuum hose while cranking. Squeeze the boots: cracks open up when you bend them. The pressure sensor reads the vacuum, so any leak throws the mixture off.')}}}
 
 // ---------- shared text ----------
 const TANK_FRONT='The tank is under the front hood. Its outlet screen sits where the fuel line leaves the bottom of the tank. Clamp the hose, pull it off the tank outlet, then open the clamp over a can: fuel should run out freely. A slow trickle means the screen is blocked with rust or old fuel.';
@@ -441,18 +442,24 @@ function def(id,base,o){const b=base?VEH[base]:{};VEH[id]={...b,...o,id,fx:{...(
 // Beetle, carbureted
 def('b46a',null,{name:'Beetle, 1946–1952 (25 hp)',fam:'beetle',lightsHow:'The red generator warning light is on the dash. If you are not sure, press the horn or switch on the headlights.',volts:6,fuel:'carb',pumpKind:'t1',tankOut:TANK_FRONT,
  fx:{carb:'Solex 26 VFIS',n:1,accel:false,choke:'manual',cut:false},ign:'pts',
- ignx:{timing:'7.5° BTDC, set static. Turn the engine until the 7.5° notch on the crank pulley lines up with the crankcase split, then turn the distributor body until the points just open.',timingSpec:['Timing','7.5° BTDC static'],coilR:COIL6},
+ ignx:{timing:'5° BTDC, set static. Turn the engine until the mark lines up with the crankcase joint, then turn the distributor body until the points just open.',timingSpec:['Timing','5° BTDC static'],coilR:COIL6},
+ marks:'turn the engine clockwise by the crank pulley bolt until the mark on the pulley lines up with the crankcase joint',
  valves:'Valve clearance: 0.004 in (0.10 mm) intake and exhaust, engine cold. Valves set too tight cannot close.',
- comp:'All four cylinders should read within about 10 percent of each other. Wear limit on the later 36 hp: 64 psi.',swap:null});
-def('b46b','b46a',{name:'Beetle, 1953–1960 (25, 30 or 36 hp)',fx:{carb:'Solex 28 PCI',accel:true},comp:'36 hp: new 100–121 psi, wear limit 64 psi.'});
-def('b61a','b46b',{name:'Beetle, 1961–1965 (1200, 40 hp)',fx:{carb:'Solex 28 PICT',choke:'auto',accel:true},
- ignx:{timing:'10° BTDC, set static (points just opening at the 10° notch) or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','10° BTDC']},
+ comp:'The compression reading should be 85–106 psi (6.0–7.5 atm).',
+ pumpSpec:[['Pump pressure','1.30–1.85 psi (0.09–0.13 atm) at 1,000–3,000 rpm, needle valve closed']],swap:null});
+def('b46b','b46a',{name:'Beetle, 1953–1960 (25, 30 or 36 hp)',fx:{carb:'Solex 28 PCI',accel:true},comp:'36 hp: new 100–121 psi, wear limit 64 psi.',
+ ignx:{timing:'7.5° BTDC, set static. Turn the engine until the 7.5° notch on the crank pulley lines up with the crankcase split, then turn the distributor body until the points just open.',timingSpec:['Timing','7.5° BTDC static']},
+ marks:'turn the engine clockwise by the crank pulley bolt until the timing notch on the pulley lines up with the crankcase split above it',
+ pumpSpec:null});
+def('b61a','b46b',{name:'Beetle, 1961–1965 (1200, 40 hp)',fx:{carb:'Solex 28 PICT, and from about May 1963 the modified 28 PICT or the 28 PICT-1',choke:'auto',chokeTime:'about 2 to 3 minutes',accel:true},
+ ignx:{timing:'10° BTDC, set static on a cold engine with a 6 Volt test lamp. The right-hand mark on the pulley lines up with the crankcase joint. Do not use a strobe. It shifts the whole setting.',timingSpec:['Timing','10° BTDC static'],dwell:'47–53°'},
  valves:'Valve clearance: '+V_T1_40,comp:'New 100–128 psi, wear limit 85 psi.'});
-def('b61b','b61a',{name:'Beetle, 1966 (1300)',fx:{carb:'Solex 30 PICT-1',cut:true,cutWhere:'right side of the carburetor, where the idle (pilot) jet goes in'},comp:'New 107–135 psi, wear limit 85 psi.',
- ignx:{timing:'7.5° BTDC, set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','7.5° BTDC']},
- valves:'Valve clearance: '+V_T1_66});
-def('b67a','b61b',{name:'Beetle, 1967 (1500)',volts:12,ignx:{coilR:COIL12}});
+def('b61b','b61a',{name:'Beetle, 1966 (1300)',fx:{carb:'Solex 30 PICT-1',chokeTime:null,cut:true,cutWhere:'right side of the carburetor, where the idle (pilot) jet goes in'},comp:'At least 92 psi (6.5 kg/cm²).',
+ ignx:{timing:'7.5° BTDC, set static. Turn the engine until the left-hand mark on the crankshaft pulley lines up with the crankcase joint, then turn the distributor body until the points just open.',timingSpec:['Timing','7.5° BTDC'],dwell:'44–50°'},
+ valves:'Valve clearance: 0.004 in (0.10 mm) intake and exhaust, engine cold or slightly warm. Valves set too tight cannot close.'});
+def('b67a','b61b',{name:'Beetle, 1967 (1500)',volts:12,ignx:{coilR:COIL12},comp:'New 107–135 psi, wear limit 85 psi.'});
 def('b67b','b67a',{name:'Beetle, 1968–1970',auto:ASS,autoNote:'Automatic Stick Shift',fx:{carb:'Solex 30 PICT-2 (1968–69) or 30 PICT-3 (1970)',cutWhere:'right side of the carburetor on the 30 PICT-2 (where the idle jet goes in), left side, just below the idle mixture screw, on the 30 PICT-3'},
+ valves:'Valve clearance: '+V_T1_66,
  ignx:{timing:'0° (TDC), set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','0° TDC']},
  comp:'1600 (1970): new 114–142 psi, minimum 100 psi.'});
 def('b67c','b67b',{name:'Beetle or Super Beetle, 1971–1974',fx:{carb:'Solex 34 PICT-3',cutWhere:'left side of the carburetor, just below the idle mixture (volume) screw'},
@@ -471,6 +478,13 @@ def('bmxb','bmxa',{name:'Mexican Beetle, 1988–1992',ign:'hall_mx'});
 // Karmann Ghia: same engines as the Beetle, battery in the engine bay
 [['g55a','b46b','Karmann Ghia, 1955–1960'],['g55b','b61a','Karmann Ghia, 1961–1965'],['g55c','b61b','Karmann Ghia, 1966'],['g67a','b67a','Karmann Ghia, 1967'],['g67b','b67b','Karmann Ghia, 1968–1970'],['g67c','b67c','Karmann Ghia, 1971–1974']]
  .forEach(([id,b,n])=>def(id,b,{name:n,fam:'ghia'}));
+VEH.g55a.gnd=['From chassis 1 304 939 the battery ground strap runs from the battery to the engine and is fastened with the screw below the oil filler cap. Clean both ends to bright metal. Earlier cars fastened the strap to the engine compartment floor.',GND_TRANS];
+VEH.g55a.comp='Good: 100–120 psi (7.0–8.5 kg/cm²). Sufficient: 65–100 psi (4.5–7.0 kg/cm²). Insufficient: below 65 psi (4.5 kg/cm²).';
+VEH.g55c.valves='Valve clearance: '+V_T1_66;
+VEH.g55c.comp='New 107–135 psi, wear limit 85 psi.';
+VEH.g55c.ignx={...VEH.g55c.ignx,timing:'7.5° BTDC, set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','7.5° BTDC']};
+VEH.g67a.valves='Valve clearance: '+V_T1_66;
+VEH.g67a.ignx={...VEH.g67a.ignx,timing:'7.5° BTDC, set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','7.5° BTDC']};
 
 // Bus
 def('s50a',null,{name:'Split-window bus, 1950–1953 (25 hp)',fam:'bus',volts:6,fuel:'carb',pumpKind:'t1',tankOut:TANK_BUS,
@@ -484,20 +498,26 @@ def('s50c','s50b',{name:'Split-window bus, 1960–1965 (1200 or 1500)',fx:{carb:
 def('s50d','s50c',{name:'Split-window bus, 1966 (1500)',fx:{carb:'Solex 28 PICT-1 or 30 PICT-1 (read the number cast on the carb)',cut:'look',cutWhere:'right side of the carburetor',lookNote:'The 28 PICT-1 has none; a late 30 PICT-1 has one.'},
  ignx:{timing:'7.5° BTDC, set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','7.5° BTDC']},valves:'Valve clearance: '+V_T1_40});
 def('s50e','s50d',{name:'Split-window bus, 1967 (1500, 12 volts)',volts:12,ignx:{coilR:COIL12}});
-def('y68a','s50e',{name:'Bay-window bus, 1968–1970 (1600)',fx:{carb:'Solex 30 PICT-2 (1968) or 30 PICT-3 (1969–70)',cut:true,cutWhere:'right side of the carburetor on the 30 PICT-2 (where the idle jet goes in), left side, just below the idle mixture screw, on the 30 PICT-3'},valves:'Valve clearance: '+V_T1_66,
- ignx:{timing:'0° (TDC), set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','0° TDC']},
- comp:'New 114–142 psi, minimum 100 psi.'});
+def('y68a','s50e',{name:'Bay-window bus, 1968–1970 (1600)',fx:{carb:'Solex 30 PICT-2 (1968–69) or 30 PICT-3 (1970)',cut:true,cutWhere:'right-hand side of the carburetor'},valves:'Valve clearance: '+V_T1_66,
+ ignx:{timing:'0° (TDC) at 800–900 rpm with a strobe, engine running, vacuum hose off the distributor and plugged. Do not set the timing with the engine stopped.',timingSpec:['Timing','0° TDC at 800–900 rpm'],gap:'0.016–0.020 in (0.40–0.50 mm)'},
+ marks:'turn the engine clockwise by the crank pulley bolt until the left V-notch on the pulley lines up with the central vertical seam of the crankcase',
+ comp:'New 114–142 psi, minimum 100 psi.',
+ pumpSpec:[['Pump pressure','3.0–5.0 psi (0.20–0.35 kg/cm²)'],['Pushrod','projects 13 mm (1/2 in)']],
+ pumpFix:['The pushrod should project 13 mm (1/2 in) above the flange.','1968 through 1970 pumps have a slightly cone-shaped cover. The 1971 pump has a dome-shaped cover and is the replacement for these single-carburetor engines.','A pump that will not deliver needs a rebuild kit or replacing.']});
 def('y68b','y68a',{name:'Bay-window bus, 1971 (1600 dual port)',fx:{carb:'Solex 34 PICT-3',cutWhere:'left side of the carburetor, just below the idle mixture (volume) screw'},
- ignx:{timing:'5° ATDC at 800–950 rpm, strobe, both vacuum hoses connected. This only works if the retard side of the vacuum can is good. If it has failed, time it by total advance instead: about 28° BTDC at 3,400 rpm with both hoses off.',timingSpec:['Timing','5° ATDC, both hoses on']},
- valves:'Valve clearance: '+V_T1_71,comp:C_T1_LATE});
+ ignx:{timing:'5° ATDC at 800–900 rpm, strobe, both vacuum hoses connected. This only works if the retard side of the vacuum can is good. If it has failed, time it by total advance instead: about 28° BTDC at 3,400 rpm with both hoses off.',timingSpec:['Timing','5° ATDC at 800–900 rpm, both hoses on']},
+ marks:'turn the engine clockwise by the crank pulley bolt until the 5° after TDC mark lines up. Do not line a notch up with the crankcase split',
+ valves:'Valve clearance: '+V_T1_71,comp:'New 114–142 psi (8.0–10.0 kg/cm²). Below 100 psi (7 kg/cm²) the engine is worn.'});
 def('y72',null,{name:'Bay-window bus, 1972–1974 (Type 4, two carburetors)',fam:'bus',lay:'t4bus',eng:'t4',volts:12,fuel:'carb',pumpKind:'t4',tankOut:TANK_BUS,filterNote:'There is an inline filter in the hose to the carburetors in the engine compartment, plus the screen at the tank outlet. Replace a dirty filter.',auto:AUTO_SHIFTER,autoNote:'Automatic (1973–74)',
- fx:{carb:'Solex 34 PDSIT-2 and 34 PDSIT-3',n:2,accel:true,choke:'auto',cut:true,label:'two Solex 34 PDSIT carburetors'},ign:'pts',
- ignx:{gap:'0.016–0.018 in (0.40–0.45 mm)',timing:'First set total advance: 25–28° BTDC at 3,200–3,400 rpm with both vacuum hoses off. Then hoses back on, warm idle: 1972, and all automatics, 5° ATDC. 1973–74 manual: 10° ATDC.',timingSpec:['Timing at idle, hoses on','5° ATDC (1972, automatics) or 10° ATDC (1973–74 manual)'],coilR:COIL12},
- valves:'Valve clearance: '+V_T4,comp:'Below 85 psi on any cylinder means worn valves, rings or cylinders.',
+ fx:{carb:'Solex 34 PDSIT-2 and 34 PDSIT-3',n:2,accel:true,choke:'auto',cut:true,cutText:'Idle cut-off valve: one electromagnetic cutoff valve in the central idling system, built into the left carburetor. Key ON, pull its wire off and push it back on. You should hear and feel a click. No click: push its wire on firmly. Still no click: the valve or its wire has failed. A dead valve shuts off the idle fuel.',label:'two Solex 34 PDSIT carburetors'},ign:'pts',
+ ignx:{gap:'0.016–0.020 in (0.40–0.50 mm)',timing:'First set total advance: 25–28° BTDC at 3,200–3,400 rpm with both vacuum hoses off. Then hoses back on, warm idle: 1972, and all automatics, 5° ATDC. 1973–74 manual: 10° ATDC.',timingSpec:['Timing at idle, hoses on','5° ATDC (1972, automatics) or 10° ATDC (1973–74 manual)'],coilR:COIL12},
+ valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold. Sodium-filled exhaust valves use 0.008 in (0.20 mm) exhaust. Those valves were in every 1974 engine and in 1973 engines from chassis 213 2210 554. Valves set too tight cannot close.',
+ comp:'Below 85 psi on any cylinder means worn valves, rings or cylinders.',
+ pumpSpec:[['Pump pressure','5.0 psi (0.35 kg/cm²)'],['Pushrod','139.5–139.8 mm']],
  known:'Vacuum leaks at the balance tube between the carbs and at the brake booster hose stop these engines idling.',
  swap:[['1','A Type 1 engine was swapped in','Upright fan housing, one carb or two','t1']]});
 // US bay-window, L-Jetronic
-const LJ_BUS={car:'bus',relayShort:'on the left of the engine compartment front wall',relayEar:'Open the engine lid. The double relay is on the left side of the engine compartment front wall, below the finned resistor pack. Rest your hand flat on it.',hoses:'cylinders 3 and 4, on the left side, are easiest to reach',ret:'at the right front of the engine, where the return hose leaves the regulator through the front engine tin',csvFeel:'it sits in the centre of the intake air distributor, on its rear face, with the fuel line running through it',resistorH:'Look at the finned resistor pack above the relay: its four wires must be tight, not broken or burnt.',afm:'the alloy box bolted to the air cleaner housing, at the end of the big rubber S-shaped boot on top of the engine.',
+const LJ_BUS={car:'bus',relayShort:'on the left of the engine compartment front wall',relayEar:'Open the engine lid. The double relay is on the left side of the engine compartment front wall, below the finned resistor pack. Rest your hand flat on it.',hoses:'cylinders 3 and 4, on the left side, are easiest to reach',ret:'at the right front of the engine, where the return hose leaves the regulator through the front engine tin',csvFeel:'it sits on the rear of the intake air distributor',resistorH:'Look at the finned resistor pack above the relay: its four wires must be tight, not broken or burnt.',afm:'the alloy box bolted to the air cleaner housing, at the end of the big rubber S-shaped boot on top of the engine.',
  listen:'the left side of the bus, under the floor just in front of the left rear wheel, where the pump is clamped to the frame',relayClick:'on the left of the engine compartment front wall',
  relay:'on the left side of the engine compartment front wall (the firewall), just below the injector resistor pack. Two plugs connect to its bottom.',
  relayPart:'11-pin, VW 071 906 059, Bosch 0 332 514 120',relayGround:'The relay is grounded through its terminal 85. Check that wire and its ground point.',
@@ -509,22 +529,30 @@ const LJ_BUS={car:'bus',relayShort:'on the left of the engine compartment front 
  resistor:'Key ON, the double relay feeds 12 V to the injector resistor pack: a finned metal block high on the left of the engine compartment front wall, just above the relay. Each of its four resistors reads 5.5–6.5 Ω.',
  resSpec:['Each series resistor','5.5–6.5 Ω'],
  grounds:'Check the injection ground wires under the intake air distributor (the plenum) on top of the engine, the battery − cable at the body, and the gearbox strap.',
- ecu:'in the right rear corner of the engine compartment, mounted under the luggage deck above the battery.',
+ ecu:'near the ground strap, directly in front of the battery. Do not fill the battery above the mark, or acid spills onto the plug.',
  ts2:'the left cylinder head next to the cylinder 3 intake port, in the forward corner. It is not the easy-to-reach hole near the back of the head.',
- csv:'at the left rear, next to the distributor'};
+ csv:'on its rear face',
+ pressSpec:[['Engine running, vacuum hose off','about 35 psi (2.5 kg/cm²), acceptable 33–37 psi (2.35–2.65 kg/cm²)'],['Idle, vacuum hose on','about 28 psi (2.0 kg/cm²), acceptable 26–30 psi (1.85–2.15 kg/cm²)'],['After shut-off','14.5 psi (1 bar) or more after 20 minutes']],
+ mixSpec:[['Temp sensor II at 20 °C (68 °F)','about 2,500 Ω'],['at −10 °C (14 °F)','7,000–11,600 Ω'],['at 80 °C (176 °F)','270–390 Ω']]};
 const FUEL_LJ_BUS=LJ(LJ_BUS);
 const FUEL_LJ_BUS_CA=LJ({...LJ_BUS,resistorH:null,relayEar:'Open the engine lid. The double relay (13-pin) is on the left side of the engine compartment front wall. This California bus has no resistor pack above it. Rest your hand flat on it.',relay:'on the left side of the engine compartment front wall (the firewall). It is the 13-pin California relay; there is no resistor pack above it. Two plugs connect to its bottom.',relayPart:'13-pin, VW 071 906 059 A, Bosch 0 332 514 125. The 11-pin relay will not run this bus',relayGround:'On this California bus the control unit grounds the relay coil through its pin 28. Check the control unit plug.',
  resistor:'This 1979 California bus has no injector resistor pack. The resistance is inside the control unit. Do not fit a resistor pack.',resSpec:null,hallNote:' The Hall ignition module is powered through the same double relay.'});
 def('y75a',null,{name:'Bay-window bus (US), 1975–1977',fam:'bus',lay:'t4bus',eng:'t4',volts:12,fuel:'lj_bus',auto:AUTO_SHIFTER,autoNote:'Automatic',
  fiPumpLoc:'under the left side of the bus, clamped to the frame just in front of the left rear wheel',ign:'pts',
- ignx:{gap:'0.016–0.020 in (0.40–0.50 mm)',timing:'Look at the vacuum can on the distributor. Two hoses (1975 and early 1976): 5° ATDC at 800–950 rpm, strobe, both hoses connected. One hose (late 1976–77): 7.5° BTDC at 850–950 rpm (900–1000 automatic), hose connected. Read the notch on the fan pulley rim against the degree scale on the fan housing; 0 is TDC.',timingSpec:['Timing, hoses on','5° ATDC (two hoses) or 7.5° BTDC (one hose)'],coilR:COIL12},
+ ignx:{gap:'0.016–0.020 in (0.40–0.50 mm)',timing:'1975 (engine code ED): 5° ATDC at 850–950 rpm, strobe, vacuum hoses on. 1976–77 (engine code GD): 7.5° BTDC at 850–950 rpm (900–1000 automatic), strobe, vacuum hose on. Read the notch on the fan pulley rim against the degree scale on the fan housing; 0 is TDC.',timingSpec:['Timing, hoses on','5° ATDC (1975) or 7.5° BTDC (1976–77)'],coilR:COIL12},
  valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold. Valves set too tight cannot close.',comp:C_FI_T4,fuse:'The dash fuse box is under the dash, left of the steering column. The injection system is not fed from it.',
  swap:[['1','A Type 1 engine was swapped in','Upright fan housing, one carb or two','t1']]});
 def('y75b','y75a',{name:'Bay-window bus (US), 1978–1979 (49-state)',
  ignx:{timing:'7.5° BTDC at 850–950 rpm (900–1000 automatic), engine warm, strobe light, the single vacuum hose connected. Read the notch on the fan pulley rim against the degree scale on the fan housing; 0 is TDC.',timingSpec:['Timing, hose on','7.5° BTDC']},
  valves:V_HYD,comp:C_FI_T4+' Run the engine 30 minutes the day before so the hydraulic lifters are pumped up.'});
 def('y75c','y75b',{name:'Bay-window bus, 1979 California',fuel:'lj_bus_ca',ign:'hall_bus',
- ignx:{timing:'5° ATDC at 800–950 rpm (850–1000 automatic), strobe, both vacuum hoses connected.',timingSpec:['Timing, hoses on','5° ATDC']}});
+ ignx:{timing:'5° ATDC at 800–950 rpm (850–1000 automatic), strobe, both vacuum hoses connected.',timingSpec:['Timing, hoses on','5° ATDC'],
+  coilR:[['Primary (1 to 15)','0.55–0.75 Ω'],['Secondary (1 to 4)','3,000–5,000 Ω']],
+  specs:[['Primary (1 to 15)','0.55–0.75 Ω'],['Secondary (1 to 4)','3,000–5,000 Ω']],
+  checks:L('The distributor has a Hall sender and no breaker points. There is nothing to gap.',
+   'The Hall sender cannot be tested with common workshop equipment.',
+   'The ignition module is powered through the 13-pin double relay. A dead relay kills both the injection and the spark.',
+   'With the ignition off, use a jumper wire to ground the central green/white wire at the plug disconnected from the distributor. A voltmeter at coil terminal 1 should read at least 12 volts, then drop briefly to about 6 volts.')}});
 def('kombi',null,{name:'Bay-window bus outside the US, or Brazilian Kombi (1600, one carburetor)',fam:'bus',volts:12,fuel:'carb',pumpKind:'t1',tankOut:TANK_BUS,
  fx:{carb:'Solex or Brosol 34 PICT-3',n:1,accel:true,choke:'auto',cut:true,cutWhere:'left side of the carburetor, just below the idle mixture (volume) screw'},ign:'pts',
  ignx:{timing:'Single-hose vacuum distributor: 7.5° BTDC static, or with a strobe at idle with the hose off and plugged.',timingSpec:['Timing','7.5° BTDC'],coilR:COIL12},
@@ -537,7 +565,8 @@ const LJ_VAN={car:'Vanagon',relayShort:'on the upper left of the engine compartm
  relayGround:'A corroded ground under the relay mounting screw stops it. Clean it.',
  pump:'under the van on the right side, below the sliding door, behind the front seats, with a small square pre-filter in front of it. It is a metal cylinder with two wires.',
  fuseNote:'The injection system is fed by the double relay, not by a dash fuse.',
- port:'Tee a fuel-injection pressure gauge into the fuel line between the two left-side injectors, or into the hose to the cold start valve.',
+ port:'Connect a fuel-injection pressure gauge (US 1078) to the fuel ring main.',
+ pressSpec:[['Idle, vacuum hose disconnected','36 psi (2.5 bar)'],['Idle, vacuum hose on the regulator','28–31 psi (2.0–2.2 bar)'],['After shut-off','14.5 psi (1 bar) or more after 20 minutes']],
  filter:'the small square pre-filter in the hose just in front of the pump, under the right side of the van.',
  reg:'sits on the engine fuel line (its return hose runs to the left side of the engine) and',
  resistor:'Key ON, the double relay feeds 12 V to the injector resistor pack: a metal block on the engine compartment front wall above the relay. Broken wires at the pack stop the injectors.',
@@ -549,11 +578,14 @@ const FUEL_LJ_VAN=LJ(LJ_VAN);
 const FUEL_LJ_VAN_CA=LJ({...LJ_VAN,resistorH:null,relayEar:'Lift the engine lid. The double relay (13-pin) is on the upper left of the engine compartment front wall. California vans have no resistor pack there. Rest your hand on it.',relay:'on the upper left of the engine compartment front wall (the firewall). It is the 13-pin California relay; there is no resistor pack above it.',relayPart:'13-pin, VW 071 906 059 A. It also powers the ignition module',resistor:'California vans have no injector resistor pack. The resistance is inside the control unit.',resSpec:null,hallNote:' The Hall ignition module on the left firewall is powered through the same double relay.'});
 def('v80us',null,{name:'Air-cooled Vanagon (US, Canada), 1980–1983, 49-state',fam:'van',volts:12,fuel:'lj_van',auto:AUTO_SHIFTER,autoNote:'Automatic',
  fiPumpLoc:'under the right side of the van, below the sliding door',ign:'pts',
- ignx:{gap:'0.016 in (0.40 mm)',timing:'7.5° BTDC at 850–950 rpm (900–1000 automatic), engine warm, strobe light, vacuum hose connected (distributor 022 905 205 S).',timingSpec:['Timing, hose on','7.5° BTDC'],coilR:COIL12},
+ ignx:{gap:'0.016 in (0.40 mm)',timing:'7.5° BTDC at 800–950 rpm (850–1000 automatic), engine warm, strobe light, vacuum hose pulled off the distributor. Reconnect the hose afterwards. Distributor 022 905 205 S.',timingSpec:['Timing, hose off','7.5° BTDC'],coilR:COIL12},
  valves:V_HYD,comp:'New 85–131 psi. Wear limit 73 psi. Run the engine the day before so the hydraulic lifters are pumped up.',
  swap:[['1','A Type 1 engine was swapped in','Upright fan housing, one carb or two','t1']]});
 def('v80ca','v80us',{name:'Air-cooled Vanagon, 1980–1983, California',fuel:'lj_van_ca',ign:'hall_van',
- ignx:{timing:'5° ATDC at 800–950 rpm (850–1000 automatic), strobe, both vacuum hoses connected. First unplug the idle stabilizer (small box in the coil wiring) and plug its two connectors into each other.',timingSpec:['Timing, hoses on','5° ATDC']}});
+ ignx:{timing:'5° ATDC at 850–950 rpm, strobe, both vacuum hoses connected. First unplug the idle stabilizer (small box in the coil wiring) and plug its two connectors into each other.',timingSpec:['Timing, hoses on','5° ATDC at 850–950 rpm'],
+  checks:L('The distributor has a Hall sender and no breaker points. There is nothing to gap.',
+   'The ignition control module is on the left side of the engine compartment front wall. The idle stabilizer sits in the coil wiring: unplug it and join its two plugs together to bypass it.',
+   'Key ON. A voltmeter from coil terminal 15 to terminal 1 should read at least 2 volts for about 1 to 2 seconds, then drop to 0. Touch the center wire of the distributor connector briefly to ground. The voltage should rise briefly to 5 to 6 volts.')}});
 def('v80r1',null,{name:'Air-cooled Vanagon outside the US, 1.6 (one carburetor)',fam:'van',volts:12,fuel:'carb',pumpKind:'t1',lay:'t1bus',eng:'t1',
  tankOut:'The tank is under the floor at the front of the van. Pull the hose off its outlet (clamp it first) and check fuel runs out freely.',
  fx:{carb:'Solex 34 PICT-4',n:1,accel:true,choke:'auto',cut:true,cutWhere:'side of the carburetor body'},ign:'pts',
@@ -573,7 +605,7 @@ def('t361b','t361a',{name:'Type 3, 1963–1965, 1500 S (two carburetors)',fx:{ca
  ignx:{timing:'Static, at the right-hand notch on the crank pulley. A pulley with two notches: the right one is 10° BTDC. A pulley with three notches: the right one is 12.5° BTDC. Turn the distributor body until the points just open at that notch.',timingSpec:['Timing','10° BTDC (two-notch pulley) or 12.5° BTDC (three-notch)']}});
 def('t361c','t361b',{name:'Type 3, 1966–1967, 1600 (two carburetors)',volts:0,valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold.',
  ignx:{timing:'10° BTDC, set static or with a strobe at 800–950 rpm, vacuum hose off the distributor and plugged.',timingSpec:['Timing','10° BTDC']}});
-const DJ_T3={car:'Type 3',relayEarH:'The pump relay is the cube under the dash on the driver’s side, in front of the fuse box. It should click at key ON and the pump should buzz for 1 to 2 seconds.',listen:'the front of the car, under the left side near the front axle beam, where the pump hangs',
+const DJ_T3={car:'Type 3',relayEarH:'The pump relay is the cube under the dash on the driver’s side, in front of the fuse box. It should click at key ON and the pump should buzz for about 1 second.',listen:'the front of the car, under the left side near the front axle beam, where the pump hangs',
  relays:L('This car has two cube relays. The main (power) relay is under the rear seat, on the right side. The pump relay is under the dash on the driver’s side, in front of the fuse box, on the bulkhead.','The pump relay contacts fail often. Swap in a known-good cube relay of the same type.'),
  force:'key ON, ground terminal 85 of the pump relay under the dash, or pull the relay and bridge its socket terminals 30 and 87. The pump should run.',
  forceSpec:[['Bridge at the pump relay socket','30 to 87'],['Or ground','pump relay terminal 85, key ON']],
@@ -590,16 +622,17 @@ const DJ_T3={car:'Type 3',relayEarH:'The pump relay is the cube under the dash o
 const FUEL_DJ_T3=DJ(DJ_T3);
 def('t368a',null,{name:'Type 3 (US), 1968–1971, fuel injection',fam:'t3',volts:12,fuel:'dj_t3',auto:{...AUTO_SHIFTER,autoFix:'Automatic: it cranks only with the selector in N (or P). The switch is in the selector. Move the lever through N while a helper turns the key; if it cranks in one spot, adjust or replace the switch.'},autoNote:'Automatic',
  fiPumpLoc:'under the front of the car, on the driver’s side of the front axle beam',ign:'pts',
- ignx:{timing:'0° (TDC), set static or with a strobe at 800–950 rpm, vacuum hose off and plugged. Keep it on the mark: moving the distributor also moves the injection timing.',timingSpec:['Timing','0° TDC'],coilR:COIL12},
+ ignx:{timing:'27° BTDC at 3,500 rpm with a strobe, vacuum unit closed off. Through July 1971 the black notch is 5° BTDC. The red notch is 27° BTDC. Moving the distributor also moves the injection timing.',timingSpec:['Timing','27° BTDC at 3,500 rpm'],coilR:COIL12},
  valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold.',comp:C_T1_LATE});
 def('t368b','t368a',{name:'Type 3 (US), 1972–1973, fuel injection',
- ignx:{timing:'5° BTDC at 800–950 rpm, strobe, both vacuum hoses off and plugged. Reset the idle with the hoses back on.',timingSpec:['Timing, hoses off','5° BTDC']}});
+ ignx:{timing:'27° BTDC at 3,500 rpm with a strobe, vacuum unit closed off. From August 1972 the 0 mark is TDC. The red notch is 27° BTDC. Moving the distributor also moves the injection timing.',timingSpec:['Timing','27° BTDC at 3,500 rpm']}});
 
 // 411 / 412
-const DJ_411={car:'411/412',relayEarH:'The pump relay is the cube under the dash by the brake pedal. It should click at key ON and the pump should buzz for 1 to 2 seconds.',listen:'the front of the car, underneath, a little left of centre behind the spare wheel well',
+const DJ_411={car:'411/412',relayEarH:'The pump relay is the cube under the dash by the brake pedal. It should click at key ON and the pump should buzz for about 1 second.',listen:'the front of the car, underneath, a little left of centre behind the spare wheel well',
  relays:L('The power relay is screwed to the control unit. The pump relay is under the dash, down by the brake pedal. Both are the same cube relay.'),
- force:'key ON, ground terminal 85 of the pump relay by the brake pedal, or pull it and bridge its socket terminals 30 and 87. The pump should run.',
- forceSpec:[['Bridge at the pump relay socket','30 to 87'],['Or ground','pump relay terminal 85, key ON']],
+ force:'Pull the plug off terminals 85 and 86 of the pump relay. Connect terminal 85 to ground and terminal 86 to 30/51. Look for voltage on terminal 87.',
+ forceSpec:[['Pump relay test','terminal 85 to ground, terminal 86 to 30/51'],['Then check','voltage on terminal 87']],
+ pressSpec:[['System pressure','2.0–2.2 kgf/cm² (28.5–30.8 psi)']],
  pump:'under the front of the car, a little left of centre behind the spare wheel well, near the front bulkhead. It has three hoses.',
  port:'Tee a fuel-injection pressure gauge into the hose to the cold start valve.',
  filter:'in the suction hose next to the pump, under the front of the car behind the spare wheel well.',reg:'is on the engine fuel return line.',
@@ -611,7 +644,7 @@ const FUEL_DJ_411=DJ(DJ_411);
 def('t4dj',null,{name:'411 or 412 (US), 1971–1973, fuel injection (1.7)',fam:'t4car',volts:12,fuel:'dj_411',auto:AUTO_SHIFTER,autoNote:'Automatic',
  fiPumpLoc:'under the front of the car, behind the spare wheel well',ign:'pts',
  ignx:{timing:'27° BTDC at 3,500 rpm, engine warm, strobe light, both vacuum hoses off (plug the retard hose). Pull the black plug out of the top of the fan housing and line the red 27° mark on the fan up with the V notch. Do not time this engine at idle.',timingSpec:['Timing','27° BTDC at 3,500 rpm, hoses off'],coilR:COIL12},
- valves:'Valve clearance: '+V_T4,comp:C_FI_T4});
+ valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold. Valves set too tight cannot close.',comp:C_FI_T4});
 def('t4lj','t4dj',{name:'412 (US), 1974, fuel injection (1.8, L-Jetronic)',fuel:'lj_412',startExtra:BELT74,
  ignx:{timing:'5° BTDC at 900–1000 rpm, strobe, vacuum hose off and plugged (distributor 022 905 205 S). Line the mark on the fan up with the V notch through the hole in the fan housing.',timingSpec:['Timing, hose off','5° BTDC']}});
 const FUEL_LJ_412=LJ({car:'412',relayEar:'The double relay and the control unit sit behind the right (passenger side) rear seat trim panel. If the panel is screwed on, you can still feel or hear the relay click through it. Rest your hand there.',
@@ -624,34 +657,38 @@ const FUEL_LJ_412=LJ({car:'412',relayEar:'The double relay and the control unit 
 
 // 914 four-cylinder
 const P914_REAR='under the right side of the car, below and in front of the engine, on the passenger side under the engine shelf (the hell hole). Reach it only from underneath';
-const P914_FRONT='at the front of the car, up under the fuel tank near the front axle. Its wires run back through the centre tunnel';
-function DJ914(front){return DJ({car:'914',relayEarH:'The fuel pump relay is J17, the third relay from the front on the relay board in the engine compartment. It should click at key ON and the pump should buzz for 1 to 2 seconds.',bridgeH:'30 to 87 (relay J17)',listen:front?'the front of the car, under the nose near the front axle':'the right side of the car, under the engine shelf in front of the engine',
+const P914_FRONT='in the front luggage compartment, behind the panel to the fuel tank compartment';
+function DJ914(front){return DJ({car:'914',relayEarH:'The fuel pump relay is J17, the third relay from the front on the relay board in the engine compartment. It should click at key ON and the pump should buzz for about 1 second.',bridgeH:'30 to 87 (relay J17)',listen:front?'the front luggage compartment, behind the panel to the fuel tank compartment':'the right side of the car, under the engine shelf in front of the engine',
+ pressSpec:[['System pressure','2.0–2.2 kgf/cm² (28.5–30.8 psi)']],
  relays:L('The relays and fuses are on the relay board in the engine compartment, on the shelf at the firewall under a black cover. From front to rear: rear window defroster, injection power (J16), fuel pump (J17), heater blower. All four are the same relay, so you can swap J17 with the blower relay to test it.','The rear fuse on the relay board (25 A) feeds the fuel pump relay. Check it and its holder for corrosion. Rivets on the board corrode and drop voltage.'),
  force:'pull relay J17 and bridge its socket terminals 30 and 87. The pump runs even with the key off, because the 25 A fuse is always live.',
  forceSpec:[['Bridge at relay J17 socket','30 to 87'],['Pump fuse','25 A, rear fuse on the relay board']],
  pump:(front?P914_FRONT:P914_REAR)+'. Its plug has a brown ground wire and a black/red feed.',
  fuseNote:front?'Good fuse at the relay board but no voltage at the front pump: the wire through the centre tunnel is broken.':null,
- port:'Tee a fuel-injection pressure gauge into the fuel loop or the hose to the cold start valve.',
- filter:front?'up front with the pump, under the tank, in the hose from the tank.':'with the pump, under the right side in front of the engine, in the hose from the tank.',
+ port:c=>/2\.0/.test(c.name)?'Tee a fuel-injection pressure gauge into the hose to the cold start valve.':'Connect a fuel-injection pressure gauge to the fitting between cylinders 1 and 2.',
+ filter:front?'behind the panel to the fuel tank compartment, with the pump, in the hose from the tank.':'with the pump, under the right side in front of the engine, in the hose from the tank.',
  reg:'is on the engine, left of the cylinder 1 spark plug, on a bracket with a 17 mm locknut. It is adjustable: set 28.5 psi at idle.',
- mps:'on a bracket near the battery, with a vacuum hose to the intake plenum. It must hold vacuum.',
+ mps:'in the right-hand side wall of the engine compartment, with a vacuum hose to the intake plenum. It must hold vacuum.',
  grounds:'Check the injection grounds on top of the engine, under the rear of the intake air distributor on the passenger side. Battery acid from the tray rots nearby grounds.',
  ecu:'bolted to the battery tray in the engine compartment, on the passenger side. Acid from a leaking battery eats its case.',
- ts2:'it screws into the cylinder head near the cylinder 3 spark plug and has one wire.',csv:null})}
+ ts2:c=>/2\.0/.test(c.name)?'it is on top of the engine, between the intake tubes, and has one wire.':'it is screwed in below the intake tube of cylinder 4 and has one wire.',csv:null})}
 const FUEL_LJ_914=front=>LJ({car:'914',relayShort:'under the battery tray support',relayEar:'The double relay is in the engine compartment, under the battery tray support on the right side. Reach in and rest your fingers on it.',hoses:'two on each side of the engine',csvFeel:'it is a fifth small injector on the intake air distributor',afm:'the black box in the engine compartment between the air cleaner and the throttle hose.',
- listen:front?'the front of the car, under the nose':'the right side of the car, under the engine shelf in front of the engine',
+ listen:front?'the front luggage compartment, behind the panel to the fuel tank compartment':'the right side of the car, under the engine shelf in front of the engine',
+ pressSpec:[['Pump running, vacuum hose off','2.5 ± 0.2 bar (35 ± 1.4 psi)']],
+ mixSpec:[['Temp sensor II at 20 °C (68 °F)','about 2,500 Ω, nominal band 500–2,500 Ω'],['at −10 °C (14 °F)','7,000–11,600 Ω'],['at 80 °C (176 °F)','270–390 Ω']],
+ csvBelow:'+15 °C (59 °F)',
  relay:'in the engine compartment, mounted under the battery tray support on the right side. It is not on the relay board at the firewall, and the fuse on that board does not feed this pump.',
  relayGround:'Battery acid from the tray above rots its plugs and ground. Clean them.',
  pump:(front?P914_FRONT:P914_REAR)+'.',port:'Tee a fuel-injection pressure gauge into the fuel line at the injectors.',
  fuseNote:front?'The pump wire runs forward through the centre tunnel. Battery voltage at the relay but none at the front pump: that wire is broken.':null,
- filter:front?'at the pump under the front of the car.':'at the pump under the passenger-side engine shelf.',reg:'is sealed, with a vacuum hose to the plenum, and',
+ filter:front?'with the pump, behind the panel to the fuel tank compartment.':'at the pump under the passenger-side engine shelf.',reg:'is sealed, with a vacuum hose to the plenum, and',
  resistor:'Key ON, the double relay powers the control unit and the injectors. Check the injector wiring plugs for corrosion.',
  grounds:'Check the injection ground wires on the engine and the battery − cable at the body. Battery acid from the tray rots nearby grounds.',ecu:'in the engine compartment, near the battery tray.',ts2:'the cylinder head, with one wire.'});
 const T914_27='27° BTDC at 3,500 rpm, engine warm, strobe light, vacuum hoses off. Line the red 27° notch on the fan up with the mark on the fan housing. Do not time this engine at idle.';
 def('p914a',null,{name:'914 1.7, 1970–1973',fam:'p914',volts:12,fuel:'dj_914r',fiPumpLoc:P914_REAR,ign:'pts',
  ignx:{timing:T914_27,timingSpec:['Timing','27° BTDC at 3,500 rpm, hoses off'],coilR:COIL12},
  valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold.',comp:'All four cylinders should read within about 10 percent of each other.'});
-def('p914b','p914a',{name:'914 2.0, 1973–1974',valves:'Valve clearance, engine cold: 0.006 in (0.15 mm) intake, 0.008 in (0.20 mm) exhaust.'});
+def('p914b','p914a',{name:'914 2.0, 1973–1974',valves:'Valve clearance: 0.006 in (0.15 mm) intake and exhaust, engine cold.'});
 def('p914c','p914b',{name:'914 2.0, 1975–1976',fuel:'dj_914f',fiPumpLoc:P914_FRONT});
 def('p914d','p914a',{name:'914 1.8 (US), 1974',fuel:'lj_914r',
  ignx:{timing:'7.5° BTDC at 800–900 rpm, engine warm, strobe light, both vacuum hoses off and plugged. The 7.5° mark is about 1/2 in from the TDC mark on the fan.',timingSpec:['Timing, hoses off','7.5° BTDC']}});
@@ -710,25 +747,38 @@ VEH.bmxb.fuelx=null;
 // Thing, Kübelwagen
 def('thing','b67c',{name:'Thing (Type 181), US 1973–1974',fam:'thing',auto:null,
  ignx:{timing:'Look at the vacuum can on the distributor. Two hoses (1973): 5° ATDC at 800–950 rpm, strobe, both hoses connected. One hose (1974 49-state): 7.5° BTDC with that hose off and plugged. Know whether the V notch on your pulley is the 5° ATDC or the 7.5° BTDC mark before you use it.',timingSpec:['Timing','5° ATDC (two hoses) or 7.5° BTDC (one hose)']}});
-def('kubel','b46a',{name:'Kübelwagen or Schwimmwagen, 1940–1945',fam:'kubel',fx:{carb:'Solex 26-series',choke:'manual',chokeKnob:'on the tunnel, right of the gear lever'},comp:'About 100 psi new. Much lower, or one cylinder far below the rest, means worn valves or rings.'});
+def('kubel','b46a',{name:'Kübelwagen or Schwimmwagen, 1940–1945',fam:'kubel',fx:{carb:'Solex 26-series',choke:'manual',chokeKnob:'on the tunnel, right of the gear lever'},comp:'About 100 psi new. Much lower, or one cylinder far below the rest, means worn valves or rings.',
+ ignx:{timing:'5° BTDC. Hand crank the engine until the ignition timing dot on the crankshaft pulley is directly under the timing pointer on the crankcase.',timingSpec:['Timing','5° BTDC'],gap:'0.020 in'},
+ marks:'turn the engine clockwise by the crank pulley bolt until the ignition timing dot on the crankshaft pulley is directly under the timing pointer on the crankcase',
+ valves:'Valve clearance: 0.006 in intake and 0.008 in exhaust, engine cold.',
+ pumpSpec:[['Pump pressure','2.5–4 psi at idle']],
+ fuse:'There are two fuse boxes, one at each end of the instrument panel, and another on the left side of the engine housing.',
+ tankOut:'The tank is an 8-gallon tank under the right front cowling. Fuel flows into a strainer and sediment bowl under the tank, then up through a wire mesh screen. The fuel cock is at the strainer under the tank.'});
 
 // Brazil
 const ALC='Alcohol (ethanol) engine: it will not start cold on alcohol alone. A small gasoline reservoir with an electric pump (like a windshield washer pump) squirts gasoline into the intake for a cold start. Fill it with fresh gasoline. Run the pump: you should hear it and see gasoline arrive. A pump can run and still deliver nothing, so check its hose for cracks and blockage, and its fuse.';
 def('br_fusca',null,{name:'Fusca (Brazil), 1959–1986',fam:'beetle',volts:12,fuel:'carb',pumpKind:'t1',tankOut:TANK_FRONT,ask_alc:true,
  fx:{carb:'Brosol or Solex H30 PIC',n:1,accel:true,choke:'auto',cut:'look',cutWhere:'side of the carburetor body',lookNote:'Brosol H30 PIC carbs coded 112047 have none.'},ign:'pts',
- ignx:{timing:'1600 gasoline: 10° BTDC with a strobe at 950 rpm (through 1983) or 750 rpm (1984–86). 1300 and 1500 gasoline: 10° BTDC at 700 rpm. Alcohol 1600: 15° BTDC at 1,000 rpm. Line the pulley mark up with the crankcase split.',timingSpec:['Timing, 1600 gasoline','10° BTDC'],coilR:COIL12},
- valves:'Valve clearance: '+V_T1_71,comp:'Above 100 psi, all four within about 5 psi of each other.',
+ ignx:{timing:'Set the initial timing at 1,000 rpm with the vacuum advance disconnected. Before TDC: BJ 10°, BY 15° (10° on pure gasoline), BZ 10°, BG 10°, UA 12.5° (7.5° on pure gasoline), UG 12.5°, UH 10°, UF 10°, BK 18°, BM 18°, BX 18°, BP 18°, UJ 15°, UK 15°.',timingSpec:['Timing at 1,000 rpm, vacuum off','by engine prefix'],coilR:[['Primary','3.6–4.1 Ω'],['Secondary','5,400–7,600 Ω']]},
+ valves:'Valve clearance: 0.10 mm (0.004 in) intake and exhaust, engine cold.',
+ comp:'Compression in kgf/cm² or atm: BJ and BY 7.0–8.5; BZ and BG 7.5–9.5; UA, UG, UH and UF 8.0–10.0; BK, BM, BX and BP 11.0–13.0; UJ and UK 12.5–14.5. Maximum difference between cylinders of one engine: 1.5 atm.',
  pumpSpecBR:[['Pump pressure','0.14–0.20 kg/cm² (2.0–2.8 psi) at 1,900 rpm']]});
 def('br_itamar','br_fusca',{name:'Fusca Itamar (Brazil), 1993–1996',ign:'hall_br',
  ignx:{timing:'Gasoline: 4.5° BTDC at 1,000 rpm with a strobe. Alcohol: 10° BTDC at 1,050–1,100 rpm. Line the pulley mark up with the crankcase split.',timingSpec:['Timing, gasoline','4.5° BTDC at 1,000 rpm']}});
 def('br_bras','br_fusca',{name:'Brasília, Variant or SP2 (Brazil, two carburetors)',fam:'ghia',
  batt:'in the engine compartment',fx:{carb:'Solex or Brosol 32 PDSIT (SP2 from late 1972: 34 PDSIT)',n:2,label:'two Solex or Brosol PDSIT carburetors'},
- ignx:{timing:'10° BTDC at about 900 rpm with a strobe, vacuum hose off and plugged (gasoline). Line the pulley mark up with the crankcase split.',timingSpec:['Timing, gasoline','10° BTDC']}});
+ ignx:{timing:'Set the initial timing at 1,000 rpm with the vacuum advance disconnected. BG 10° BTDC, UA 12.5° BTDC (7.5° on pure gasoline), UG 12.5° BTDC, UH 10° BTDC. Line the pulley mark up with the crankcase split.',timingSpec:['Timing, vacuum off, 1,000 rpm','10° to 12.5° BTDC']}});
 def('br_gol','br_fusca',{name:'Gol (Brazil, air-cooled, front engine), 1980–1986',batt:'in the front engine compartment',seatbatt:false,
  gnd:['The battery − cable bolts to the body in the front engine compartment. Clean both faces to bright metal and bolt it back tight.','Check the braided ground strap between the engine or gearbox and the body.'],
  starter:'The engine and gearbox are at the front. The starter is on the gearbox bellhousing; reach it from under the front of the car.',
  fx:{carb:'Solex H30 PIC-2 (1300) or two Solex 32/34 PDSIT (1600)',n:1},
- ignx:{timing:'1300 gasoline: 15° BTDC at 700 rpm with a strobe. 1300 alcohol: 18° BTDC at 1,000 rpm. Line the pulley mark up with the crankcase split.',timingSpec:['Timing, 1300 gasoline','15° BTDC']}});
+ ignx:{timing:'1300 gasoline (prefix BY): 15° BTDC at 1,000 rpm with the vacuum advance disconnected. On pure gasoline, BY is 10° BTDC. 1300 alcohol: 18° BTDC at 1,000 rpm. Line the pulley mark up with the crankcase split.',timingSpec:['Timing, 1300 gasoline, vacuum off','15° BTDC at 1,000 rpm']}});
+VEH.br_itamar.valves='Valve clearance: '+V_T1_71;
+VEH.br_itamar.comp='Above 100 psi, all four within about 5 psi of each other.';
+VEH.br_itamar.ignx={...VEH.br_itamar.ignx,coilR:COIL12};
+VEH.br_fusca.turn='Turn the engine anti-clockwise with a wrench on the crank pulley bolt, so the points open and close.';
+VEH.br_fusca.pumpSpec=[['Pump pressure','0.33–0.39 kgf/cm² at 1,900 rpm, gasoline']];
+VEH.br_fusca.pumpSpecAlc=[['Pump pressure','0.14–0.20 kgf/cm² at 1,900 rpm, alcohol']];
 
 // Buggy / kit car and unknown
 def('buggy',null,{name:'Baja Bug, dune buggy or kit car',fam:'buggy',volts:12,fuel:'carb',pumpKind:'t1',ask_batt:[['f','In the front (nose or front hood)'],['s','Under or behind a seat'],['e','In the engine area at the back'],['r','On the firewall behind the seats']],
@@ -878,6 +928,7 @@ function ctx(){
   if(swapped&&ENGSWAP[e]){const s=ENGSWAP[e];c.lay=s.lay;c.valves=s.valves;c.comp=s.comp;c.startExtra=L(f.startExtra,s.swapNote)}
   if(V.ask_eng&&e==='t4'){c.lay='t4bus';c.valves='Valve clearance: '+V_T4;c.comp=C_FI_T4}
   c.lay=LAY[c.lay];if(f.coilWhere)c.lay={...c.lay,coil:f.coilWhere};
+  if(f.marks)c.lay={...c.lay,marks:f.marks};if(f.turn)c.lay={...c.lay,turn:f.turn};
   c.volts=CFG.v?+CFG.v:(f.volts||12);c.V6=c.volts===6;c.vv=(a,b)=>c.V6?b:a;
   if(CFG.b&&f.batt_opts)c.batt=f.batt_opts[CFG.b];
   if(CFG.b&&f.batt_opts)c.seatbatt=CFG.b==='s'||CFG.b==='r';
