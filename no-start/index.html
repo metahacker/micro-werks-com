@@ -26,6 +26,7 @@ h1{font-weight:700;font-size:clamp(34px,8vw,52px);line-height:.98;letter-spacing
 .q{font-size:clamp(22px,5vw,28px);font-weight:700;line-height:1.15;letter-spacing:-.01em;margin:0 0 8px}
 .how{color:var(--tx);font-size:15px;margin:0 0 6px}
 .how li{margin:3px 0}
+.alt{margin:12px 0 0;border:1px solid var(--ln);border-radius:10px;background:var(--pn,#fff)}.alt summary{cursor:pointer;padding:11px 14px;font-weight:600;font-size:15px;list-style-position:inside}.alt[open] summary{border-bottom:1px solid var(--ln)}.alt figure{margin:12px 14px}.alt img{display:block;width:100%;max-width:560px;height:auto;margin:0 auto;background:#fff;border-radius:6px}.alt figcaption{font-size:12.5px;color:var(--mu);margin-top:4px}.alt .how{margin:6px 14px 12px}
 .note{font-size:13.5px;color:var(--mu);border-left:3px solid var(--ln);padding:2px 0 2px 10px;margin:10px 0 0}
 .note.safe{border-color:var(--bad);color:#6a2a1e}
 .opts{display:grid;gap:8px;margin-top:16px}
@@ -338,6 +339,15 @@ function LJ(o){return c=>({label:'Bosch L-Jetronic fuel injection',hint:'Air flo
   `Listen at ${o.listen}. As soon as the flap moves off its stop you should feel a second click at the relay and hear the pump: a smooth, steady whine.`,
   'Let the flap go. The pump should stop at once. Grinding, growling, or a whine that cuts in and out is not normal: a worn pump, low fuel, a blocked filter, or a loose connection.'),
  pumpNote:'Do not trust the fuel needle on the dash. Make sure there is fuel in the tank before you go further.',
+ pumpAlt:{t:'Another way: take the meter cover off and watch the pump switch',
+  fig:[['afm-inside.svg','Inside the air flow meter with its top cover off: carbon track, wiper arm on the flap shaft, pump switch contacts, toothed spring wheel and its lock wire. Schematic.'],['afm-flap.svg','The flap in its air passage, side section: at its stop the pump switch is open; pushed open, it closes. Schematic.']],
+  how:L('Use this to see the pump switch work. The black plastic cover on top of the air flow meter is held on by a bead of sealer. Under it are the potentiometer and the pump switch.',
+   'Key OFF while you work on the cover. Cut the sealer bead all around the cover edge with a razor blade. Pry at the edge next to the plug with a wide flat blade: press slowly and let it ease up before you lift it off. An untouched cover takes some work.',
+   'Under the cover: the black carbon track, the wiper arm that sweeps it (clamped to the flap shaft), two small copper pump switch contacts, and a black toothed wheel held by a wire.',
+   'With the flap at its stop the copper contacts sit about 1 mm apart. Key ON. Push the flap open through the intake, as above, and watch the contacts. They should close as soon as the flap moves, and the pump should run.',
+   'The flap moves but the contacts stay apart: the switch is bent or out of adjustment. They close but the pump stays off: take the No pump sound card, which bridges the switch at the plug and then tests the relay.',
+   'Do not touch the toothed wheel or its lock wire: they set the flap spring and the mixture. Do not bend or press on the wiper arm; its pressure on the track is set at the factory. Do not loosen the wiper clamp screw. Do not scratch the carbon track or clean it with solvent.',
+   'Key OFF. Put sealer around the whole edge of the cover and press it back on, so dirt and water stay out.')},
  pumpYes:'Yes, the pump runs while the flap is open',
  pumpFix:L(`The double relay (the fuel pump relay, two relays in one box) is ${o.relay}`,
   'Flap switch test: unplug the air flow meter plug. Key ON, bridge its terminals 36 and 39 with a paper clip. The pump runs: the switch inside the meter is dirty or broken.',
@@ -1129,7 +1139,7 @@ fix_c_jets:c=>({fix:'Fuel is not getting through the carburetor',how:L(c.F.alc,c
 fix_c_dies:c=>({fix:c.F.diesTitle,how:L(c.F.alc,c.F.cutoff,c.F.choke,c.F.jets,c.F.pumpElec?'An electric pump wired through an oil pressure safety switch stops when the engine stalls. Check its relay and switch.':null)}),
 
 // fuel-injection branch
-fi_pump:c=>({q:c.F.pumpQ,how:L(c.F.pumpHow),note:c.F.pumpNote,cls:'tip',a:[[c.F.pumpYes||'Yes, the pump runs','fi_press'],['No pump sound','fix_fi_pump']]}),
+fi_pump:c=>({q:c.F.pumpQ,how:L(c.F.pumpHow),note:c.F.pumpNote,cls:'tip',alt:c.F.pumpAlt,a:[[c.F.pumpYes||'Yes, the pump runs','fi_press'],['No pump sound','fix_fi_pump']]}),
 fix_fi_pump:c=>({fix:'The electric fuel pump is not running',how:L(c.F.pumpFix),specs:c.F.pumpFixSpec,note:'Injection fuel runs at high pressure. Never run the pump with a fuel line open.',cls:'safe'}),
 fi_press:c=>({q:'Is the fuel pressure in spec?',how:L(c.F.pressHow),specs:c.F.pressSpec,a:[['Pressure is in spec','fi_inj'],['Low or no pressure','fix_fi_press'],['No gauge: skip this test','fi_inj']]}),
 fix_fi_press:c=>({fix:'Low fuel pressure',how:L(c.F.pressFix),specs:c.F.pressSpec,note:'Use only fuel-injection hose (SAE J30R9) and fuel-injection clamps. A leak sprays fuel onto a hot engine.',cls:'safe'}),
@@ -1323,6 +1333,7 @@ function render(){
   if(n.how)h+=(n.fix?'<ol class="how">':'<ul class="how">')+n.how.map(x=>`<li>${esc(x)}</li>`).join('')+(n.fix?'</ol>':'</ul>');
   if(n.specs)h+=`<div class="specs">${n.specs.map(([k,v])=>`<div class="spec">${esc(k)}<b>${esc(v)}</b></div>`).join('')}</div>`;
   if(n.note)h+=`<p class="note${n.cls?' '+n.cls:''}">${esc(n.note)}</p>`;
+  if(n.alt)h+=`<details class="alt"><summary>${esc(n.alt.t)}</summary>${(n.alt.fig||[]).map(([src,cap])=>`<figure><img src="${src}" alt="${esc(cap)}" loading="lazy"><figcaption>${esc(cap)}</figcaption></figure>`).join('')}<ul class="how">${n.alt.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details>`;
   if(n.a)h+=`<div class="opts">${n.a.map(([l,to],i)=>opt('data-go',to,l,null,i===0)).join('')}</div>`;
   h+=`<div class="nav"><button class="btn" data-act="back">‹ Back</button>${path.length>1?'<button class="btn" data-act="restart">Start over</button>':''}${n.fix?'<button class="btn pri" data-act="restart">Fixed it? Try again from the top</button>':''}</div></div>`;
   $('#view').innerHTML=h}

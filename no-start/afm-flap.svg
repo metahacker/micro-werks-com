@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="tb db"><title id="tb">Air flow meter flap, side section</title><desc id="db">Schematic side section: air enters, the measuring flap rests against its stop when closed and swings open with air flow; a second vane on the same shaft sits in its own chamber.</desc>
+<rect width="600" height="400" fill="#fff"/>
+<path d="M60 200 H260 V110 H380 V200 H540" stroke="#1d1d1b" stroke-width="3" fill="none"/>
+<path d="M60 340 H540" stroke="#1d1d1b" stroke-width="3" fill="none"/>
+<rect x="60" y="200" width="480" height="140" fill="#ecebe6" opacity=".6"/>
+<rect x="260" y="110" width="120" height="90" fill="#ecebe6" opacity=".6"/>
+<path d="M320 200 L320 330" stroke="#1f4a96" stroke-width="7" stroke-linecap="round"/>
+<path d="M320 200 L320 128" stroke="#1f4a96" stroke-width="7" stroke-linecap="round"/>
+<path d="M320 200 L416.6 287.0" stroke="#1f4a96" stroke-width="4" stroke-dasharray="9 7" stroke-linecap="round"/>
+<path d="M320 200 L266.5 151.8" stroke="#1f4a96" stroke-width="4" stroke-dasharray="9 7" stroke-linecap="round"/>
+<path d="M380 240 A 70 70 0 0 1 360 262" fill="none" stroke="#65625b" stroke-width="2"/>
+<rect x="298" y="318" width="14" height="22" fill="#1d1d1b"/>
+<circle cx="320" cy="200" r="9" fill="#fff" stroke="#1f4a96" stroke-width="4"/>
+<path d="M80 270 H210" stroke="#65625b" stroke-width="5"/><path d="M210 258 L232 270 L210 282Z" fill="#65625b"/>
+<text x="80" y="252" text-anchor="start" style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:23px;font-weight:600" fill="#65625b">Air in</text>
+<path d="M290 368L304 334" stroke="#1d1d1b" stroke-width="1.6" fill="none"/><circle cx="304" cy="334" r="4" fill="#1d1d1b"/>
+<text x="40" y="392" text-anchor="start" style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:23px;font-weight:600" fill="#1d1d1b">Stop: flap rests here, pump off</text>
+<path d="M500 150L412.60882731206124 282.9869788266516" stroke="#1f4a96" stroke-width="1.6" fill="none"/><circle cx="412.60882731206124" cy="282.9869788266516" r="4" fill="#1f4a96"/>
+<text x="590" y="96" text-anchor="end" style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:23px;font-weight:600" fill="#1f4a96">Flap pushed open:</text>
+<text x="590" y="124" text-anchor="end" style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:21px;font-weight:500" fill="#1f4a96">pump switch closes</text>
+<path d="M170 70L314 140" stroke="#1f4a96" stroke-width="1.6" fill="none"/><circle cx="314" cy="140" r="4" fill="#1f4a96"/>
+<text x="16" y="62" text-anchor="start" style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:21px;font-weight:500" fill="#1f4a96">Second vane, same shaft</text>
+</svg>
