@@ -34,6 +34,13 @@ h1{font-weight:700;font-size:clamp(34px,8vw,52px);line-height:.98;letter-spacing
 .opt span{font-weight:400;color:var(--mu);font-size:13px}
 .opt::after{content:"›";color:var(--vw);font-size:22px;line-height:1}
 .fix .q{color:var(--vw)}
+.pick-sub{color:var(--mu);font-size:14.5px;margin:0 0 4px}
+.vg{margin-top:16px}
+.vgh{font:600 11px/1 "Jost";letter-spacing:.18em;text-transform:uppercase;color:var(--kick);margin:0 0 8px}
+.vopts{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.vopts .opt{padding:10px 12px;font-size:15px}
+.trail button.vchip{border-color:var(--vw);color:var(--vw);font-weight:600}
+.note.tip{border-color:var(--vw);color:var(--tx)}
 .badge{display:inline-block;font:600 10.5px/1 "Jost";letter-spacing:.14em;text-transform:uppercase;border:1px solid currentColor;border-radius:4px;padding:4px 6px;margin-bottom:10px}
 .badge.fix{color:var(--ok)}
 .specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin:12px 0 0}
@@ -78,7 +85,7 @@ footer{margin-top:28px;font-size:12.5px;color:var(--mu)}
 </style></head>
 <body>
 <div class="mwbar"><a class="mw" href="/" aria-label="micro.werks home"><img src="/img/logo.svg" alt="micro.werks"></a><nav><a href="/tools/">&larr; All tools</a><a class="hide-xs" href="/">micro-werks.com</a></nav></div>
-<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">Air-cooled VW · carburetor or fuel injection</div><h1>Won't start.</h1><p>For every air-cooled VW: Beetle, Karmann Ghia, Type 2 bus, Thing, Type 3, 411/412, 914, air-cooled Vanagon, Kübelwagen, Baja and buggy. Answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
+<div class="hero-wrap"><div class="hero"><img src="hero.jpg" alt="Illustration of a VW Beetle pulled over on a coastal road with its engine lid open and tools on the ground" onerror="this.remove()"><div class="inner"><div class="kick">Air-cooled VW · carburetor or fuel injection</div><h1>Won't start.</h1><p>For every air-cooled VW: Beetle, Karmann Ghia, Type 2 bus, Thing, Type 3, 411/412, 914, air-cooled Vanagon, Kübelwagen, Baja and buggy. Pick your VW, then answer one question at a time. Each answer narrows it down, from battery to spark to fuel to timing.</p></div></div></div>
 <div class="wrap" style="padding-top:16px">
 <div class="trail" id="trail"></div>
 <div id="view"></div>
@@ -93,8 +100,8 @@ start:{q:"Turn the key to start. Does the engine turn over?",how:["Gearbox in ne
 
 dead:{q:"With the key on, do the red charge light and green oil light come on?",how:["Key to 'on', engine off. Both dash lights should glow.","Try the horn or headlights too."],
   a:[["No lights, no horn","nopower"],["Lights work, starter does nothing","nostarter"]]},
-nopower:{fix:"No power: battery or main cables",how:["Measure the battery: 12.4 V or more is charged (6.2 V on a 6-volt car). Charge or jump it.","Clean and tighten both battery terminals.","Check the braided ground strap from the gearbox to the body. A broken strap is a classic no-start.","Check the thick battery cable at the starter (terminal 30)."],
-  specs:[["Battery, charged","12.4–12.7 V"],["Under cranking","no lower than 9.6 V"],["6-volt car, cranking","no lower than about 4.8 V"]],note:"Where's the battery? Beetle, Super Beetle, Thing, Type 3 and Kübelwagen: under the rear seat. 411/412: under the driver's seat. Air-cooled Vanagon: under the right front seat. Karmann Ghia, Type 2 bus and 914: in the engine bay, right side. Bajas and buggies: wherever the builder put it. Under a seat, make sure the springs can't touch the + terminal."},
+nopower:{fix:"No power: battery or main cables",how:["Measure the battery: [[12.4 V|6.2 V]] or more is charged. Charge or jump it.","Clean and tighten both battery terminals.","Check the braided ground strap from the gearbox to the body. A broken strap is a classic no-start.","Check the thick battery cable at the starter (terminal 30)."],
+  specs:[["Battery, charged","[[12.4–12.7 V|6.2–6.4 V]]"],["Under cranking","no lower than [[9.6 V|4.8 V]]"]],note:"Where's the battery? Beetle, Super Beetle, Thing, Type 3 and Kübelwagen: under the rear seat. 411/412: under the driver's seat. Air-cooled Vanagon: under the right front seat. Karmann Ghia, Type 2 bus and 914: in the engine bay, right side. Bajas and buggies: wherever the builder put it. Under a seat, make sure the springs can't touch the + terminal."},
 nostarter:{q:"Jump the starter: bridge terminal 30 to terminal 50 on the solenoid. Does it crank now?",how:["Neutral, handbrake on, key on.","Bridge the big terminal (30, battery cable) to the small spade (50) with a screwdriver or remote starter button."],
   note:"Stay clear of the fan belt and pulley. The engine may start.",cls:"safe",
   a:[["Yes, it cranks","fix_50"],["Still nothing","fix_starter"]]},
@@ -102,7 +109,7 @@ fix_50:{fix:"Starter signal isn't arriving: ignition switch or the terminal 50 w
 fix_starter:{fix:"Starter or solenoid",how:["Tap the starter body with a hammer handle while someone holds the key on 'start'. If it then cranks, the brushes or solenoid contacts are worn.","Check for 12 V at terminal 30 while cranking.","Remove and bench-test the starter, or swap a known-good one."]},
 
 click:{q:"One click and nothing? Check the voltage at the battery while you turn the key.",how:["Meter on the battery posts, have someone turn the key to 'start'."],
-  a:[["Drops below about 9.6 V (4.8 V on 6-volt)","fix_batt_weak"],["Stays above 10 V (5 V on 6-volt)","fix_click"]]},
+  a:[["Drops below about [[9.6 V|4.8 V]]","fix_batt_weak"],["Stays above [[10 V|5 V]]","fix_click"]]},
 fix_batt_weak:{fix:"Weak battery or bad connections",how:["Charge the battery and test it under load.","Clean the terminals and the gearbox-to-body ground strap.","A battery that shows 12.4 V resting but collapses when cranking is worn out."]},
 fix_click:{fix:"Solenoid contacts, starter, or the bushing",how:["The solenoid clicks but its internal contacts don't pass current. Rebuild or replace the solenoid/starter.","A worn starter bushing in the gearbox bellhousing lets the starter bind. Replace it when you pull the starter (grease it lightly).","Hot-start clicks only? Add a hot-start relay so the solenoid gets full voltage."]},
 
@@ -116,7 +123,7 @@ nospark:{q:"Now test at the coil: pull the centre wire out of the distributor ca
   a:[["Good spark at the coil wire","fix_cap"],["No spark at the coil wire","coil12"]]},
 fix_cap:{fix:"Distributor cap, rotor or plug wires",how:["Pop the cap. Look for cracks, carbon tracks, moisture or burnt contacts. Dry it or replace it.","Check the rotor: a cracked rotor, or a failed rev-limiter rotor, grounds out the spark.","Check plug wires and the plug connectors. Replace wet or cracked wires.","Make sure the plug wires go to the right cylinders: firing order 1-4-3-2."],
   specs:[["Firing order","1-4-3-2"],["Rotation","counter-clockwise (from the top)"]]},
-coil12:{q:"Key on. Is there battery voltage (12 V, or 6 V on a 6-volt car) at the coil's + terminal (15)?",how:["Meter between coil terminal 15 and ground, key in the 'on' position."],
+coil12:{q:"Key on. Is there battery voltage ([[12 V|6 V]]) at the coil's + terminal (15)?",how:["Meter between coil terminal 15 and ground, key in the 'on' position."],
   a:[["Yes, full battery voltage","points"],["No power","fix_15"]]},
 fix_15:{fix:"No power to the coil",how:["The coil feed comes from the ignition switch (terminal 15, usually a black wire).","Check the wire and its connector at the coil.","Test the ignition switch's 'on' contacts.","If someone fitted a ballast resistor or an electronic ignition, check its wiring too."]},
 points:{q:"Take off the distributor cap. Bump the engine over. Do the points open and close, and are they clean?",how:["Bump the starter or turn the engine with a wrench on the pulley nut.","Watch the points: they should open as each cam lobe passes, and the contact faces should be clean and flat."],
@@ -167,36 +174,85 @@ timing:{fix:"Timing, compression or a big air leak",how:["Timing: if the distrib
   specs:[["Valve clearance (cold)","0.006 in (0.15 mm) on most solid-lifter engines; 1978-on 2.0 bus and Vanagon engines have hydraulic lifters"],["Firing order","1-4-3-2"],["Compression","about 100–130 psi, even"],["Timing","varies by engine and year: check the sticker or your manual"]]}
 };
 
+// Vehicle picker: [id, name, fuel (carb|fi|ask), volts (12|6|0 = either), battery spot, tip]
+const B={rear:"under the rear seat",bay:"in the engine bay, right side",driver:"under the driver's seat",rightseat:"under the right front seat",builder:"wherever the builder put it"};
+const VW=[
+ ["Beetle",[
+  ["b46","Beetle, 1946–1966","carb",6,"rear"],
+  ["b67","Beetle or Super Beetle, 1967–1974","carb",12,"rear"],
+  ["b75","Beetle or Super Beetle (US), 1975–1980","fi",12,"rear","US Beetles from 1975 are fuel-injected (L-Jetronic)."],
+  ["bmx","Mexican or European Beetle, 1975–1992","carb",12,"rear"],
+  ["bmxfi","Mexican Beetle, 1993–2003","fi",12,"rear","Fuel injection and electronic ignition from the factory."]]],
+ ["Karmann Ghia",[
+  ["g55","Karmann Ghia, 1955–1966","carb",6,"bay"],
+  ["g67","Karmann Ghia, 1967–1974","carb",12,"bay"],
+  ["g34","Type 34 Ghia, 1962–1969","carb",0,null,"6-volt until the 1967 model year."]]],
+ ["Bus",[
+  ["s50","Split-window bus, 1950–1967","carb",0,"bay","6-volt until the 1967 model year."],
+  ["y68","Bay-window bus, 1968–1971","carb",12,"bay"],
+  ["y72","Bay-window bus, 1972–1974","carb",12,"bay","Most have the Type 4 engine with two carbs. Check both."],
+  ["y75","Bay-window bus (US), 1975–1979","fi",12,"bay","US buses from 1975 are fuel-injected (L-Jetronic)."],
+  ["kombi","Bay-window bus outside the US, or Brazilian Kombi","carb",12,"bay"],
+  ["v80","Air-cooled Vanagon, 1980–1983","ask",12,"rightseat","US Vanagons are fuel-injected; many others have a carburetor."]]],
+ ["Type 3 and Type 4",[
+  ["t361","Type 3 Notchback, Squareback or Fastback, 1961–1967","carb",0,"rear","6-volt until the 1967 model year."],
+  ["t368","Type 3, 1968–1973","ask",12,"rear","US cars are fuel-injected (D-Jetronic); many others kept two carbs."],
+  ["t4","411 or 412, 1968–1974","ask",12,"driver","US cars are fuel-injected; others may have two carbs."],
+  ["p914","VW-Porsche 914, four-cylinder, 1970–1976","ask",12,"bay","US cars are fuel-injected. Some 1.8s sold elsewhere have two carbs."]]],
+ ["Everything else",[
+  ["thing","Thing (Type 181), 1969–1983","carb",12,"rear"],
+  ["kubel","Kübelwagen or Schwimmwagen, 1940–1945","carb",6,null,"Kübelwagen battery: under the rear seat, left side."],
+  ["br","Brazilian VW: Fusca, Brasília, Variant, SP2, air-cooled Gol","carb",12,null],
+  ["buggy","Baja Bug, dune buggy or kit car","ask",0,"builder"],
+  ["other","Something else, or not sure","ask",0,null]]]];
+const VBY={};VW.forEach(([,l])=>l.forEach(([id,name,fuel,volts,batt,tip])=>VBY[id]={id,name,fuel,volts,batt,tip:tip||""}));
+let V=null;
+const T=s=>typeof s!=="string"?s:s.replace(/\[\[([^|\]]*)\|([^\]]*)\]\]/g,(m,a,b)=>!V||!V.volts?`${a} (${b} on 6-volt)`:V.volts===6?b:a);
+const route=t=>t==="fuelsys"&&V&&V.fuel!=="ask"?(V.fuel==="fi"?"fi_pump":"fuel"):t;
+function tailor(id){const o={...N[id]};
+  ["q","fix","note"].forEach(k=>{if(o[k])o[k]=T(o[k])});
+  if(o.how)o.how=o.how.map(T);if(o.specs)o.specs=o.specs.map(([k,v])=>[T(k),T(v)]);if(o.a)o.a=o.a.map(([l,to])=>[T(l),route(to)]);
+  if(id==="nopower"&&V&&V.batt)o.note=`On your ${V.name.split(",")[0]}, the battery is ${B[V.batt]}.`+(["rear","driver","rightseat"].includes(V.batt)?" Make sure the seat springs can't touch the + terminal.":"");
+  return o}
+function picker(){
+  $('#trail').innerHTML='';
+  $('#view').innerHTML=`<div class="card"><div class="step">First</div><p class="q">Which VW is it?</p><p class="pick-sub">This sets the battery location, 6- or 12-volt numbers, and carburetor or fuel injection checks. Not listed? Pick the last one.</p>${VW.map(([g,l])=>`<div class="vg"><div class="vgh">${g}</div><div class="vopts">${l.map(([id,name])=>`<button class="opt" data-vw="${id}">${name}</button>`).join('')}</div></div>`).join('')}</div>`;
+  history.replaceState(null,'',location.pathname);
+}
 const $=s=>document.querySelector(s);
 let path=['start'];
-function title(id){const n=N[id];return n.q||n.fix}
+function title(id){const n=N[id];return T(n.q||n.fix)}
 function render(){
-  const id=path[path.length-1],n=N[id];
-  $('#trail').innerHTML=path.length>1?path.slice(0,-1).map((p,i)=>`<button data-back="${i}">${i+1}. ${short(title(p))}</button>`).join(''):'';
+  if(!V)return picker();
+  const id=path[path.length-1],n=tailor(id);
+  $('#trail').innerHTML=`<button class="vchip" data-act="pick">VW: ${short(V.name)} · change</button>`+path.slice(0,-1).map((p,i)=>`<button data-back="${i}">${i+1}. ${short(title(p))}</button>`).join('');
   let h=`<div class="card${n.fix?' fix':''}">`;
   if(n.fix)h+=`<div class="badge fix">Likely cause</div>`;else h+=`<div class="step">Step ${path.length}</div>`;
   h+=`<p class="q">${n.q||n.fix}</p>`;
+  if(id==='start'&&V.tip)h+=`<p class="note tip">${V.tip}</p>`;
   if(n.how)h+=n.fix?`<ol class="how">${n.how.map(x=>`<li>${x}</li>`).join('')}</ol>`:`<ul class="how">${n.how.map(x=>`<li>${x}</li>`).join('')}</ul>`;
   if(n.specs)h+=`<div class="specs">${n.specs.map(([k,v])=>`<div class="spec">${k}<b>${v}</b></div>`).join('')}</div>`;
   if(n.note)h+=`<p class="note${n.cls?' '+n.cls:''}">${n.note}</p>`;
   if(n.a)h+=`<div class="opts">${n.a.map(([l,to],i)=>`<button class="opt${i===0?' yes':''}" data-go="${to}">${l}</button>`).join('')}</div>`;
   h+=`<div class="nav">${path.length>1?'<button class="btn" data-act="back">‹ Back</button>':''}${path.length>1?'<button class="btn" data-act="restart">Start over</button>':''}${n.fix?'<button class="btn pri" data-act="restart">Fixed it? Try again from the top</button>':''}</div></div>`;
   $('#view').innerHTML=h;
-  history.replaceState(null,'','#'+path.join('.'));
+  history.replaceState(null,'','#'+V.id+'/'+path.join('.'));
   window.scrollTo({top:0,behavior:'smooth'});
 }
 const short=s=>s.length>46?s.slice(0,44)+'…':s;
 document.addEventListener('click',e=>{const t=e.target.closest('button,a[data-node]');if(!t)return;
-  if(t.dataset.go){path.push(t.dataset.go);render();}
+  if(t.dataset.vw){V=VBY[t.dataset.vw];path=['start'];render();}
+  else if(t.dataset.act==='pick'){V=null;path=['start'];render();}
+  else if(t.dataset.go){path.push(t.dataset.go);render();}
   else if(t.dataset.back!=null){path=path.slice(0,+t.dataset.back+1);render();}
   else if(t.dataset.act==='back'){path.pop();render();}
   else if(t.dataset.act==='restart'){path=['start'];render();}
-  else if(t.dataset.node){e.preventDefault();path=findPath(t.dataset.node)||['start'];render();}
+  else if(t.dataset.node){e.preventDefault();if(!V)V=VBY.other;path=findPath(t.dataset.node)||['start'];render();}
 });
 function findPath(target,id='start',p=[]){p=[...p,id];if(id===target)return p;for(const [,to] of (N[id].a||[])){const r=findPath(target,to,p);if(r)return r}return null}
-function tree(id,label){const n=N[id];return `<li>${label?`<span class="lbl">${label} →</span>`:''}<a href="#" data-node="${id}" class="${n.fix?'fx':''}">${n.fix?'✓ '+n.fix:n.q}</a>${n.a?`<ul>${n.a.map(([l,to])=>tree(to,l)).join('')}</ul>`:''}</li>`}
+function tree(id,label){const n=N[id];return `<li>${label?`<span class="lbl">${label} →</span>`:''}<a href="#" data-node="${id}" class="${n.fix?'fx':''}">${n.fix?'✓ '+T(n.fix):T(n.q)}</a>${n.a?`<ul>${n.a.map(([l,to])=>tree(to,T(l))).join('')}</ul>`:''}</li>`}
 $('#tree').innerHTML=`<ul>${tree('start')}</ul>`;
-const h=location.hash.slice(1).split('.').filter(x=>N[x]);if(h[0]==='start')path=h;
+{const hs=decodeURIComponent(location.hash.slice(1)),i=hs.indexOf('/'),vp=i<0?'':hs.slice(0,i),pp=i<0?hs:hs.slice(i+1);if(VBY[vp])V=VBY[vp];const h=pp.split('.').filter(x=>N[x]);if(h[0]==='start'){path=h;if(!V)V=VBY.other}}
 render();
 </script>
 <div class="mwfoot">A free tool from <a href="/">micro.werks</a>, VW bus engineering in San Diego. <a href="/tools/">More tools</a></div>
