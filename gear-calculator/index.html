@@ -389,10 +389,29 @@ html{touch-action:pan-x pan-y}
 .dnp b{font-size:13px;font-weight:700}.dnp b small{font-size:10px;font-weight:600;color:var(--c);margin-left:5px}
 .dnp em{font-style:normal;font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .dnp span{font-size:11px;color:var(--mu)}.dnp span+span{text-align:right}
-.dnpw{margin-top:12px;padding-top:10px;border-top:1px solid var(--ln)}.dnpw h4{margin:0 0 6px;font-size:12.5px;font-weight:700}
-.dnpw .dnv small{display:block;margin-top:1px}
-.dnt i.rl{opacity:.42}
-.dnleg i.rl{background:#1d1d1b;opacity:.42}.dnleg i.air{background:#1d1d1b}
+.dnscore{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:center;padding:10px 11px;margin:0 0 10px;border-radius:10px;background:#1d1d1b;color:#f4f1ea}
+.dnscore .x{font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;grid-row:span 2}
+.dnscore .x small{font-size:15px}
+.dnscore .l{font-size:14px;font-weight:700;line-height:1.2}
+.dnscore .q{font-size:11px;opacity:.75}
+.dndial{grid-column:1/-1;position:relative;height:7px;border-radius:4px;margin:9px 0 3px;background:linear-gradient(90deg,#5b9bd5 0%,#6fb36b 25%,#6fb36b 45%,#e8b23a 62%,#d9622b 82%,#b3261e 100%)}
+.dndial i{position:absolute;top:-4px;width:3px;height:15px;margin-left:-1px;background:#fff;border-radius:2px;box-shadow:0 0 0 1px #1d1d1b}
+.dnscale{grid-column:1/-1;position:relative;height:13px;font-size:10px;opacity:.7}.dnscale span{position:absolute}
+.seg.dnG{margin:0 0 8px}
+.dnhd{font-size:12.5px;font-weight:700;margin:0 0 2px}
+.dnsub{font-size:11px;color:var(--mu);margin:0 0 7px}
+.dnrow{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:1px solid transparent;border-radius:8px;padding:4px 5px;margin:0 -5px;cursor:pointer}
+.dnrow.on{border-color:var(--c);background:rgba(0,0,0,.025)}
+.dnrow .dnv{margin-bottom:2px}
+.dnq{display:grid;grid-template-columns:minmax(0,84px) 1fr 42px 34px;gap:6px;align-items:center;font-size:11px;margin:2px 0}
+.dnq .dnl{color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dnq.b .dnl{color:var(--tx);font-weight:700}
+.dnq .rp{text-align:right;color:var(--mu);font-variant-numeric:tabular-nums}
+.dnq b{text-align:right;font-variant-numeric:tabular-nums;font-size:12px}
+.dnq .dnt:after{content:"";position:absolute;left:85%;top:-2px;bottom:-2px;border-left:1px dashed rgba(0,0,0,.35)}
+.dnq.no .dnt{background:repeating-linear-gradient(45deg,rgba(179,38,30,.18),rgba(179,38,30,.18) 4px,transparent 4px,transparent 8px)}
+.dnq.no b{color:#b3261e}
+.dntiny{font-size:11px;color:var(--mu);margin:7px 0 0}
 .dnmore{margin:0 0 10px;font-size:12px}.dnmore summary{cursor:pointer;color:var(--mu);margin-bottom:5px}
 .dnnone{font-size:12.5px;color:var(--mu);margin:2px 0}
 .dnsp{display:grid;gap:7px}
@@ -1351,37 +1370,59 @@ const DNDS={o:'Cd from the maker\'s spec sheet, frontal area 0.84 × width × he
 const dnHp=(lb,cda,eff,mph)=>{const v=mph*0.44704,k=v/745.7/eff;return {roll:lb/2.20462*9.81*0.014*k,air:0.5*1.225*cda*v*v*k};};
 // road load for bus and car at a speed. tb and ta are engine hp.
 function dnLoad(s,d,Wb,Wd,m){const {dg}=busOf(s),cB=dg==='bay'?1.52:1.42,cD=DND[d.id][0],auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,b=dnHp(Wb,cB,auto?0.80:0.86,m),a=dnHp(Wd,cD,dnMan(d)?0.86:0.80,m);return {b,a,tb:b.roll+b.air,ta:a.roll+a.air,cB,cD};}
-function dnPower(s,d,sp,c,Wb,Wd,rpmB){const rows=sp.map(v=>{const m=fromU(v);return {v,m,...dnLoad(s,d,Wb,Wd,m)};}),{cB,cD}=rows[0],mx=Math.max(...rows.map(r=>r.tb))*1.06,w=x=>(x/mx*100).toFixed(1),bar=(lbl,cl,p,t,clr)=>`<div class="dnb ${cl}"><span class="dnl">${lbl}</span><span class="dnt"><i class="rl" style="width:${w(p.roll)}%;background:${clr}"></i><i style="left:${w(p.roll)}%;width:${w(p.air)}%;background:${clr}"></i></span><b>${fmt(Math.round(t))} hp</b></div>`;
-  const R=rows[2],av=tqAt(engP(s),rpmB)*condF(s)*rpmB/5252,pc=Math.round(R.tb/av*100);
-  return `<div class="dnpw"><h4>Power to hold speed, flat road</h4><div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()} · ${fmt(r.tb/r.ta,1)}×</small></div><div class="dnbs">${bar(esc(d.s),'d',r.a,r.ta,'#9a907c')}${bar('Bus','b',r.b,r.tb,c)}</div></div>`).join('')}</div>
-   <div class="dnleg"><span><i class="air"></i>air drag</span><span><i class="rl"></i>rolling</span><span>engine hp, after driveline loss</span></div>
-   <p class="dnline"><b>At ${R.v} ${uL()} the bus needs about ${fmt(Math.round(R.tb))} hp, the ${esc(d.s)} about ${fmt(Math.round(R.ta))}.</b> Air is ${Math.round(R.b.air/R.tb*100)}% of the bus's load and ${Math.round(R.a.air/R.ta*100)}% of the car's. The power to push air grows with the cube of speed, so the gap in hp widens fast.${av>0?` At ${fmt(Math.round(rpmB/10)*10)} rpm the engine can make about ${fmt(Math.round(av))} hp, so holding ${R.v} uses roughly ${pc}% of it.`:''} Drag area: bus ${cB} m², ${esc(d.s)} ${cD} m². Add wind or a roof load and the bus number climbs.</p></div>`;}
+// Third gear down, as an overall ratio. Same sources as the donor notes.
+const DN3={gti337:1.152*3.875,gti20:1.15*3.944,tt225:1.088*4.2};
+const dn3=d=>DN3[d.id]||d.fd*(d.tr==='4AT'?1.441:d.tr==='4EAT'?1.545:d.tr==='5EAT'?1.471:d.f==='tdi'?1.36:d.f==='18t'?(/^(jet01g|nb00g)/.test(d.id)?1.308:1.429):d.top===0.738?1.366:1.448);
+// Low-rpm torque share by family, so a car and a swapped bus with the same engine get the same curve shape
+const dnF0=f=>f==='ez'?0.80:f==='ej'||f==='eg33'?0.78:0.62,dnCurve=d=>[d.hp[0],d.hp[1],d.tq[0],d.tq[1],0,0,dnF0(d.f)],dnBusP=(s,d)=>{const p=engP(s).slice();p[6]=dnF0(d.f);return p;};
+const dnAv=(p,f,r)=>tqAt(p,r)*f*r/5252;
+// Highest gear that holds the speed at under 85% of what the engine can make at that rpm, else the highest that holds it at all.
+function dnHold(G,need,av,red){let last=null;for(const [i,r] of G){if(r>red)continue;const l=need/av(r);if(l<=0.85)return {i,r,l};if(l<=1&&!last)last={i,r,l};}return last;}
+// Bus and car at one speed and grade. Engine load = hp needed / hp the engine can make at that rpm.
+function dnAt(s,d,Wb,Wd,m,gr){const L=dnLoad(s,d,Wb,Wd,m),v=m*0.44704,auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eB=auto?0.80:0.86,eD=dnMan(d)?0.86:0.80,climb=(lb,e)=>lb/2.20462*9.81*gr/100*v/745.7/e;
+  const nb=L.tb+climb(Wb,eB),na=L.ta+climb(Wd,eD),pB=dnBusP(s,d),fB=condF(s),pD=dnCurve(d),n=s.gears.length,dg=dnGears(d),base=dnRpm(d,m)/(d.top*d.fd);
+  const gB=s.gears.map((_,i)=>[n-1-i,rpmAt(s,n-1-i,m)]),gD=[[dg-1,d.top*d.fd],[dg-2,dnNext(d)*d.fd],[dg-3,dn3(d)]].map(([i,o])=>[i,base*o]);
+  return {b:dnHold(gB,nb,r=>dnAv(pB,fB,r),s.red||6000),a:dnHold(gD,na,r=>dnAv(pD,1,r),d.red||d.hp[1]*1.08),nb,na,L};}
+// Steepest grade held in top gear at this speed
+function dnTopGrade(hp,need,lb,e,m){const v=m*0.44704;return Math.max(0,(hp-need)*745.7*e/(lb/2.20462*9.81*v)*100);}
+const dnFeel=l=>l<0.4?'loafing':l<0.6?'relaxed':l<0.75?'steady, with the engine pulling':l<0.9?'working, with little left':'flat out';
+function dnScore(r,rpm,s){if(r<0.9&&rpm>(s.hi||4000))return ['Short: strong but busy','Plenty of reserve, at high rpm.'];if(r<0.9)return ['Easier than factory','More reserve than the car had.'];if(r<=1.15)return ['Factory feel','About how the engineers set it up.'];if(r<=1.4)return ['Close to factory','A little less reserve than the car.'];if(r<=1.75)return ['Working harder','Expect more throttle and earlier downshifts.'];return ['Overgeared for the bus','Top gear is mostly for flat roads.'];}
 function dnPick(s,d){const {cars,rest,exact}=dnRank(s),Wb=busLb(s),row=(x,top)=>{const dw=dnLb(x)/Wb-1,p=Math.round(Math.abs(dw)*100);
     return `<button class="dnp${x.id===d.id?' on':''}" data-act="dnp" data-id="${x.id}"><b>${esc(x.n)}${top?'<small>closest</small>':''}</b><em>${fmt(Math.round(dnLb(x)/10)*10)} lb</em><span>${esc(x.y)} · ${x.tr} · ${esc(x.en)}</span><span>${p?`${p}% ${dw>0?'heavier':'lighter'} than bus`:'same as bus'}</span></button>`;};
   return `<div class="dnh">${exact||!['tdi','18t'].includes(dnFam(s.eng))?'Stock cars with this engine, closest weight first':'No stock car here has exactly this engine. Cars with the same engine family, closest weight first'}</div><div class="dnpick">${cars.map((x,j)=>row(x,!j)).join('')}</div>${rest.length?`<details class="dnmore"${rest.some(x=>x.id===d.id)?' open':''}><summary>Other cars with related engines</summary><div class="dnpick">${rest.map(x=>row(x)).join('')}</div></details>`:''}`;}
 function donorHTML(s,i){const d=dnOf(s),c=col(i);
   if(!d)return dnFam(s.eng)?`<p class="dnnone">No factory donor specs for this engine yet.</p>`:`<p class="dnnone">Stock car comparison covers Subaru engines, VW and Audi 1.8T engines, and VW TDI engines. Pick one under Engine (✎ above) to compare the bus with the car it came from.</p>`;
-  const n=s.gears.length,f=condF(s),p=engP(s),bhp=p[0]*f,btq=p[2]*f,Wb=busLb(s),Wd=dnLb(d),Db=diam(s),td=tireD(d.tire);
+  const n=s.gears.length,f=condF(s),p=dnBusP(s,d),Wb=busLb(s),Wd=dnLb(d),Db=diam(s),td=tireD(d.tire);
   if(!Db||!td)return '<p class="dnnone">Enter a tire size to compare.</p>';
-  // top-gear pull per pound: torque x overall ratio / tire radius / weight. Black line = the bus rpm at which its engine works as hard as the car's: rpm scales with road load hp over peak torque.
-  const pullB=btq*ovr(s,n-1)/(Db/2)/Wb,pullD=d.tq[0]*d.top*d.fd/(td.d/2)/Wd;
-  const sp=S.u==='kmh'?[90,100,110,120]:[55,60,65,70],dg=dnGears(d),more=dg>n,rows=sp.map(v=>{const m=fromU(v),rd=dnRpm(d,m);return {v,rb:rpmAt(s,n-1,m),rd,rm:(()=>{const L=dnLoad(s,d,Wb,Wd,m);return rd*(L.tb/L.ta)*(d.tq[0]/btq);})(),rn:more?rd*dnNext(d)/d.top:0};});
-  const short=more?d.s.split(' ')[0]:d.s,tG=ord(dg-1),nG=ord(dg-2),bG=ord(n-1);
-  const mx=Math.max(4000,...rows.map(r=>Math.max(r.rb,r.rm,r.rn)))*1.06,w=x=>Math.min(100,x/mx*100).toFixed(1);
-  const R=rows[2],dW=Wb/Wd-1,heavy=dW>=0,pct=Math.round(Math.abs(dW)*100);
-  const verdict=R.rb<R.rm*0.93?"The bus is geared taller than that, so its engine works harder than the car's at this speed: expect to drop a gear on grades.":R.rb>R.rm*1.12?"The bus is geared shorter than that, so its engine has more in reserve than the car's, at more rpm.":"That is close to how hard the car's engine works.";
-  const bar=(cls,x,lbl,clr,mk)=>`<div class="dnb ${cls}"><span class="dnl">${lbl}</span><span class="dnt"><i style="width:${w(x)}%;background:${clr}"></i>${mk!=null?`<em class="mk" style="left:${w(mk)}%" title="Same engine load as the car: ${fmt(Math.round(mk/50)*50)} rpm"></em>`:''}</span><b>${fmt(Math.round(x/10)*10)}</b></div>`;
-  const kg=S.u==='kmh'?` · ${fmt(Math.round(Wb/2.20462/10)*10)} kg`:'';
+  const sp=S.u==='kmh'?[90,100,110,120,130]:[55,60,65,70,80],GR=[0,3,6],gr=GR[s.dnG||0],ref=s.dnV==null?2:s.dnV,V=sp[ref],m=fromU(V),u=uL(),dg=dnGears(d),short=d.s.split(' ')[0];
+  const rows=sp.map((v,j)=>({v,j,...dnAt(s,d,Wb,Wd,fromU(v),gr)}));
+  const F=dnAt(s,d,Wb,Wd,m,0),H=dnAt(s,d,Wb,Wd,m,6),rB=rpmAt(s,n-1,m),rD=dnRpm(d,m),pD=dnCurve(d),avB=dnAv(p,f,rB),avD=dnAv(pD,1,rD),lB=F.nb/avB,lD=F.na/avD,ratio=lB/lD,[title,sub]=dnScore(ratio,rB,s);
+  const auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,tgB=dnTopGrade(avB,F.nb,Wb,auto?0.80:0.86,m),tgD=dnTopGrade(avD,F.na,Wd,dnMan(d)?0.86:0.80,m);
+  // rpm where the bus's top gear would match the car's engine load at this speed
+  let rM=null;for(let r=1200;r<=(s.red||6000);r+=25){if(F.nb/dnAv(p,f,r)<=lD){rM=r;break;}}
+  const fdNow=s.fd*(s.hub||1)*(s.rgb||1),fdM=rM?fdNow*rM/rB:0,R10=x=>fmt(Math.round(x/10)*10),pct=x=>`${Math.round(x*100)}%`;
+  const Q=(lbl,cl,h,clr)=>h?`<div class="dnq ${cl}"><span class="dnl">${lbl} ${ord(h.i)}</span><span class="dnt"><i style="width:${Math.min(100,h.l*100).toFixed(1)}%;background:${clr}"></i></span><span class="rp">${R10(h.r)}</span><b>${pct(h.l)}</b></div>`:`<div class="dnq ${cl} no"><span class="dnl">${lbl}</span><span class="dnt"></span><span class="rp"></span><b>won't</b></div>`;
+  const dial=Math.max(0,Math.min(100,ratio<=1?(ratio-0.6)/0.4*35:35+(ratio-1)/1.2*65));
+  const say=(h,who)=>h?(h.i===(who==='b'?n-1:dg-1)?`stays in ${ord(h.i)} at ${R10(h.r)} rpm, ${pct(h.l)} load`:`drops to ${ord(h.i)} at ${R10(h.r)} rpm, ${pct(h.l)} load`):'cannot hold the speed';
+  const top=rows[rows.length-1],tb=top.b,ta=top.a;
+  const hillB=H.b?n-1-H.b.i:9,hillD=H.a?dg-1-H.a.i:9,hillLine=!H.b?`It will slow down on that grade, so plan on a lower speed.`:hillB<=hillD?`Same number of downshifts as the factory setup or fewer.`:`${hillB-hillD===1?'One more downshift':`${hillB-hillD} more downshifts`} than the factory setup needed: you will hear it, but it goes.`;
+  const fixLine=ratio<=1.15?'':rM?`To match the ${esc(short)}'s load at ${V} in top, the bus would turn about ${fmt(Math.round(rM/50)*50)}, roughly a ${fmt(fdM,2)} overall final drive against your ${fmt(fdNow,2)}.`:`No final drive gets the bus to the ${esc(short)}'s load at ${V}: there isn't enough engine for that much air.`;
   return `<div class="seg dnL">${LOADS.map(([l],j)=>`<button data-act="dnl" data-l="${j}" class="${(s.dnL||0)===j?'on':''}">${l==='Normal'?'Bus + driver':l}</button>`).join('')}</div>
    ${dnPick(s,d)}
-   <div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()}</small></div><div class="dnbs">${r.rn?bar('d',r.rn,`${esc(short)} ${nG}`,'#c9c1b0'):''}${bar('d',r.rd,more?`${esc(short)} ${tG}`:esc(d.s),'#9a907c')}${bar('b',r.rb,more?`Bus ${bG}`:'Bus',c,r.rm)}</div></div>`).join('')}</div>
-   <div class="dnleg"><span><i style="background:#9a907c"></i>${esc(d.s)} in top (${d.top} × ${d.fd}, ${esc(d.tire)})</span><span><i style="background:${c}"></i>this bus in top</span><span><i class="mk"></i>bus rpm for the same engine load as the car</span></div>
-   <div class="dnk"><div><div class="k">Bus weight</div><div class="v">${fmt(Math.round(Wb/10)*10)} <small>lb${kg}</small></div><div class="d ${heavy?'dn':'up'}">${pct?`${pct}% ${heavy?'heavier':'lighter'} than the ${esc(d.s)} (${fmt(Math.round(Wd/10)*10)} lb)`:`same as the ${esc(d.s)}`}</div></div>
-     <div><div class="k">lb per hp</div><div class="v">${fmt(Wb/bhp,1)}</div><div class="d same">${esc(d.s)}: ${fmt(Wd/d.hp[0],1)}</div></div>
-     <div><div class="k">lb per lb-ft</div><div class="v">${fmt(Wb/btq,1)}</div><div class="d same">${esc(d.s)}: ${fmt(Wd/d.tq[0],1)}</div></div>
-     <div><div class="k">Top-gear pull per lb</div><div class="v">${fmt(pullB/pullD*100)}<small>%</small></div><div class="d same">of the ${esc(d.s)}</div></div></div>
-   <p class="dnline"><b>At ${R.v} ${uL()} the bus turns ${fmt(Math.round(R.rb/10)*10)} rpm in top. The ${esc(d.s)} turned ${fmt(Math.round(R.rd/10)*10)}.</b> ${more?(()=>{const t=(R.rb-R.rd)/(R.rn-R.rd);return `The ${esc(d.s)} has ${dg} gears to your ${n}: it runs ${fmt(Math.round(R.rd/10)*10)} in ${tG} and ${fmt(Math.round(R.rn/10)*10)} in ${nG}, so your ${bG} ${t<0?`is taller than its ${tG}`:t>1?`is shorter than its ${nG}`:`lands ${Math.round(t*100)}% of the way from its ${tG} to its ${nG}`}. `;})():''}To work its engine as hard as the car does in ${tG}, counting weight and air, the bus would turn about ${fmt(Math.round(R.rm/50)*50)} (the black line). ${verdict} The ${esc(d.en)} makes peak torque at ${fmt(d.tq[1])} rpm${d.red?` and redlines at ${fmt(d.red)}`:''}. </p>
-   ${dnPower(s,d,sp,c,Wb,Wd,R.rb)}
+   <div class="dnscore"><div class="x">${fmt(ratio,1)}<small>×</small></div><div class="l">${title}</div><div class="q">${sub}</div><div class="dndial"><i style="left:${dial.toFixed(1)}%"></i></div><div class="dnscale"><span>easier</span><span style="left:35%;transform:translateX(-50%)">factory</span><span style="right:0">harder</span></div></div>
+   <div class="dnhd">How hard the engine works, top gear down</div>
+   <div class="dnsub">% of what the engine can make at that rpm, counting weight, air and grade. Tap a speed to score it.</div>
+   <div class="seg dnG">${['Flat','3% grade','6% grade'].map((l,j)=>`<button data-act="dng" data-l="${j}" class="${(s.dnG||0)===j?'on':''}">${l}</button>`).join('')}</div>
+   ${rows.map(r=>`<button class="dnrow${r.j===ref?' on':''}" data-act="dnv" data-l="${r.j}"><div class="dnv">${r.v} <small>${u}</small></div>${Q(esc(short),'d',r.a,'#9a907c')}${Q('Bus','b',r.b,c)}</button>`).join('')}
+   <div class="dnleg"><span>Dashed line: 85%, where a gear stops feeling easy and it shifts down. The column before the % is rpm.</span></div>
+   <div class="dnk"><div><div class="k">Load at ${V}</div><div class="v">${pct(lB)}</div><div class="d same">${esc(short)}: ${pct(lD)}</div></div>
+     <div><div class="k">Spare hp at ${V}</div><div class="v">${fmt(Math.round(Math.max(0,avB-F.nb)))}</div><div class="d same">${esc(short)}: ${fmt(Math.round(Math.max(0,avD-F.na)))}</div></div>
+     <div><div class="k">Steepest grade in top</div><div class="v">${fmt(tgB,1)}<small>%</small></div><div class="d same">${esc(short)}: ${fmt(tgD,1)}%</div></div>
+     <div><div class="k">6% grade at ${V}</div><div class="v">${H.b?ord(H.b.i):'No'}</div><div class="d same">${esc(short)}: ${H.a?ord(H.a.i):'no'}</div></div></div>
+   <p class="dnline"><b>At ${V} ${u} the bus turns ${R10(rB)} rpm and feels ${dnFeel(lB)}.</b> The ${esc(d.s)} turned ${R10(rD)} and felt ${dnFeel(lD)}. Your engine is doing ${fmt(ratio,1)} times the work relative to what it can make there. ${fixLine}</p>
+   <p class="dnline"><b>On a 6% grade at ${V}:</b> the bus ${say(H.b,'b')}. The ${esc(short)} ${say(H.a,'a')}. ${hillLine}</p>
+   ${ref===sp.length-1?'':`<p class="dnline"><b>At ${top.v} ${u}:</b> air takes over. On a flat road the bus would be at ${(()=>{const t=dnAt(s,d,Wb,Wd,fromU(top.v),0);return `${t.b?pct(t.b.l):'its limit'} against ${t.a?pct(t.a.l):'its limit'} for the ${esc(short)}, needing ${fmt(Math.round(t.nb))} hp to its ${fmt(Math.round(t.na))}`;})()}.</p>`}
+   <p class="dntiny">Bus ${R10(Wb)} lb, ${fmt(Wb/(p[0]*f),1)} lb per hp, drag area ${F.L.cB} m². ${esc(short)} ${R10(Wd)} lb, ${fmt(Wd/d.hp[0],1)} lb per hp, drag area ${F.L.cD} m². Sea level, no wind, converter locked.</p>
    <details class="dnsrc"><summary>Donor specs and sources</summary><p>${esc(d.n)} ${esc(d.y)}, ${esc(d.en)}, ${d.tr}: top ${d.top}, final drive ${d.fd}, ${esc(d.tire)} (${fmt(td.d,1)} in), curb ${fmt(d.lb[0])}${d.lb[1]!==d.lb[0]?`–${fmt(d.lb[1])}`:''} lb, ${d.hp[0]} hp at ${fmt(d.hp[1])}, ${d.tq[0]} lb-ft at ${fmt(d.tq[1])}${d.red?`, redline ${fmt(d.red)}`:''}. Drag area ${DND[d.id][0]} m²: ${DNDS[DND[d.id][1]]}.${d.note?` ${esc(d.note)}`:''} Bus weight is this calc's bus weight plus a 200 lb driver, or about 935 lb of people, water and gear when loaded as a camper. The car gets the middle of its curb range plus a 200 lb driver.</p><p>Sources: ${d.src.map((x,j)=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t||'source '+(j+1))}</a>`).join(' · ')}</p></details>`;}
 
 function renderTabs(){
@@ -1692,6 +1733,8 @@ B.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)retu
   if(a==='wiz')return openWiz(i,+t.dataset.step);
   if(a==='dnl'){s.dnL=+t.dataset.l;return update();}
   if(a==='dnp'){s.dn=t.dataset.id;return update();}
+  if(a==='dng'){s.dnG=+t.dataset.l;return update();}
+  if(a==='dnv'){s.dnV=+t.dataset.l;return update();}
   if(a==='gear'){stopRun();const g=+t.dataset.g,l=lv(s);l.man=l.man===g&&S.auto?null:g;S.mode='cruise';return update();}
   if(a==='dup'){const c=clone(s);c.id=uid();c.name=s.name?s.name+' copy':'';S.set.splice(i+1,0,c);renderAll();scrollToCol(i+1);return;}
   if(a==='rm'){S.set.splice(i,1);delete LV[s.id];}
