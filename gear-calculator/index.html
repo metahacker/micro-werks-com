@@ -1335,6 +1335,8 @@ function dnOf(s){const L=dnList(s);if(!L.length)return null;const p=L.find(d=>d.
   return cars.find(d=>(d.tr!=='5MT')===auto)||cars[0];}
 // donor engine rpm at a road speed in top gear, from its factory gearing and tires
 const dnRpm=(d,m)=>{const t=tireD(d.tire);return t?m*63360/(60*Math.PI*t.d)*d.top*d.fd:0;};
+// donor's gear count and next-to-top ratio: both automatics run 4th or 3rd at 1:1; US 5MT 4th is 1.088, or 0.972 in the turbo boxes
+const dnGears=d=>d.tr==='4EAT'?4:5,dnNext=d=>d.tr==='5MT'?(d.top===0.738?0.972:1.088):1;
 // bus as driven: the calc's bus weight plus a 200 lb driver; donor: middle of its curb range plus the same driver
 const busLb=s=>{const {dg,G}=busOf(s);return ((KG[dg]||1400)+(G.k==='syn'?110:0)+(LOADS[s.dnL||0]||LOADS[0])[1])*2.20462;};
 const dnLb=d=>(d.lb[0]+d.lb[1])/2+200;
@@ -1343,9 +1345,9 @@ const DND={imp96m:[.72,'w'],imp96a:[.72,'w'],imp98:[.72,'w'],imp04m:[.69,'e'],im
 const DNDS={o:'Cd from Subaru spec sheet, frontal area 0.84 × width × height',w:'published drag area, Wikipedia list of drag coefficients',p:'published Cd, frontal area 0.84 × width × height',e:'estimate from reported Cd and body size'};
 // engine hp to hold a speed on a flat road with no wind: same rolling (0.014) and sea-level air as the hill climb
 const dnHp=(lb,cda,eff,mph)=>{const v=mph*0.44704,k=v/745.7/eff;return {roll:lb/2.20462*9.81*0.014*k,air:0.5*1.225*cda*v*v*k};};
-function dnPower(s,d,sp,c,Wb,Wd,rpmB){const {dg}=busOf(s),cB=dg==='bay'?1.52:1.42,cD=DND[d.id][0],auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eB=auto?0.80:0.86,eD=d.tr==='5MT'?0.86:0.80;
-  const rows=sp.map(v=>{const m=fromU(v),b=dnHp(Wb,cB,eB,m),a=dnHp(Wd,cD,eD,m);return {v,m,b,a,tb:b.roll+b.air,ta:a.roll+a.air};}),mx=Math.max(...rows.map(r=>r.tb))*1.06,w=x=>(x/mx*100).toFixed(1);
-  const bar=(lbl,cl,p,t,clr)=>`<div class="dnb ${cl}"><span class="dnl">${lbl}</span><span class="dnt"><i class="rl" style="width:${w(p.roll)}%;background:${clr}"></i><i style="left:${w(p.roll)}%;width:${w(p.air)}%;background:${clr}"></i></span><b>${fmt(Math.round(t))} hp</b></div>`;
+// road load for bus and car at a speed. tb and ta are engine hp.
+function dnLoad(s,d,Wb,Wd,m){const {dg}=busOf(s),cB=dg==='bay'?1.52:1.42,cD=DND[d.id][0],auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,b=dnHp(Wb,cB,auto?0.80:0.86,m),a=dnHp(Wd,cD,d.tr==='5MT'?0.86:0.80,m);return {b,a,tb:b.roll+b.air,ta:a.roll+a.air,cB,cD};}
+function dnPower(s,d,sp,c,Wb,Wd,rpmB){const rows=sp.map(v=>{const m=fromU(v);return {v,m,...dnLoad(s,d,Wb,Wd,m)};}),{cB,cD}=rows[0],mx=Math.max(...rows.map(r=>r.tb))*1.06,w=x=>(x/mx*100).toFixed(1),bar=(lbl,cl,p,t,clr)=>`<div class="dnb ${cl}"><span class="dnl">${lbl}</span><span class="dnt"><i class="rl" style="width:${w(p.roll)}%;background:${clr}"></i><i style="left:${w(p.roll)}%;width:${w(p.air)}%;background:${clr}"></i></span><b>${fmt(Math.round(t))} hp</b></div>`;
   const R=rows[2],av=tqAt(engP(s),rpmB)*condF(s)*rpmB/5252,pc=Math.round(R.tb/av*100);
   return `<div class="dnpw"><h4>Power to hold speed, flat road</h4><div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()} · ${fmt(r.tb/r.ta,1)}×</small></div><div class="dnbs">${bar(esc(d.s),'d',r.a,r.ta,'#9a907c')}${bar('Bus','b',r.b,r.tb,c)}</div></div>`).join('')}</div>
    <div class="dnleg"><span><i class="air"></i>air drag</span><span><i class="rl"></i>rolling</span><span>engine hp, after driveline loss</span></div>
@@ -1357,23 +1359,24 @@ function donorHTML(s,i){const d=dnOf(s),c=col(i);
   if(!d)return dnFam(s.eng)?`<p class="dnnone">No factory donor specs for this engine yet.</p>`:`<p class="dnnone">Pick a Subaru engine under Engine (✎ above) to compare the bus with the car it came from.</p>`;
   const n=s.gears.length,f=condF(s),p=engP(s),bhp=p[0]*f,btq=p[2]*f,Wb=busLb(s),Wd=dnLb(d),Db=diam(s),td=tireD(d.tire);
   if(!Db||!td)return '<p class="dnnone">Enter a tire size to compare.</p>';
-  // top-gear pull per pound: torque x overall ratio / tire radius / weight. Matched rpm = the bus rpm that gives the same pull per pound.
-  const pullB=btq*ovr(s,n-1)/(Db/2)/Wb,pullD=d.tq[0]*d.top*d.fd/(td.d/2)/Wd,k=(Wb/Wd)*(d.tq[0]/btq);
-  const sp=S.u==='kmh'?[90,100,110,120]:[55,60,65,70],rows=sp.map(v=>{const m=fromU(v),rd=dnRpm(d,m);return {v,rb:rpmAt(s,n-1,m),rd,rm:rd*k};});
-  const mx=Math.max(4000,...rows.map(r=>Math.max(r.rb,r.rm)))*1.06,w=x=>Math.min(100,x/mx*100).toFixed(1);
+  // top-gear pull per pound: torque x overall ratio / tire radius / weight. Black line = the bus rpm at which its engine works as hard as the car's: rpm scales with road load hp over peak torque.
+  const pullB=btq*ovr(s,n-1)/(Db/2)/Wb,pullD=d.tq[0]*d.top*d.fd/(td.d/2)/Wd;
+  const sp=S.u==='kmh'?[90,100,110,120]:[55,60,65,70],dg=dnGears(d),more=dg>n,rows=sp.map(v=>{const m=fromU(v),rd=dnRpm(d,m);return {v,rb:rpmAt(s,n-1,m),rd,rm:(()=>{const L=dnLoad(s,d,Wb,Wd,m);return rd*(L.tb/L.ta)*(d.tq[0]/btq);})(),rn:more?rd*dnNext(d)/d.top:0};});
+  const short=more?d.s.split(' ')[0]:d.s,tG=ord(dg-1),nG=ord(dg-2),bG=ord(n-1);
+  const mx=Math.max(4000,...rows.map(r=>Math.max(r.rb,r.rm,r.rn)))*1.06,w=x=>Math.min(100,x/mx*100).toFixed(1);
   const R=rows[2],dW=Wb/Wd-1,heavy=dW>=0,pct=Math.round(Math.abs(dW)*100);
-  const verdict=R.rb<R.rm*0.93?'The bus is geared taller than that, so it has less pull in top than the car did: expect to drop a gear on grades.':R.rb>R.rm*1.12?'The bus is geared shorter than that: more pull than the car had, at more rpm.':'That is close to how the car was geared for its weight.';
-  const bar=(cls,x,lbl,clr,mk)=>`<div class="dnb ${cls}"><span class="dnl">${lbl}</span><span class="dnt"><i style="width:${w(x)}%;background:${clr}"></i>${mk!=null?`<em class="mk" style="left:${w(mk)}%" title="Matched-weight rpm: ${fmt(Math.round(mk/50)*50)}"></em>`:''}</span><b>${fmt(Math.round(x/10)*10)}</b></div>`;
+  const verdict=R.rb<R.rm*0.93?"The bus is geared taller than that, so its engine works harder than the car's at this speed: expect to drop a gear on grades.":R.rb>R.rm*1.12?"The bus is geared shorter than that, so its engine has more in reserve than the car's, at more rpm.":"That is close to how hard the car's engine works.";
+  const bar=(cls,x,lbl,clr,mk)=>`<div class="dnb ${cls}"><span class="dnl">${lbl}</span><span class="dnt"><i style="width:${w(x)}%;background:${clr}"></i>${mk!=null?`<em class="mk" style="left:${w(mk)}%" title="Same engine load as the car: ${fmt(Math.round(mk/50)*50)} rpm"></em>`:''}</span><b>${fmt(Math.round(x/10)*10)}</b></div>`;
   const kg=S.u==='kmh'?` · ${fmt(Math.round(Wb/2.20462/10)*10)} kg`:'';
   return `<div class="seg dnL">${LOADS.map(([l],j)=>`<button data-act="dnl" data-l="${j}" class="${(s.dnL||0)===j?'on':''}">${l==='Normal'?'Bus + driver':l}</button>`).join('')}</div>
    ${dnPick(s,d)}
-   <div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()}</small></div><div class="dnbs">${bar('d',r.rd,esc(d.s),'#9a907c')}${bar('b',r.rb,'Bus',c,r.rm)}</div></div>`).join('')}</div>
-   <div class="dnleg"><span><i style="background:#9a907c"></i>${esc(d.s)} in top (${d.top} × ${d.fd}, ${esc(d.tire)})</span><span><i style="background:${c}"></i>this bus in top</span><span><i class="mk"></i>matched weight</span></div>
+   <div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()}</small></div><div class="dnbs">${r.rn?bar('d',r.rn,`${esc(short)} ${nG}`,'#c9c1b0'):''}${bar('d',r.rd,more?`${esc(short)} ${tG}`:esc(d.s),'#9a907c')}${bar('b',r.rb,more?`Bus ${bG}`:'Bus',c,r.rm)}</div></div>`).join('')}</div>
+   <div class="dnleg"><span><i style="background:#9a907c"></i>${esc(d.s)} in top (${d.top} × ${d.fd}, ${esc(d.tire)})</span><span><i style="background:${c}"></i>this bus in top</span><span><i class="mk"></i>bus rpm for the same engine load as the car</span></div>
    <div class="dnk"><div><div class="k">Bus weight</div><div class="v">${fmt(Math.round(Wb/10)*10)} <small>lb${kg}</small></div><div class="d ${heavy?'dn':'up'}">${pct?`${pct}% ${heavy?'heavier':'lighter'} than the ${esc(d.s)} (${fmt(Math.round(Wd/10)*10)} lb)`:`same as the ${esc(d.s)}`}</div></div>
      <div><div class="k">lb per hp</div><div class="v">${fmt(Wb/bhp,1)}</div><div class="d same">${esc(d.s)}: ${fmt(Wd/d.hp[0],1)}</div></div>
      <div><div class="k">lb per lb-ft</div><div class="v">${fmt(Wb/btq,1)}</div><div class="d same">${esc(d.s)}: ${fmt(Wd/d.tq[0],1)}</div></div>
      <div><div class="k">Top-gear pull per lb</div><div class="v">${fmt(pullB/pullD*100)}<small>%</small></div><div class="d same">of the ${esc(d.s)}</div></div></div>
-   <p class="dnline"><b>At ${R.v} ${uL()} the bus turns ${fmt(Math.round(R.rb/10)*10)} rpm in top. The ${esc(d.s)} turned ${fmt(Math.round(R.rd/10)*10)}.</b> To pull its weight like the car did, the bus would turn about ${fmt(Math.round(R.rm/50)*50)}. ${verdict} The ${esc(d.en)} makes peak torque at ${fmt(d.tq[1])} rpm${d.red?` and redlines at ${fmt(d.red)}`:''}. </p>
+   <p class="dnline"><b>At ${R.v} ${uL()} the bus turns ${fmt(Math.round(R.rb/10)*10)} rpm in top. The ${esc(d.s)} turned ${fmt(Math.round(R.rd/10)*10)}.</b> ${more?(()=>{const t=(R.rb-R.rd)/(R.rn-R.rd);return `The ${esc(d.s)} has ${dg} gears to your ${n}: it runs ${fmt(Math.round(R.rd/10)*10)} in ${tG} and ${fmt(Math.round(R.rn/10)*10)} in ${nG}, so your ${bG} ${t<0?`is taller than its ${tG}`:t>1?`is shorter than its ${nG}`:`lands ${Math.round(t*100)}% of the way from its ${tG} to its ${nG}`}. `;})():''}To work its engine as hard as the car does in ${tG}, counting weight and air, the bus would turn about ${fmt(Math.round(R.rm/50)*50)} (the black line). ${verdict} The ${esc(d.en)} makes peak torque at ${fmt(d.tq[1])} rpm${d.red?` and redlines at ${fmt(d.red)}`:''}. </p>
    ${dnPower(s,d,sp,c,Wb,Wd,R.rb)}
    <details class="dnsrc"><summary>Donor specs and sources</summary><p>${esc(d.n)} ${esc(d.y)}, ${esc(d.en)}, ${d.tr}: top ${d.top}, final drive ${d.fd}, ${esc(d.tire)} (${fmt(td.d,1)} in), curb ${fmt(d.lb[0])}${d.lb[1]!==d.lb[0]?`–${fmt(d.lb[1])}`:''} lb, ${d.hp[0]} hp at ${fmt(d.hp[1])}, ${d.tq[0]} lb-ft at ${fmt(d.tq[1])}${d.red?`, redline ${fmt(d.red)}`:''}. Drag area ${DND[d.id][0]} m²: ${DNDS[DND[d.id][1]]}. Bus weight is this calc's bus weight plus a 200 lb driver, or about 935 lb of people, water and gear when loaded as a camper. The car gets the middle of its curb range plus a 200 lb driver.</p><p>Sources: ${d.src.map((x,j)=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t||'source '+(j+1))}</a>`).join(' · ')}</p></details>`;}
 
