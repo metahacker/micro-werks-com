@@ -389,6 +389,10 @@ html{touch-action:pan-x pan-y}
 .dnp b{font-size:13px;font-weight:700}.dnp b small{font-size:10px;font-weight:600;color:var(--c);margin-left:5px}
 .dnp em{font-style:normal;font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .dnp span{font-size:11px;color:var(--mu)}.dnp span+span{text-align:right}
+.dnpw{margin-top:12px;padding-top:10px;border-top:1px solid var(--ln)}.dnpw h4{margin:0 0 6px;font-size:12.5px;font-weight:700}
+.dnpw .dnv small{display:block;margin-top:1px}
+.dnt i.rl{opacity:.42}
+.dnleg i.rl{background:#1d1d1b;opacity:.42}.dnleg i.air{background:#1d1d1b}
 .dnmore{margin:0 0 10px;font-size:12px}.dnmore summary{cursor:pointer;color:var(--mu);margin-bottom:5px}
 .dnnone{font-size:12.5px;color:var(--mu);margin:2px 0}
 .dnsp{display:grid;gap:7px}
@@ -1334,6 +1338,18 @@ const dnRpm=(d,m)=>{const t=tireD(d.tire);return t?m*63360/(60*Math.PI*t.d)*d.to
 // bus as driven: the calc's bus weight plus a 200 lb driver; donor: middle of its curb range plus the same driver
 const busLb=s=>{const {dg,G}=busOf(s);return ((KG[dg]||1400)+(G.k==='syn'?110:0)+(LOADS[s.dnL||0]||LOADS[0])[1])*2.20462;};
 const dnLb=d=>(d.lb[0]+d.lb[1])/2+200;
+// Drag area CdA in m². Sources in DND below. Bus figures match the hill climb model.
+const DND={imp96m:[.72,'w'],imp96a:[.72,'w'],imp98:[.72,'w'],imp04m:[.69,'e'],imp04a:[.69,'e'],for98m:[.93,'p'],for98a:[.93,'p'],for03m:[.81,'e'],for03a:[.81,'e'],ob00m:[.85,'e'],ob00a:[.85,'e'],ob05m:[.72,'e'],ob05a:[.72,'e'],obh6:[.85,'e'],ob30r:[.72,'e'],ob36:[.94,'e'],lg36:[.67,'o'],trib:[1.03,'o'],wrxm:[.68,'e'],wrxa:[.68,'e'],fxtm:[.81,'e'],fxta:[.81,'e'],svx:[.56,'w'],svxf:[.56,'w']};
+const DNDS={o:'Cd from Subaru spec sheet, frontal area 0.84 × width × height',w:'published drag area, Wikipedia list of drag coefficients',p:'published Cd, frontal area 0.84 × width × height',e:'estimate from reported Cd and body size'};
+// engine hp to hold a speed on a flat road with no wind: same rolling (0.014) and sea-level air as the hill climb
+const dnHp=(lb,cda,eff,mph)=>{const v=mph*0.44704,k=v/745.7/eff;return {roll:lb/2.20462*9.81*0.014*k,air:0.5*1.225*cda*v*v*k};};
+function dnPower(s,d,sp,c,Wb,Wd,rpmB){const {dg}=busOf(s),cB=dg==='bay'?1.52:1.42,cD=DND[d.id][0],auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eB=auto?0.80:0.86,eD=d.tr==='5MT'?0.86:0.80;
+  const rows=sp.map(v=>{const m=fromU(v),b=dnHp(Wb,cB,eB,m),a=dnHp(Wd,cD,eD,m);return {v,m,b,a,tb:b.roll+b.air,ta:a.roll+a.air};}),mx=Math.max(...rows.map(r=>r.tb))*1.06,w=x=>(x/mx*100).toFixed(1);
+  const bar=(lbl,cl,p,t,clr)=>`<div class="dnb ${cl}"><span class="dnl">${lbl}</span><span class="dnt"><i class="rl" style="width:${w(p.roll)}%;background:${clr}"></i><i style="left:${w(p.roll)}%;width:${w(p.air)}%;background:${clr}"></i></span><b>${fmt(Math.round(t))} hp</b></div>`;
+  const R=rows[2],av=tqAt(engP(s),rpmB)*condF(s)*rpmB/5252,pc=Math.round(R.tb/av*100);
+  return `<div class="dnpw"><h4>Power to hold speed, flat road</h4><div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()} · ${fmt(r.tb/r.ta,1)}×</small></div><div class="dnbs">${bar(esc(d.s),'d',r.a,r.ta,'#9a907c')}${bar('Bus','b',r.b,r.tb,c)}</div></div>`).join('')}</div>
+   <div class="dnleg"><span><i class="air"></i>air drag</span><span><i class="rl"></i>rolling</span><span>engine hp, after driveline loss</span></div>
+   <p class="dnline"><b>At ${R.v} ${uL()} the bus needs about ${fmt(Math.round(R.tb))} hp, the ${esc(d.s)} about ${fmt(Math.round(R.ta))}.</b> Air is ${Math.round(R.b.air/R.tb*100)}% of the bus's load and ${Math.round(R.a.air/R.ta*100)}% of the car's. The power to push air grows with the cube of speed, so the gap in hp widens fast.${av>0?` At ${fmt(Math.round(rpmB/10)*10)} rpm the engine can make about ${fmt(Math.round(av))} hp, so holding ${R.v} uses roughly ${pc}% of it.`:''} Drag area: bus ${cB} m², ${esc(d.s)} ${cD} m². Add wind or a roof load and the bus number climbs.</p></div>`;}
 function dnPick(s,d){const {cars,rest}=dnRank(s),Wb=busLb(s),row=(x,top)=>{const dw=dnLb(x)/Wb-1,p=Math.round(Math.abs(dw)*100);
     return `<button class="dnp${x.id===d.id?' on':''}" data-act="dnp" data-id="${x.id}"><b>${esc(x.n)}${top?'<small>closest</small>':''}</b><em>${fmt(Math.round(dnLb(x)/10)*10)} lb</em><span>${esc(x.y)} · ${x.tr} · ${esc(x.en)}</span><span>${p?`${p}% ${dw>0?'heavier':'lighter'} than bus`:'same as bus'}</span></button>`;};
   return `<div class="dnh">Stock cars with this engine, closest weight first</div><div class="dnpick">${cars.map((x,j)=>row(x,!j)).join('')}</div>${rest.length?`<details class="dnmore"${rest.some(x=>x.id===d.id)?' open':''}><summary>Other cars with related engines</summary><div class="dnpick">${rest.map(x=>row(x)).join('')}</div></details>`:''}`;}
@@ -1357,8 +1373,9 @@ function donorHTML(s,i){const d=dnOf(s),c=col(i);
      <div><div class="k">lb per hp</div><div class="v">${fmt(Wb/bhp,1)}</div><div class="d same">${esc(d.s)}: ${fmt(Wd/d.hp[0],1)}</div></div>
      <div><div class="k">lb per lb-ft</div><div class="v">${fmt(Wb/btq,1)}</div><div class="d same">${esc(d.s)}: ${fmt(Wd/d.tq[0],1)}</div></div>
      <div><div class="k">Top-gear pull per lb</div><div class="v">${fmt(pullB/pullD*100)}<small>%</small></div><div class="d same">of the ${esc(d.s)}</div></div></div>
-   <p class="dnline"><b>At ${R.v} ${uL()} the bus turns ${fmt(Math.round(R.rb/10)*10)} rpm in top. The ${esc(d.s)} turned ${fmt(Math.round(R.rd/10)*10)}.</b> To pull its weight like the car did, the bus would turn about ${fmt(Math.round(R.rm/50)*50)}. ${verdict} The ${esc(d.en)} makes peak torque at ${fmt(d.tq[1])} rpm${d.red?` and redlines at ${fmt(d.red)}`:''}. The bus also pushes a lot more air than the car, so real highway load is higher still.</p>
-   <details class="dnsrc"><summary>Donor specs and sources</summary><p>${esc(d.n)} ${esc(d.y)}, ${esc(d.en)}, ${d.tr}: top ${d.top}, final drive ${d.fd}, ${esc(d.tire)} (${fmt(td.d,1)} in), curb ${fmt(d.lb[0])}${d.lb[1]!==d.lb[0]?`–${fmt(d.lb[1])}`:''} lb, ${d.hp[0]} hp at ${fmt(d.hp[1])}, ${d.tq[0]} lb-ft at ${fmt(d.tq[1])}${d.red?`, redline ${fmt(d.red)}`:''}. Bus weight is this calc's bus weight plus a 200 lb driver, or about 935 lb of people, water and gear when loaded as a camper. The car gets the middle of its curb range plus a 200 lb driver.</p><p>Sources: ${d.src.map((x,j)=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t||'source '+(j+1))}</a>`).join(' · ')}</p></details>`;}
+   <p class="dnline"><b>At ${R.v} ${uL()} the bus turns ${fmt(Math.round(R.rb/10)*10)} rpm in top. The ${esc(d.s)} turned ${fmt(Math.round(R.rd/10)*10)}.</b> To pull its weight like the car did, the bus would turn about ${fmt(Math.round(R.rm/50)*50)}. ${verdict} The ${esc(d.en)} makes peak torque at ${fmt(d.tq[1])} rpm${d.red?` and redlines at ${fmt(d.red)}`:''}. </p>
+   ${dnPower(s,d,sp,c,Wb,Wd,R.rb)}
+   <details class="dnsrc"><summary>Donor specs and sources</summary><p>${esc(d.n)} ${esc(d.y)}, ${esc(d.en)}, ${d.tr}: top ${d.top}, final drive ${d.fd}, ${esc(d.tire)} (${fmt(td.d,1)} in), curb ${fmt(d.lb[0])}${d.lb[1]!==d.lb[0]?`–${fmt(d.lb[1])}`:''} lb, ${d.hp[0]} hp at ${fmt(d.hp[1])}, ${d.tq[0]} lb-ft at ${fmt(d.tq[1])}${d.red?`, redline ${fmt(d.red)}`:''}. Drag area ${DND[d.id][0]} m²: ${DNDS[DND[d.id][1]]}. Bus weight is this calc's bus weight plus a 200 lb driver, or about 935 lb of people, water and gear when loaded as a camper. The car gets the middle of its curb range plus a 200 lb driver.</p><p>Sources: ${d.src.map((x,j)=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t||'source '+(j+1))}</a>`).join(' · ')}</p></details>`;}
 
 function renderTabs(){
   $('#tabs').innerHTML=(S.set.length?'':'<span class="hint">No setups yet</span>')+S.set.map((s,i)=>`<button class="tab" data-tab="${i}"><i class="tg" style="background:${col(i)}">${letter(i)}</i><b>${esc(s.name||famLabel(s)[0])}</b></button>`).join('')+`<button class="tab add" data-act="add">＋ Add</button>${S.set.length>1?'<span class="arrows"><button class="btn" data-scroll="-1" aria-label="Scroll left">‹</button><button class="btn" data-scroll="1" aria-label="Scroll right">›</button></span>':''}`;
