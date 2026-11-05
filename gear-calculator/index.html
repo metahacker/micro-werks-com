@@ -382,7 +382,14 @@ html{touch-action:pan-x pan-y}
 .zoomctl .zr{width:auto;height:auto;padding:3px 8px;border-radius:10px;font:700 11px/1.2 "Jost",sans-serif;background:rgba(29,29,27,.82)}
 .tabs:not(:has(.tab[data-tab])){display:flex!important;gap:10px;align-items:center}
 /* donor car card */
-.dnsel{width:100%;font:600 13px/1.2 inherit;padding:7px 8px;border:1px solid var(--ln);border-radius:8px;background:#fff;color:var(--tx);margin:0 0 9px}
+.dnh{font-size:11.5px;color:var(--mu);margin:0 0 5px}
+.dnpick{display:grid;gap:5px;margin:0 0 10px}
+.dnp{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 8px;width:100%;text-align:left;padding:7px 9px;border:1px solid var(--ln);border-radius:8px;background:#fff;color:var(--tx);font:inherit;cursor:pointer}
+.dnp.on{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+.dnp b{font-size:13px;font-weight:700}.dnp b small{font-size:10px;font-weight:600;color:var(--c);margin-left:5px}
+.dnp em{font-style:normal;font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.dnp span{font-size:11px;color:var(--mu)}.dnp span+span{text-align:right}
+.dnmore{margin:0 0 10px;font-size:12px}.dnmore summary{cursor:pointer;color:var(--mu);margin-bottom:5px}
 .dnnone{font-size:12.5px;color:var(--mu);margin:2px 0}
 .dnsp{display:grid;gap:7px}
 .dnr{display:grid;grid-template-columns:52px 1fr;gap:6px;align-items:center}
@@ -916,8 +923,8 @@ function colHTML(s,i){
     ${setupHTML(s)}<div class="sub">${i?`Compared with ${letter(0)}`:'Baseline: the others compare to this one'}</div>`)}
   ${sec('dash','',`<div class="gauges"><svg data-o="spd" viewBox="9 9 182 180" overflow="visible"></svg><svg data-o="tach" viewBox="9 9 182 180" overflow="visible"></svg></div><div class="readout" data-o="ro"></div><div class="gears" data-o="gb"></div><div class="ghint" data-o="gh"></div><div class="dctl"><div class="drow"><span class="dl">Target cruise</span><input type="range" class="spdS" min="0" max="100" step="0.5" aria-label="Target cruise speed for every setup"><output class="spdO"></output></div><div class="drow rrow"><button class="btn pri runB">${RUNL}</button><span class="seg rmS">${RMODES.map(([k,l])=>`<button data-rm="${k}" class="${(S.rm||'commute')===k?'on':''}">${l}</button>`).join('')}</span></div></div>`)}
   ${sec('glance','At a glance',`<div class="sum" data-o="kpi"></div>`)}
+  ${sec('donor','Compare to stock car',`<div data-o="dn"></div>`,'Subaru')}
   ${sec('trace','Gears & cruise',`<svg class="tracer" data-o="tr" viewBox="0 0 360 200"></svg><div class="cruise" data-o="cr"></div><div class="legend" data-o="tl"></div>`,'drag to set speed')}
-  ${sec('donor','Compare to donor car',`${dnSelHTML(s)}<div data-o="dn"></div>`,'Subaru')}
   ${sec('t1','Speed in each gear',`<div data-o="t1"></div>`,uL())}
   ${sec('t2','RPM at road speed',`<div data-o="t2"></div>`,'true '+uL())}
   ${sec('speedo','Speedo vs real speed',`<div data-o="sp"></div>`)}
@@ -1316,16 +1323,20 @@ const DONORS=[{"id":"imp96m","f":"ej","e":[38,39,37],"n":"Impreza 2.2","s":"Impr
 // Which donor list fits the engine picked for the bus (ENG index -> family)
 const dnFam=k=>k===9||(k>=37&&k<=42)?'ej':k===11||(k>=43&&k<=50)?'ejt':k===10||(k>=51&&k<=53)?'ez':k===12||k===54?'eg33':null;
 const dnList=s=>{const f=dnFam(s.eng);return f?DONORS.filter(d=>d.f===f):[];};
+// Stock cars that had this engine (or its family if none match exactly), closest to the bus's weight first
+const dnRank=s=>{const L=dnList(s),W=busLb(s),hit=L.filter(d=>d.e.includes(s.eng)),byE=L.filter(d=>hit.some(h=>h.en===d.en)),near=A=>A.slice().sort((x,y)=>Math.abs(dnLb(x)-W)-Math.abs(dnLb(y)-W));
+  return {cars:near(byE.length?byE:L),rest:byE.length?near(L.filter(d=>!byE.includes(d))):[]};};
 function dnOf(s){const L=dnList(s);if(!L.length)return null;const p=L.find(d=>d.id===s.dn);if(p)return p;
-  const b=BOX[s.box],auto=!!(b&&b.t==='auto'),byE=L.filter(d=>d.e.includes(s.eng)),pool=(byE.length?byE:L).slice().sort((x,y)=>(y.p||0)-(x.p||0));
-  return pool.find(d=>(d.tr!=='5MT')===auto)||pool[0];}
+  const b=BOX[s.box],auto=!!(b&&b.t==='auto'),{cars}=dnRank(s);
+  return cars.find(d=>(d.tr!=='5MT')===auto)||cars[0];}
 // donor engine rpm at a road speed in top gear, from its factory gearing and tires
 const dnRpm=(d,m)=>{const t=tireD(d.tire);return t?m*63360/(60*Math.PI*t.d)*d.top*d.fd:0;};
 // bus as driven: the calc's bus weight plus a 200 lb driver; donor: middle of its curb range plus the same driver
 const busLb=s=>{const {dg,G}=busOf(s);return ((KG[dg]||1400)+(G.k==='syn'?110:0)+(LOADS[s.dnL||0]||LOADS[0])[1])*2.20462;};
 const dnLb=d=>(d.lb[0]+d.lb[1])/2+200;
-function dnSelHTML(s){const L=dnList(s),d=dnOf(s);if(!L.length)return '';
-  return `<select class="dnsel" data-k="dn" aria-label="Donor car">${L.map(x=>`<option value="${x.id}"${d&&x.id===d.id?' selected':''}>${esc(x.n)} · ${esc(x.y)} · ${x.tr}</option>`).join('')}</select>`;}
+function dnPick(s,d){const {cars,rest}=dnRank(s),Wb=busLb(s),row=(x,top)=>{const dw=dnLb(x)/Wb-1,p=Math.round(Math.abs(dw)*100);
+    return `<button class="dnp${x.id===d.id?' on':''}" data-act="dnp" data-id="${x.id}"><b>${esc(x.n)}${top?'<small>closest</small>':''}</b><em>${fmt(Math.round(dnLb(x)/10)*10)} lb</em><span>${esc(x.y)} · ${x.tr} · ${esc(x.en)}</span><span>${p?`${p}% ${dw>0?'heavier':'lighter'} than bus`:'same as bus'}</span></button>`;};
+  return `<div class="dnh">Stock cars with this engine, closest weight first</div><div class="dnpick">${cars.map((x,j)=>row(x,!j)).join('')}</div>${rest.length?`<details class="dnmore"${rest.some(x=>x.id===d.id)?' open':''}><summary>Other cars with related engines</summary><div class="dnpick">${rest.map(x=>row(x)).join('')}</div></details>`:''}`;}
 function donorHTML(s,i){const d=dnOf(s),c=col(i);
   if(!d)return dnFam(s.eng)?`<p class="dnnone">No factory donor specs for this engine yet.</p>`:`<p class="dnnone">Pick a Subaru engine under Engine (✎ above) to compare the bus with the car it came from.</p>`;
   const n=s.gears.length,f=condF(s),p=engP(s),bhp=p[0]*f,btq=p[2]*f,Wb=busLb(s),Wd=dnLb(d),Db=diam(s),td=tireD(d.tire);
@@ -1339,6 +1350,7 @@ function donorHTML(s,i){const d=dnOf(s),c=col(i);
   const bar=(cls,x,lbl,clr,mk)=>`<div class="dnb ${cls}"><span class="dnl">${lbl}</span><span class="dnt"><i style="width:${w(x)}%;background:${clr}"></i>${mk!=null?`<em class="mk" style="left:${w(mk)}%" title="Matched-weight rpm: ${fmt(Math.round(mk/50)*50)}"></em>`:''}</span><b>${fmt(Math.round(x/10)*10)}</b></div>`;
   const kg=S.u==='kmh'?` · ${fmt(Math.round(Wb/2.20462/10)*10)} kg`:'';
   return `<div class="seg dnL">${LOADS.map(([l],j)=>`<button data-act="dnl" data-l="${j}" class="${(s.dnL||0)===j?'on':''}">${l==='Normal'?'Bus + driver':l}</button>`).join('')}</div>
+   ${dnPick(s,d)}
    <div class="dnsp">${rows.map(r=>`<div class="dnr"><div class="dnv">${r.v} <small>${uL()}</small></div><div class="dnbs">${bar('d',r.rd,esc(d.s),'#9a907c')}${bar('b',r.rb,'Bus',c,r.rm)}</div></div>`).join('')}</div>
    <div class="dnleg"><span><i style="background:#9a907c"></i>${esc(d.s)} in top (${d.top} × ${d.fd}, ${esc(d.tire)})</span><span><i style="background:${c}"></i>this bus in top</span><span><i class="mk"></i>matched weight</span></div>
    <div class="dnk"><div><div class="k">Bus weight</div><div class="v">${fmt(Math.round(Wb/10)*10)} <small>lb${kg}</small></div><div class="d ${heavy?'dn':'up'}">${pct?`${pct}% ${heavy?'heavier':'lighter'} than the ${esc(d.s)} (${fmt(Math.round(Wd/10)*10)} lb)`:`same as the ${esc(d.s)}`}</div></div>
@@ -1655,6 +1667,7 @@ B.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)retu
   const i=colOf(t);if(i==null)return;const s=S.set[i];
   if(a==='wiz')return openWiz(i,+t.dataset.step);
   if(a==='dnl'){s.dnL=+t.dataset.l;return update();}
+  if(a==='dnp'){s.dn=t.dataset.id;return update();}
   if(a==='gear'){stopRun();const g=+t.dataset.g,l=lv(s);l.man=l.man===g&&S.auto?null:g;S.mode='cruise';return update();}
   if(a==='dup'){const c=clone(s);c.id=uid();c.name=s.name?s.name+' copy':'';S.set.splice(i+1,0,c);renderAll();scrollToCol(i+1);return;}
   if(a==='rm'){S.set.splice(i,1);delete LV[s.id];}
@@ -1688,7 +1701,6 @@ if(window.visualViewport){visualViewport.addEventListener('resize',placeZoom);vi
 ['gesturestart','gesturechange'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
 $('#board').addEventListener('input',e=>{if(!e.target.classList.contains('spdS'))return;stopRun();S.mph=fromU(+e.target.value);S.mode='cruise';if(S.auto)for(const k in LV)LV[k].man=null;update();});
-$('#board').addEventListener('change',e=>{if(e.target.dataset.k!=='dn')return;const i=colOf(e.target);if(i==null)return;S.set[i].dn=e.target.value;update();});
 $('#board').addEventListener('change',e=>{if(!e.target.classList.contains('autoC'))return;S.auto=e.target.checked;if(S.auto)for(const k in LV)LV[k].man=null;S.mode='cruise';update();});
 $$('#units button').forEach(b=>b.onclick=()=>{S.u=b.dataset.u;renderAll();});
 const setRun=x=>$$('.runB').forEach(b=>b.innerHTML=x);
