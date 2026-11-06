@@ -163,22 +163,28 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   .rise{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease}
   .rise.in{opacity:1;transform:none}
 }
+.swapgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.swapt{display:block;text-decoration:none;position:relative;background:var(--ink2);border:1px solid var(--line);overflow:hidden}
+.swapt img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:top;transition:transform .35s}
+.swapt:hover img{transform:scale(1.04)}
+.swapt span{display:block;padding:12px 14px;font-size:1.5rem;color:var(--paper)}
+.swapjump{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.swapjump a{text-decoration:none;padding:9px 16px;border:2px solid var(--line);font-weight:800;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+.swapjump a:hover{border-color:var(--cyan);color:var(--cyan)}
+@media (max-width:860px){.swapgrid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
+<script>if(/^#(cooling|suspension|engine|gearbox|kits)$/.test(location.hash))location.replace('swaps/'+(location.hash==='#kits'?'':location.hash))</script>
 
 <nav>
   <a href="#top" aria-label="micro.werks home"><img width="272" height="128" class="mark" src="img/logo.svg" alt="micro.werks"></a>
   <ul>
     <li><a href="#solar">Solar</a></li>
-    <li class="only-md"><a href="#kits">Kits</a></li>
     <li class="hide-sm"><a href="#turn-key">Turn Key</a></li>
-    <li class="hide-md"><a href="#cooling">Cooling</a></li>
-    <li class="hide-md"><a href="#suspension">Suspension</a></li>
-    <li class="hide-md"><a href="#engine">Engine</a></li>
-    <li class="hide-md"><a href="#gearbox">Gearbox</a></li>
+    <li><a href="swaps/">Swaps</a></li>
     <li class="hide-sm"><a href="#merch">Merch</a></li>
-    <li class="hide-md"><a href="#contact">Contact</a></li>
+    <li class="hide-sm"><a href="#contact">Contact</a></li>
     <li><a class="tools" href="#tools"><svg class="tcog" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.58 3.01 10.97 0.45 13.03 0.45 13.42 3.01 15.26 3.50 16.88 1.48 18.67 2.51 17.73 4.93 19.07 6.27 21.49 5.33 22.52 7.12 20.50 8.74 20.99 10.58 23.55 10.97 23.55 13.03 20.99 13.42 20.50 15.26 22.52 16.88 21.49 18.67 19.07 17.73 17.73 19.07 18.67 21.49 16.88 22.52 15.26 20.50 13.42 20.99 13.03 23.55 10.97 23.55 10.58 20.99 8.74 20.50 7.12 22.52 5.33 21.49 6.27 19.07 4.93 17.73 2.51 18.67 1.48 16.88 3.50 15.26 3.01 13.42 0.45 13.03 0.45 10.97 3.01 10.58 3.50 8.74 1.48 7.12 2.51 5.33 4.93 6.27 6.27 4.93 5.33 2.51 7.12 1.48 8.74 3.50ZM6.1 12a5.9 5.9 0 1 0 11.8 0a5.9 5.9 0 1 0 -11.8 0ZM9.0 12a3.0 3.0 0 1 0 6.0 0a3.0 3.0 0 1 0 -6.0 0Z"/></svg>Tools</a></li>
   </ul>
 </nav>
@@ -255,106 +261,29 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
     <div class="tkspec rise">
       <span class="kicker">Every build</span>
       <ul>
-        <li>3.6 flat six</li><li>4EAT or 5MT</li><li>Limited slip differential</li><li>SLA A-arm front suspension</li><li>HD front and rear sway bars</li><li>4-piston aluminum caliper disc brakes</li><li>Starlink</li><li>Full solar roof</li><li>2,000 watt inverter</li><li>Full hookups</li><li>LiFePO4 battery bank</li><li>Off-Grid A/C, 20K BTU, 12V</li><li>12V water heater</li><li>Propane furnace</li><li>Propane cooktop</li><li>Fridge &amp; freezer</li><li>Microwave</li><li>Air fryer/oven</li><li>Advanced water system with purification</li><li>Shower and toilet</li><li>Memory foam Recaro seats</li><li>Memory foam bedding</li><li>Memory foam bench</li>
+        <li>3.6 flat six</li><li>4EAT or 5MT</li><li>Limited slip differential</li><li>SLA A-arm front suspension</li><li>HD front and rear sway bars</li><li>4-piston aluminum caliper disc brakes</li><li>Starlink</li><li>Full solar roof</li><li>2,000 watt inverter</li><li>Full hookups</li><li>LiFePO4 battery bank</li><li>Off-Grid A/C, 20K BTU, 12V</li><li>12V water heater</li><li>Propane furnace</li><li>Propane cooktop</li><li>Fridge &amp; freezer</li><li>Microwave</li><li>Air fryer/oven</li><li>Advanced water system with purification</li><li>Shower and toilet</li><li>Sleeps 5</li><li>Memory foam Recaro seats</li><li>Memory foam bedding</li><li>Memory foam bench</li>
       </ul>
     </div>
     <a class="tkask rise" href="#contact">Ask about a build →</a>
   </div>
 </section>
 
-<div id="kits">
-<section class="block kitsintro">
-  <div class="wrap rise">
-    <span class="pill dev">In development</span>
-    <h2 class="d">Kits for the Bay</h2>
-    <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
-  </div>
-</section>
-<section class="block product" id="cooling">
-  <div class="wrap split">
+<section class="block" id="swaps">
+  <div class="wrap">
     <div class="rise">
-      <span class="kicker">Cooling</span>
-      <h2 class="d">Underbelly radiator</h2>
-      <p class="lede">Cooling for 300+HP, tucked under the bus.</p>
-      <div class="panels">
-        <div class="panel"><b>300+HP</b><p>Cooling</p></div>
-        <div class="panel"><b>2</b><p>Low-profile fans</p></div>
-        <div class="panel"><b>Stainless</b><p>Bent housing</p></div>
-      </div>
-      <ul class="specs">
-        <li>Full-size radiator with the A/C condenser stacked on top, first in the airflow</li>
-        <li>Built-in transmission and engine oil coolers</li>
-        <li>Whole stack enclosed in a bent stainless housing, between the frame rails</li>
-        <li>Flows forward into a sheet metal belly pan</li>
-        <li>Sealed scoop and road screen, with two low-profile fans pulling air down through the stack</li>
-      </ul>
+      <span class="pill dev">In development</span>
+      <h2 class="d">Swaps.</h2>
+      <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
     </div>
-    <div class="media plate rise"><img width="1000" height="1432" src="img/kit-underbelly.webp" alt="Vintage service manual style drawing of the underside of a VW bus, with a stainless housing and two fans between the frame rails, flowing forward into a belly pan with a screened intake mouth" loading="lazy"></div>
+    <div class="swapgrid">
+      <a class="swapt rise" href="swaps/#engine"><img width="1500" height="1000" src="img/kit-engine.webp" alt="Service manual style drawing of the engine swap" loading="lazy"><span class="d">Engine</span></a>
+      <a class="swapt rise" href="swaps/#cooling"><img width="1500" height="1000" src="img/kit-underbelly.webp" alt="Service manual style drawing of the cooling kit under a bus" loading="lazy"><span class="d">Cooling</span></a>
+      <a class="swapt rise" href="swaps/#suspension"><img width="1500" height="1000" src="img/kit-a-arm-t3.webp" alt="Service manual style drawing of the front suspension" loading="lazy"><span class="d">Suspension</span></a>
+      <a class="swapt rise" href="swaps/#gearbox"><img width="1500" height="1000" src="img/kit-gearbox.webp" alt="Service manual style drawing of the gearbox" loading="lazy"><span class="d">Gearbox</span></a>
+    </div>
+    <a class="tkask rise" href="swaps/">See all the swaps →</a>
   </div>
 </section>
-<section class="block product" id="suspension">
-  <div class="wrap split rev">
-    <div class="rise">
-      <span class="kicker">Suspension</span>
-      <h2 class="d">Bus “OEM+” <span class="nb">A-Arm</span></h2>
-      <p class="lede">Bolt-on Vanagon front suspension for the Bay.</p>
-      <div class="panels">
-        <div class="panel"><b>SLA</b><p>A-arm front suspension</p></div>
-        <div class="panel"><b>Bolt-in</b><p>Subframe</p></div>
-        <div class="panel"><b>Vanagon</b><p>Control arms and knuckles</p></div>
-      </div>
-      <ul class="specs">
-        <li>Vanagon control arms and knuckles on a bolt-in subframe</li>
-        <li>Radius rods on their own subframe section</li>
-        <li>Steering rack laid out like a Vanagon, with a bevel box</li>
-      </ul>
-    </div>
-    <div class="media plate rise"><img width="1500" height="1000" src="img/kit-a-arm-t3.webp" alt="Vintage service manual style drawing of the front wheel arch of a blue and cream Bay Window bus with the wheel off, showing a stamped upper arm, boxed lower arm, coil spring and shock, steering knuckle and threaded radius rod on a bolt-in mounting plate" loading="lazy"></div>
-  </div>
-</section>
-<section class="block product" id="engine">
-  <div class="wrap split">
-    <div class="rise">
-      <span class="kicker">Engine</span>
-      <h2 class="d">EZ36 flat six</h2>
-      <p class="lede">A 3.6 liter Subaru six, built to live in the back of a T2 Bay or T3 Vanagon.</p>
-      <div class="panels">
-        <div class="panel"><b>3.6L</b><p>Flat six</p></div>
-        <div class="panel"><b>256 hp</b><p>247 lb-ft stock</p></div>
-        <div class="panel"><b>~280 hp</b><p>About 270 lb-ft with headers and exhaust (our estimate)</p></div>
-      </div>
-      <ul class="specs">
-        <li>Intake manifold reversed, with the throttle body facing forward</li>
-        <li>Alternator on a custom bracket, tucked under the plenum</li>
-        <li>Stainless headers into a 911-style dual outlet muffler</li>
-        <li>Clean mil-spec harness with a compact interface box</li>
-      </ul>
-    </div>
-    <div class="media plate rise"><img width="1500" height="1000" src="img/kit-engine.webp" alt="Vintage service manual style drawing of a flat six engine seen from the front, with a reversed intake manifold, throttle body facing forward and an alternator on a custom bracket" loading="lazy"></div>
-  </div>
-</section>
-<section class="block product" id="gearbox">
-  <div class="wrap split rev">
-    <div class="rise">
-      <span class="kicker">Gearbox</span>
-      <h2 class="d">Subaru + RGB</h2>
-      <p class="lede">Subaru gearboxes turned around for a rear-engine bus with Reversaru reduction gearboxes.</p>
-      <div class="panels">
-        <div class="panel"><b>4EAT</b><p>Four-speed automatic</p></div>
-        <div class="panel"><b>5MT</b><p>Five-speed manual</p></div>
-        <div class="panel"><b>1.19</b><p>RGB ratio, or 1:1</p></div>
-      </div>
-      <ul class="specs">
-        <li>4EAT four-speed automatic or 5MT five-speed manual</li>
-        <li>RGB at 1:1 or 1.19, so a 4.11 final drive stays 4.11 or becomes 4.89</li>
-        <li>Flat end plate replaces the AWD nose cone</li>
-      </ul>
-      <a class="tkask" href="gear-calculator/" target="_blank" rel="noopener">Try your setup in the Bus Gear Calc →</a>
-    </div>
-    <div class="media plate rise"><img width="1500" height="1000" src="img/kit-gearbox.webp" alt="Vintage service manual style side view of a Subaru 5 speed transmission with a flat black end plate, adjustable clocking plate and inboard portal axle unit, with labels" loading="lazy"></div>
-  </div>
-</section>
-</div>
 
 <section class="block" id="builds">
   <div class="wrap">
@@ -402,7 +331,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
     <form class="cform rise" id="cform" action="https://pear.metahack.io/api/micro-werks/contact" method="post">
       <label>Name<input name="name" autocomplete="name" maxlength="120" required></label>
       <label>Email<input name="email" type="email" autocomplete="email" maxlength="200" required></label>
-      <label class="full">About<select name="topic"><option>Turn key</option><option>Kits</option><option>Solar</option><option selected>Something else</option></select></label>
+      <label class="full">About<select name="topic"><option>Turn key</option><option value="Kits">Swaps</option><option>Solar</option><option selected>Something else</option></select></label>
       <label class="full">Message<textarea name="message" maxlength="4000" required></textarea></label>
       <label class="trap" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
       <input type="hidden" name="started">
@@ -428,6 +357,7 @@ document.querySelectorAll('.rise').forEach(el=>io.observe(el));
   const f=document.getElementById('cform'),m=document.getElementById('cmsg'),b=f.querySelector('button');
   f.started.value=Date.now();
   document.querySelector('.tkask').addEventListener('click',()=>{f.topic.value='Turn key'});
+  if(new URLSearchParams(location.search).get('topic')==='Kits')f.topic.value='Kits';
   f.addEventListener('submit',async e=>{
     e.preventDefault();
     b.disabled=true;m.className='cmsg';m.textContent='Sending…';

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swaps · micro.werks</title>
+<meta name="description" content="VW bus swaps from micro.werks in San Diego, California: engine, cooling, suspension and gearbox.">
+<meta property="og:title" content="Swaps · micro.werks">
+<meta property="og:description" content="Engine, cooling, suspension and gearbox swaps for VW buses.">
+<meta property="og:image" content="https://micro-werks.com/img/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://micro-werks.com/swaps/">
+<meta name="theme-color" content="#111011">
+<link rel="icon" href="../img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111011;--ink2:#1b191a;--cyan:#55c8e8;--paper:#f4f1ea;--mute:#a7a3a0;--line:#2c292a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:Inter,system-ui,sans-serif;font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+.d{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.005em;line-height:calc(.88em + 2px)}
+.wrap{width:min(1280px,100% - 48px);margin-inline:auto}
+
+/* nav */
+nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:linear-gradient(#111011ee,#11101100)}
+nav .mark{width:96px}
+.only-md{display:none}
+@media(max-width:1240px){nav .hide-md{display:none}nav .only-md{display:list-item}}
+@media(min-width:861px){nav .mark{width:190px}}
+nav ul{display:flex;gap:26px;list-style:none;font-weight:800;font-size:16px;letter-spacing:.14em;text-transform:uppercase}
+nav a{text-decoration:none;opacity:.85}
+nav a:hover{opacity:1;color:var(--cyan)}
+nav a.tools{display:inline-flex;align-items:center;gap:.42em}
+nav a.tools .tcog{width:1.32em;height:1.32em;flex:none;transition:transform .5s ease}
+nav a.tools:hover .tcog{transform:rotate(90deg)}
+@media(prefers-reduced-motion:reduce){nav a.tools .tcog{transition:none}}
+
+/* hero */
+.hero{min-height:100svh;display:grid;place-items:center;padding:110px 24px 48px;position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 38%,#55c8e81f,transparent 60%)}
+.uc{display:block;width:min(936px,92vw);height:auto;margin:0 auto clamp(16px,3vh,32px);image-rendering:pixelated}
+@media(max-width:720px){.uc{image-rendering:auto}}
+.hero .logo{width:min(1000px,88vw,92svh);margin-inline:auto;filter:drop-shadow(0 30px 60px #000a)}
+.hero .tag{margin-top:clamp(24px,4vh,48px);text-align:center;font-size:clamp(3.4rem,min(13.5vw,14.5svh),12.5rem)}
+.hero .tag span{color:var(--cyan)}
+.hero .sub{margin-top:22px;text-align:center;color:var(--mute);font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:clamp(12px,1.4vw,15px)}
+.scroll{position:absolute;bottom:22px;left:50%;translate:-50% 0;width:2px;height:46px;background:linear-gradient(var(--cyan),transparent)}
+
+/* full bleed photo */
+.bleed{position:relative;height:min(88vh,960px);overflow:hidden}
+.bleed img{width:100%;height:100%;object-fit:cover}
+.bleed .cap{position:absolute;left:24px;bottom:22px;font-size:clamp(2.2rem,7vw,6rem);text-shadow:0 6px 30px #000c}
+
+/* sections */
+section.block{padding:clamp(72px,11vw,150px) 0;border-top:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.kicker::before{content:"";width:28px;height:3px;background:var(--cyan)}
+.pill{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:7px 12px;border:2px solid currentColor;border-radius:99px}
+.pill.live{color:#7dffb0}.pill.soon{color:var(--cyan)}.pill.dev{color:#ffcf5c}
+h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
+.lede{font-size:clamp(19px,2vw,24px);max-width:36ch;color:#dcd7cf}
+.btn{display:inline-flex;align-items:center;gap:12px;margin-top:34px;padding:18px 28px;background:var(--cyan);color:var(--ink);font-weight:800;text-decoration:none;text-transform:uppercase;letter-spacing:.1em;font-size:15px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.btn:hover{background:var(--paper)}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,80px);align-items:center}
+.split.rev{grid-template-columns:.95fr 1.05fr}
+.split.rev .media{order:-1}
+.media{position:relative}
+.media img{width:100%;aspect-ratio:4/5;object-fit:cover;clip-path:polygon(9% 0,100% 0,91% 100%,0 100%)}
+.media.wide img{aspect-ratio:4/3}
+.calc-art{display:block;margin-top:56px}
+.calc-art img{width:100%;border-radius:8px;box-shadow:0 30px 80px #000c;transition:transform .4s}
+.calc-art:hover img{transform:scale(1.01)}
+
+
+/* solar */
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px}
+.panel{background:var(--ink2);border:1px solid var(--line);padding:22px 20px}
+.panel b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(2.4rem,4.4vw,3.8rem);line-height:1;color:var(--cyan)}
+.panel p{font-size:14px;color:var(--mute);margin-top:8px}
+.fine{margin-top:18px;font-size:15px;color:var(--mute);max-width:56ch}
+
+/* kits */
+.kitsintro{padding-bottom:0}.kitsintro + section.block{border-top:0}
+.specs{list-style:none;margin-top:22px}
+.specs li{padding:11px 0;border-top:1px solid var(--line);font-size:17px;color:#dcd7cf}
+.product .split{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.product .split.rev{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
+.product h2.d{font-size:clamp(3rem,5.6vw,5.6rem)}
+.product .nb,.product .panel b{white-space:nowrap}
+.product .panels{margin-top:26px;gap:10px}
+.product .panel{padding:16px 12px}
+.product .panel b{font-size:clamp(1.7rem,2.3vw,2.3rem)}
+#cooling .split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+#cooling .media.plate img{aspect-ratio:1000/1432}
+.media.plate img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;clip-path:none}
+.tk{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px}
+.tkc{background:var(--ink2);border:1px solid var(--line)}
+.tkc img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.tkc h3{font-size:clamp(2.4rem,4.4vw,4.2rem);margin:18px 20px 6px}
+.tkc p{margin:0 20px 20px;font-size:16px;color:#dcd7cf}
+.tkspec{margin-top:30px;padding:clamp(22px,3vw,36px);background:var(--ink2);border:1px solid var(--line)}
+.tkspec ul{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px;margin-top:16px}
+.tkask{display:inline-block;margin-top:26px;color:var(--cyan);font-weight:700;font-size:18px}
+.tkask:hover{color:var(--paper)}
+.cform{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px;max-width:860px}
+.cform label{display:grid;gap:8px;font-weight:700;font-size:14px;letter-spacing:.04em;color:#dcd7cf}
+.cform .full{grid-column:1/-1}
+.cform input,.cform select,.cform textarea{width:100%;padding:15px 16px;background:var(--ink2);border:1px solid var(--line);border-radius:0;color:var(--paper);font:inherit;font-size:17px;font-weight:400;letter-spacing:0}
+.cform textarea{min-height:170px;resize:vertical}
+.cform input:focus,.cform select:focus,.cform textarea:focus{outline:2px solid var(--cyan);outline-offset:-1px}
+.cform .trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cform .btn{margin-top:0;border:0;cursor:pointer;font-family:inherit}
+.cform .btn:disabled{opacity:.6;cursor:wait}
+.cfoot{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:20px}
+.cmsg{font-size:17px;color:#dcd7cf}
+.cmsg.bad{color:#ffb3a0}
+@media(max-width:640px){.cform{grid-template-columns:1fr}}
+.tkspec li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
+@media (max-width:860px){.tk{grid-template-columns:1fr}.tkspec ul{grid-template-columns:repeat(2,1fr);gap:0 16px}}
+.alltools{display:inline-block;margin-left:18px;font-weight:800;font-size:15px;color:var(--cyan);text-decoration:none}.alltools:hover{text-decoration:underline}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:44px}
+.gallery img,.gallery video{display:block;width:100%;height:100%;object-fit:cover}
+.g1{grid-column:span 7;aspect-ratio:16/10}.g2{grid-column:span 5}.g3{grid-column:span 4;aspect-ratio:1;object-position:18% 50%}.g4{grid-column:span 4}.g5{grid-column:span 4}.g6{grid-column:span 12;aspect-ratio:21/9;object-position:50% 100%}
+
+/* merch */
+.merch{background:var(--cyan);color:var(--ink);border:0}
+.merch .kicker{color:var(--ink)}.merch .kicker::before{background:var(--ink)}
+.merch h2.d{font-size:clamp(4rem,15vw,14rem)}
+.merch .lede{color:#111011cc}
+.tees{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+.tee.big{grid-column:span 2;grid-row:span 2}.tee.big img{aspect-ratio:1}
+.tee{display:block;background:#fff;color:var(--ink);text-decoration:none;padding:0 0 12px;transition:transform .2s ease}
+.tee.wide{grid-column:span 2}.tee.wide img{aspect-ratio:2/1;object-fit:contain}
+.tee:hover{transform:translateY(-3px)}
+.tee img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.tee b{display:block;padding:10px 14px 0;font-size:16px;font-weight:800}
+.tee span{display:block;padding:0 14px;font-size:15px;color:#111011aa;font-weight:600}
+@media (max-width:860px){.tees{grid-template-columns:repeat(2,1fr);gap:10px}.tee b{font-size:14px}}
+
+footer{padding:48px 0 60px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+footer img{width:120px}
+footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing:.06em}
+
+@media (max-width:860px){
+  nav ul{gap:16px;font-size:13px}
+  nav .hide-sm{display:none}
+  .split,.split.rev{grid-template-columns:1fr}
+  .split.rev .media{order:0}
+  .panels{grid-template-columns:1fr}
+  .product .split,.product .split.rev,#cooling .split{grid-template-columns:1fr}
+  .kits{grid-template-columns:1fr}
+  .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 12;aspect-ratio:4/3}.g4{aspect-ratio:3/4}
+}
+@media (prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease}
+  .rise.in{opacity:1;transform:none}
+}
+.swapgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.swapt{display:block;text-decoration:none;position:relative;background:var(--ink2);border:1px solid var(--line);overflow:hidden}
+.swapt img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:top;transition:transform .35s}
+.swapt:hover img{transform:scale(1.04)}
+.swapt span{display:block;padding:12px 14px;font-size:1.5rem;color:var(--paper)}
+.swapjump{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.swapjump a{text-decoration:none;padding:9px 16px;border:2px solid var(--line);font-weight:800;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+.swapjump a:hover{border-color:var(--cyan);color:var(--cyan)}
+@media (max-width:860px){.swapgrid{grid-template-columns:repeat(2,1fr)}}
+.swaph{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
+.kitsintro + section.block{padding-top:clamp(48px,6vw,84px)}
+section.block.swapcta{padding:40px 0 clamp(48px,6vw,84px)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../" aria-label="micro.werks home"><img width="272" height="128" class="mark" src="../img/logo.svg" alt="micro.werks"></a>
+  <ul>
+    <li><a href="../#solar">Solar</a></li>
+    <li class="hide-sm"><a href="../#turn-key">Turn Key</a></li>
+    <li><a href="../swaps/">Swaps</a></li>
+    <li class="hide-sm"><a href="../#merch">Merch</a></li>
+    <li class="hide-sm"><a href="../#contact">Contact</a></li>
+    <li><a class="tools" href="../#tools"><svg class="tcog" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.58 3.01 10.97 0.45 13.03 0.45 13.42 3.01 15.26 3.50 16.88 1.48 18.67 2.51 17.73 4.93 19.07 6.27 21.49 5.33 22.52 7.12 20.50 8.74 20.99 10.58 23.55 10.97 23.55 13.03 20.99 13.42 20.50 15.26 22.52 16.88 21.49 18.67 19.07 17.73 17.73 19.07 18.67 21.49 16.88 22.52 15.26 20.50 13.42 20.99 13.03 23.55 10.97 23.55 10.58 20.99 8.74 20.50 7.12 22.52 5.33 21.49 6.27 19.07 4.93 17.73 2.51 18.67 1.48 16.88 3.50 15.26 3.01 13.42 0.45 13.03 0.45 10.97 3.01 10.58 3.50 8.74 1.48 7.12 2.51 5.33 4.93 6.27 6.27 4.93 5.33 2.51 7.12 1.48 8.74 3.50ZM6.1 12a5.9 5.9 0 1 0 11.8 0a5.9 5.9 0 1 0 -11.8 0ZM9.0 12a3.0 3.0 0 1 0 6.0 0a3.0 3.0 0 1 0 -6.0 0Z"/></svg>Tools</a></li>
+  </ul>
+</nav>
+
+<section class="block kitsintro" id="top">
+  <div class="wrap rise">
+    <span class="pill dev">In development</span>
+    <h1 class="d swaph">Swaps.</h1>
+    <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
+    <div class="swapjump"><a href="#engine">Engine</a><a href="#cooling">Cooling</a><a href="#suspension">Suspension</a><a href="#gearbox">Gearbox</a></div>
+  </div>
+</section>
+<section class="block product" id="engine">
+  <div class="wrap split">
+    <div class="rise">
+      <span class="kicker">Engine</span>
+      <h2 class="d">EZ36 flat six</h2>
+      <p class="lede">A 3.6 liter Subaru six, built to live in the back of a T2 Bay or T3 Vanagon.</p>
+      <div class="panels">
+        <div class="panel"><b>3.6L</b><p>Flat six</p></div>
+        <div class="panel"><b>256 hp</b><p>247 lb-ft stock</p></div>
+        <div class="panel"><b>~280 hp</b><p>About 270 lb-ft with headers and exhaust (our estimate)</p></div>
+      </div>
+      <ul class="specs">
+        <li>Intake manifold reversed, with the throttle body facing forward</li>
+        <li>Alternator on a custom bracket, tucked under the plenum</li>
+        <li>Stainless headers into a 911-style dual outlet muffler</li>
+        <li>Clean mil-spec harness with a compact interface box</li>
+      </ul>
+    </div>
+    <div class="media plate rise"><img width="1500" height="1000" src="../img/kit-engine.webp" alt="Vintage service manual style drawing of a flat six engine seen from the front, with a reversed intake manifold, throttle body facing forward and an alternator on a custom bracket" loading="lazy"></div>
+  </div>
+</section>
+<section class="block product" id="cooling">
+  <div class="wrap split rev">
+    <div class="rise">
+      <span class="kicker">Cooling</span>
+      <h2 class="d">Underbelly radiator</h2>
+      <p class="lede">Cooling for 300+HP, tucked under the bus.</p>
+      <div class="panels">
+        <div class="panel"><b>300+HP</b><p>Cooling</p></div>
+        <div class="panel"><b>2</b><p>Low-profile fans</p></div>
+        <div class="panel"><b>Stainless</b><p>Bent housing</p></div>
+      </div>
+      <ul class="specs">
+        <li>Full-size radiator with the A/C condenser stacked on top, first in the airflow</li>
+        <li>Built-in transmission and engine oil coolers</li>
+        <li>Whole stack enclosed in a bent stainless housing, between the frame rails</li>
+        <li>Flows forward into a sheet metal belly pan</li>
+        <li>Sealed scoop and road screen, with two low-profile fans pulling air down through the stack</li>
+      </ul>
+    </div>
+    <div class="media plate rise"><img width="1000" height="1432" src="../img/kit-underbelly.webp" alt="Vintage service manual style drawing of the underside of a VW bus, with a stainless housing and two fans between the frame rails, flowing forward into a belly pan with a screened intake mouth" loading="lazy"></div>
+  </div>
+</section>
+<section class="block product" id="suspension">
+  <div class="wrap split">
+    <div class="rise">
+      <span class="kicker">Suspension</span>
+      <h2 class="d">Bus “OEM+” <span class="nb">A-Arm</span></h2>
+      <p class="lede">Bolt-on Vanagon front suspension for the Bay.</p>
+      <div class="panels">
+        <div class="panel"><b>SLA</b><p>A-arm front suspension</p></div>
+        <div class="panel"><b>Bolt-in</b><p>Subframe</p></div>
+        <div class="panel"><b>Vanagon</b><p>Control arms and knuckles</p></div>
+      </div>
+      <ul class="specs">
+        <li>Vanagon control arms and knuckles on a bolt-in subframe</li>
+        <li>Radius rods on their own subframe section</li>
+        <li>Steering rack laid out like a Vanagon, with a bevel box</li>
+      </ul>
+    </div>
+    <div class="media plate rise"><img width="1500" height="1000" src="../img/kit-a-arm-t3.webp" alt="Vintage service manual style drawing of the front wheel arch of a blue and cream Bay Window bus with the wheel off, showing a stamped upper arm, boxed lower arm, coil spring and shock, steering knuckle and threaded radius rod on a bolt-in mounting plate" loading="lazy"></div>
+  </div>
+</section>
+<section class="block product" id="gearbox">
+  <div class="wrap split rev">
+    <div class="rise">
+      <span class="kicker">Gearbox</span>
+      <h2 class="d">Subaru + RGB</h2>
+      <p class="lede">Subaru gearboxes turned around for a rear-engine bus with Reversaru reduction gearboxes.</p>
+      <div class="panels">
+        <div class="panel"><b>4EAT</b><p>Four-speed automatic</p></div>
+        <div class="panel"><b>5MT</b><p>Five-speed manual</p></div>
+        <div class="panel"><b>1.19</b><p>RGB ratio, or 1:1</p></div>
+      </div>
+      <ul class="specs">
+        <li>4EAT four-speed automatic or 5MT five-speed manual</li>
+        <li>RGB at 1:1 or 1.19, so a 4.11 final drive stays 4.11 or becomes 4.89</li>
+        <li>Flat end plate replaces the AWD nose cone</li>
+      </ul>
+      <a class="tkask" href="../gear-calculator/" target="_blank" rel="noopener">Try your setup in the Bus Gear Calc →</a>
+    </div>
+    <div class="media plate rise"><img width="1500" height="1000" src="../img/kit-gearbox.webp" alt="Vintage service manual style side view of a Subaru 5 speed transmission with a flat black end plate, adjustable clocking plate and inboard portal axle unit, with labels" loading="lazy"></div>
+  </div>
+</section>
+<section class="block swapcta">
+  <div class="wrap rise"><a class="tkask" href="../?topic=Kits#contact">Ask about a swap →</a></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img width="272" height="128" src="../img/logo.svg" alt="micro.werks">
+    <a class="ig" href="https://www.instagram.com/micro.werks/" rel="me noopener" target="_blank">Instagram @micro.werks</a>
+    <span>San Diego, California · © 2026 micro.werks</span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
