@@ -96,6 +96,21 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 .tkc p{margin:0 20px 20px;font-size:16px;color:#dcd7cf}
 .tkspec{margin-top:30px;padding:clamp(22px,3vw,36px);background:var(--ink2);border:1px solid var(--line)}
 .tkspec ul{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px;margin-top:16px}
+.tkask{display:inline-block;margin-top:26px;color:var(--cyan);font-weight:700;font-size:18px}
+.tkask:hover{color:var(--paper)}
+.cform{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px;max-width:860px}
+.cform label{display:grid;gap:8px;font-weight:700;font-size:14px;letter-spacing:.04em;color:#dcd7cf}
+.cform .full{grid-column:1/-1}
+.cform input,.cform select,.cform textarea{width:100%;padding:15px 16px;background:var(--ink2);border:1px solid var(--line);border-radius:0;color:var(--paper);font:inherit;font-size:17px;font-weight:400;letter-spacing:0}
+.cform textarea{min-height:170px;resize:vertical}
+.cform input:focus,.cform select:focus,.cform textarea:focus{outline:2px solid var(--cyan);outline-offset:-1px}
+.cform .trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cform .btn{margin-top:0;border:0;cursor:pointer;font-family:inherit}
+.cform .btn:disabled{opacity:.6;cursor:wait}
+.cfoot{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:20px}
+.cmsg{font-size:17px;color:#dcd7cf}
+.cmsg.bad{color:#ffb3a0}
+@media(max-width:640px){.cform{grid-template-columns:1fr}}
 .tkspec li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
 @media (max-width:860px){.tk{grid-template-columns:1fr}.tkspec ul{grid-template-columns:repeat(2,1fr);gap:0 16px}}
 .kit{scroll-margin-top:130px;background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
@@ -158,6 +173,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
     <li class="hide-md"><a href="#gearbox">Gearbox</a></li>
     <li><a href="#solar">Solar</a></li>
     <li class="hide-sm"><a href="#merch">Merch</a></li>
+    <li class="hide-md"><a href="#contact">Contact</a></li>
     <li><a class="tools" href="#tools"><svg class="tcog" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.58 3.01 10.97 0.45 13.03 0.45 13.42 3.01 15.26 3.50 16.88 1.48 18.67 2.51 17.73 4.93 19.07 6.27 21.49 5.33 22.52 7.12 20.50 8.74 20.99 10.58 23.55 10.97 23.55 13.03 20.99 13.42 20.50 15.26 22.52 16.88 21.49 18.67 19.07 17.73 17.73 19.07 18.67 21.49 16.88 22.52 15.26 20.50 13.42 20.99 13.03 23.55 10.97 23.55 10.58 20.99 8.74 20.50 7.12 22.52 5.33 21.49 6.27 19.07 4.93 17.73 2.51 18.67 1.48 16.88 3.50 15.26 3.01 13.42 0.45 13.03 0.45 10.97 3.01 10.58 3.50 8.74 1.48 7.12 2.51 5.33 4.93 6.27 6.27 4.93 5.33 2.51 7.12 1.48 8.74 3.50ZM6.1 12a5.9 5.9 0 1 0 11.8 0a5.9 5.9 0 1 0 -11.8 0ZM9.0 12a3.0 3.0 0 1 0 6.0 0a3.0 3.0 0 1 0 -6.0 0Z"/></svg>Tools</a></li>
   </ul>
 </nav>
@@ -249,6 +265,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
         <li>3.6 flat six</li><li>4EAT or 5MT</li><li>Limited slip differential</li><li>SLA A-arm front suspension</li><li>HD front and rear sway bars</li><li>4-piston aluminum caliper disc brakes</li><li>Starlink</li><li>Custom solar</li><li>2K inverter</li><li>LiFePO4 battery bank</li><li>12V 20K BTU A/C</li><li>12V water heater</li><li>Propane furnace</li><li>Propane cooktop</li><li>Microwave</li><li>Air fryer/oven</li><li>Shower and toilet</li>
       </ul>
     </div>
+    <a class="tkask rise" href="#contact">Ask about a build →</a>
   </div>
 </section>
 
@@ -342,6 +359,24 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   </div>
 </section>
 
+<section class="block" id="contact">
+  <div class="wrap">
+    <div class="rise">
+      <h2 class="d">Contact.</h2>
+      <p class="lede">Tell us about your bus.</p>
+    </div>
+    <form class="cform rise" id="cform" action="https://pear.metahack.io/api/micro-werks/contact" method="post">
+      <label>Name<input name="name" autocomplete="name" maxlength="120" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" maxlength="200" required></label>
+      <label class="full">About<select name="topic"><option>Turn key</option><option>Kits</option><option>Solar</option><option selected>Something else</option></select></label>
+      <label class="full">Message<textarea name="message" maxlength="4000" required></textarea></label>
+      <label class="trap" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+      <input type="hidden" name="started">
+      <div class="cfoot"><button class="btn" type="submit">Send</button><span class="cmsg" id="cmsg" role="status"></span></div>
+    </form>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <img src="img/logo.svg" alt="micro.werks">
@@ -353,6 +388,26 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+</script>
+<script>
+(()=>{
+  const f=document.getElementById('cform'),m=document.getElementById('cmsg'),b=f.querySelector('button');
+  f.started.value=Date.now();
+  document.querySelector('.tkask').addEventListener('click',()=>{f.topic.value='Turn key'});
+  f.addEventListener('submit',async e=>{
+    e.preventDefault();
+    b.disabled=true;m.className='cmsg';m.textContent='Sending…';
+    try{
+      const r=await fetch(f.action,{method:'POST',body:new URLSearchParams(new FormData(f))});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(j.error||'');
+      f.reset();f.started.value=Date.now();m.textContent='Thanks. Your message is on its way.';
+    }catch(x){
+      m.className='cmsg bad';m.textContent=x.message||'That did not go through. Please try again.';
+    }
+    b.disabled=false;
+  });
+})();
 </script>
 </body>
 </html>
