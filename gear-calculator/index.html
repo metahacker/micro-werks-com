@@ -383,7 +383,7 @@ tr.cur td.band{background:color-mix(in srgb,var(--c) 45%,#d6ebc9)}
 .cmp{zoom:var(--uz,1);max-width:calc(min(92vw,calc(1100px*var(--k,1)))/var(--uz,1))!important}
 .route{zoom:var(--rz,1);max-width:calc(92vw/var(--rz,1))!important;width:1100px;box-sizing:border-box}
 .rcards{grid-auto-columns:calc(var(--cw)*var(--k,1));column-gap:0}
-@media(min-width:701px){.route{width:auto;max-width:none!important;margin-left:0;margin-right:0;padding:0 14px}.rcards{width:var(--vpw,100vw);grid-auto-columns:minmax(0,1fr)}}
+@media(min-width:701px){.route{width:auto;max-width:none!important;margin-left:0;margin-right:0;padding:0 14px}.rcards{position:sticky;left:0;width:var(--vpw,100vw);min-width:0;grid-auto-columns:minmax(0,1fr)}}
 .rout2{margin-top:14px}
 .zoomctl{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:calc(max(16px,env(safe-area-inset-bottom)) + 4px);z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px}
 .zoomctl button{all:unset;cursor:pointer;box-sizing:border-box;width:52px;height:52px;border-radius:50%;background:#1d1d1b;color:#fffaf0;font:600 30px/52px "Jost",sans-serif;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.35),inset 0 0 0 2px rgba(255,255,255,.12);-webkit-tap-highlight-color:transparent;user-select:none}
@@ -409,9 +409,12 @@ html{touch-action:pan-x pan-y}
 .dnscale{grid-column:1/-1;position:relative;height:13px;font-size:10px;opacity:.7}.dnscale span{position:absolute}
 .seg.dnG{margin:0 0 8px}
 /* stock car comparison: full-width block at the bottom of the page */
-.dns{margin-bottom:18px}
-.dngrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
-.dngrid .sec{border:1px solid var(--ln)!important;border-radius:10px!important;container-type:inline-size}
+.dns{margin-bottom:0}
+.dngrid{display:grid;grid-auto-flow:column;grid-auto-columns:calc(var(--cw)*var(--k,1));padding:0 14px 20px;width:max-content;min-width:var(--vpw,100vw);box-sizing:border-box}
+.dngrid:empty{display:none}
+.dngrid .sec{zoom:var(--k,1);border-top:1px solid var(--ln)!important;container-type:inline-size}
+.dngrid .sec:first-child{border-left:1px solid var(--ln)!important}
+.dngrid.one{width:var(--vpw,100vw);grid-auto-columns:minmax(0,1fr)}.dngrid.one .sec{zoom:var(--rz,1)}
 .dnctl{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0 0 10px}.dnctl .seg{margin:0;flex:1 1 200px}.dnctl .seg.dnG{display:flex}.dnctl .seg.dnG button{flex:1;font:600 12px/1 inherit;padding:7px 6px}
 .dnc .dnA,.dnc .dnB,.dnc .dnC{min-width:0}
 .dnA{margin-bottom:12px}
@@ -430,8 +433,8 @@ html{touch-action:pan-x pan-y}
 .gd i{display:grid;place-items:center;width:15px;height:15px;border-radius:50%;background:rgba(0,0,0,.07);color:var(--mu);font:700 9px/1 "Jost",sans-serif}.gd i.on{color:#fff}
 .dnair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,250px);gap:10px;align-items:center;margin-top:9px;padding:8px 10px;background:#fbfaf6;border:1px solid var(--ln);border-radius:8px}
 .dnair .dnsub{margin-bottom:6px}.dnwall{display:block;width:100%;height:auto}.dnwall .w{font:600 9.5px "Jost",sans-serif;fill:#65625b}
-.roof{display:flex;flex-wrap:wrap;align-items:center;gap:4px}.roof span{font-size:11px;font-weight:700;margin-right:3px}.roof .chip.on{background:color-mix(in srgb,var(--c) 30%,#fff)}
-@media(max-width:420px){.dnair{grid-template-columns:1fr}.dnwall{max-width:240px}}
+.roof{display:grid;gap:4px}.roof span{font-size:11px;font-weight:700}.roof div{display:flex;gap:4px}.roof .chip{flex:1 1 0;padding:3px 2px;text-align:center}.roof .chip.on{background:color-mix(in srgb,var(--c) 30%,#fff)}
+@container (max-width:520px){.dnair{grid-template-columns:1fr}.dnwall{max-width:240px}}
 @container (max-width:380px){.dnk>div{grid-template-columns:minmax(0,1fr)}.dnk .dg,.dnk .gds{justify-self:start}.gd{justify-content:flex-start}}
 .dnhd{font-size:12.5px;font-weight:700;margin:0 0 2px}
 .dnsub{font-size:11px;color:var(--mu);margin:0 0 7px}
@@ -507,6 +510,7 @@ html{touch-action:pan-x pan-y}
 <div class="rcards" id="rcards"></div>
 <div class="pin"><section class="route rout2" id="routeOut" hidden></section></div>
 <div class="pin"><section class="route dns" id="donors" hidden></section></div>
+<div class="dngrid" id="dngrid"></div>
 <div class="pin"><div class="foot">Speed = rpm × tire circumference ÷ (gear × R&amp;P × hub reduction × RGB / drop box), less converter slip. Ratios come from the vetted Bus Gear reference. Every number is editable. Your setups live in the page link: bookmark it to keep them, or Copy link to share.</div></div>
 <div class="zoomctl" aria-label="Zoom"><button id="zIn" aria-label="Zoom in">+</button><button id="zR" class="zr" aria-label="Reset zoom">100%</button><button id="zOut" aria-label="Zoom out">−</button></div>
 <div class="sheet" id="sheet" hidden><div class="sheetIn" role="dialog" aria-modal="true">
@@ -933,7 +937,7 @@ const ART={split:'split',ebay:'bay',lbay:'lbay',van:'t3',syn:'syncro',kombi1:'sp
 let artN=0;
 // Vintage brochure-style paintings (art/<kind>.webp); the flat SVG below stays as the fallback.
 function busArt(kind,c){return `<img class="vbus" src="vbus-${ART_FILES.includes(kind)?kind:'bay'}.webp?v=1031m" alt="" loading="lazy" onerror="this.outerHTML=busArtSVG('${kind}','${c}')">`;}
-const ART_FILES=['split','bay','bayHigh','t3','syncro','za','lbay'];
+const ART_FILES=['split','bay','bayHigh','bayTop','t3','syncro','za','lbay'];
 function busArtSVG(kind,c){
   const id='ba'+(artN++),ink='#2b2a26',cream='#fffaf0',glass='#a8d5da';
   const win=(x,y,w,h)=>`M${x+4} ${y} h${w-8} a4 4 0 0 1 4 4 v${h-8} a4 4 0 0 1 -4 4 h-${w-8} a4 4 0 0 1 -4 -4 v-${h-8} a4 4 0 0 1 4 -4 Z`;
@@ -951,7 +955,7 @@ function busArtSVG(kind,c){
      glass:['M49 54 L58 24 L80 24 L80 54 Z','M86 24 h36 v28 h-36 Z','M128 24 h36 v28 h-36 Z','M170 24 h29 a3 3 0 0 1 3 3 v22 a3 3 0 0 1 -3 3 h-29 Z'],
      wheels:[78,182],r:15,extra:`<path d="M44 66 H208" stroke="${ink}" stroke-width="3"/><rect x="39" y="81" width="17" height="10" rx="2" fill="${ink}"/><rect x="200" y="81" width="13" height="10" rx="2" fill="${ink}"/>`},
   };
-  S.syncro={...S.t3,r:18,lift:7,extra:S.t3.extra+`<rect x="56" y="98" width="40" height="4" rx="2" fill="${ink}"/>`};
+  S.bayTop=S.bayHigh;S.syncro={...S.t3,r:18,lift:7,extra:S.t3.extra+`<rect x="56" y="98" width="40" height="4" rx="2" fill="${ink}"/>`};
   S.za={...S.t3,extra:S.t3.extra+`<rect x="39" y="56" width="9" height="20" rx="2" fill="${ink}"/><path d="M41 60h5M41 64h5M41 68h5M41 72h5" stroke="${cream}" stroke-width="1.5"/>`};
   const k=S[kind]||S.bay,lift=k.lift||0;
   // whitewall tyres
@@ -971,7 +975,7 @@ function busArtSVG(kind,c){
 // atomic starburst ornament
 function starburst(r,c,n=8){let p='';for(let i=0;i<n;i++){const a=i*Math.PI*2/n,l=i%2?r*.55:r;p+=`<line x1="${r}" y1="${r}" x2="${(r+Math.cos(a)*l).toFixed(1)}" y2="${(r+Math.sin(a)*l).toFixed(1)}" stroke="${c}" stroke-width="2.4" stroke-linecap="round"/>`;}
   return `<svg width="${r*2}" height="${r*2}" viewBox="0 0 ${r*2} ${r*2}" aria-hidden="true">${p}<circle cx="${r}" cy="${r}" r="${r*.16}" fill="${c}"/></svg>`;}
-const artFor=s=>{const a=ART[s.bus.g]||'bay';return s.roof&&(a==='bay'||a==='lbay')?'bayHigh':a;};
+const artFor=s=>{const a=ART[s.bus.g]||'bay';return s.roof?(a==='bay'?'bayTop':a==='lbay'?'bayHigh':a):a;};
 
 /* ---------- column markup ---------- */
 const famOf=s=>FAM[s.fam];
@@ -1059,7 +1063,7 @@ function cmpRender(){return;const el=$('#cmp');if(!el)return;if(S.set.length<2){
   h+=`</svg><div class="cmptab"><table><thead><tr><th></th>${S.set.map((s,i)=>`<th><i class="tg" style="background:${col(i)}">${letter(i)}</i></th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr><td>${r.k}</td>${r.v.map(v=>`<td>${v==null?'—':Array.isArray(v)?(v[0]===v[1]?r.fmt(v[0]):`${r.fmt(v[0])}–${r.fmt(v[1])}`):r.fmt(v)}${r.u&&!['hp','lb-ft'].includes(r.u)&&r.u!==u?'':''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   el.innerHTML=h;}
 function renderAll(){sizeCols();
-  {const DN=$('#donors');DN.hidden=!S.set.length;DN.innerHTML=S.set.length?donorsHTML():'';}
+  {const DN=$('#donors'),DG=$('#dngrid');DN.hidden=!S.set.length;DN.innerHTML=S.set.length?donorsHTML():'';DG.innerHTML=S.set.length?donorCols():'';DG.classList.toggle('one',S.set.length===1);}
   $('#board').classList.toggle('is-empty',!S.set.length);
   if(!S.set.length){$('#board').innerHTML=`<div class="empty"><div class="parade">${['split','bay','lbay','t3','syncro'].map((k,i)=>busArt(k,COLS[i])).join('')}</div><h2>Compare bus gearing, side by side</h2><p>Pick a bus, then its gearbox, gears and tires. Add as many setups as you like and scroll sideways to compare them.</p><button class="btn pri big" data-act="add">＋ Add your first setup</button><p class="hint">Or load one from Examples at the top.</p></div>`;
     $$('#units button').forEach(b=>b.classList.toggle('on',b.dataset.u===S.u));$$('.autoC').forEach(x=>x.checked=S.auto);update();cmpRender();routeRender();return;}
@@ -1448,7 +1452,8 @@ function dnPick(s,d){const {cars,rest,exact}=dnRank(s),Wb=busLb(s),row=(x,top)=>
     return `<button class="dnp${x.id===d.id?' on':''}" data-act="dnp" data-id="${x.id}"><b>${esc(x.n)}${top?'<small>closest</small>':''}</b><em>${fmt(Math.round(dnLb(x)/10)*10)} lb</em><span>${esc(x.y)} · ${x.tr} · ${esc(x.en)}</span><span>${p?`${p}% ${dw>0?'heavier':'lighter'} than bus`:'same as bus'}</span></button>`;};
   return `<div class="dnh">${exact||!['tdi','18t'].includes(dnFam(s.eng))?'Stock cars with this engine, closest weight first':'No stock car here has exactly this engine. Cars with the same engine family, closest weight first'}</div><div class="dnpick">${cars.map((x,j)=>row(x,!j)).join('')}</div>${rest.length?`<details class="dnmore"${rest.some(x=>x.id===d.id)?' open':''}><summary>Other cars with related engines</summary><div class="dnpick">${rest.map(x=>row(x)).join('')}</div></details>`:''}`;}
 function donorsHTML(){return `<div class="rhead"><div class="kick">Stock car</div><h2>Compared to the stock car.</h2><p>How hard your bus works against the car its engine came from. Pick a car, a load, a grade and a speed.</p></div>
-  <div class="dngrid">${S.set.map((s,i)=>{const c=col(i);return `<section class="sec donor" id="dn-${s.id}" data-i="${i}" style="--c:${c}"><h3><i class="tg" style="background:${c}">${letter(i)}</i><span>${esc(s.name||busLabel(s))}</span><span class="x">${dnTag(s)}</span></h3><div data-o="dn"></div></section>`;}).join('')}</div>`;}
+`;}
+function donorCols(){return S.set.map((s,i)=>{const c=col(i);return `<section class="sec donor" id="dn-${s.id}" data-i="${i}" style="--c:${c}"><h3><i class="tg" style="background:${c}">${letter(i)}</i><span>${esc(s.name||busLabel(s))}</span><span class="x">${dnTag(s)}</span></h3><div data-o="dn"></div></section>`;}).join('');}
 // Small pictures for the four stat boxes. Bus in its setup color, car in the same tan as the speed rows.
 const DNCAR='#9a907c';
 function dnRing(lb,ld,c){const arc=(r,l,k)=>{const C=2*Math.PI*r,on=Math.min(1,Math.max(0,l))*C;return `<circle cx="26" cy="26" r="${r}" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="6"/><circle cx="26" cy="26" r="${r}" fill="none" stroke="${k}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${on.toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 26 26)"/>`;};
@@ -1506,7 +1511,7 @@ function donorHTML(s,i){const d=dnOf(s),c=col(i);
      <div><div><div class="k">Spare hp · ${where}</div><div class="v">${hp(Math.max(0,avB-G.nb))}</div><div class="d same">${esc(short)}: ${hp(Math.max(0,avD-G.na))}</div></div>${dnMini(Math.max(0,avB-G.nb),Math.max(0,avD-G.na),c)}</div>
      <div><div><div class="k">Steepest grade in top</div><div class="v">${fmt(tgB,1)}<small>%</small></div><div class="d same">${esc(short)}: ${fmt(tgD,1)}%</div></div>${dnRamp(tgB,tgD,c)}</div>
      <div><div><div class="k">6% grade at ${V}</div><div class="v">${H.b?ord(H.b.i):'No'}</div><div class="d same">${esc(short)}: ${H.a?ord(H.a.i):'no'}</div></div><div class="gds">${dnGearDots(n,H.b?H.b.i:-1,c)}${dnGearDots(dg,H.a?H.a.i:-1,DNCAR)}</div></div></div>
-   <div class="dnair"><div><div class="dnhd">The air it has to push</div><div class="dnsub">Each shape's area is its drag area. ${fmt(G.L.cB/G.L.cD,1)}× the drag of the ${esc(short)}. At ${V} ${u}, air takes ${hp(G.L.b.air)} hp from the bus and ${hp(G.L.a.air)} from the ${esc(short)}.</div><div class="roof"><span>Roof</span>${roofs}</div></div>${dnWall(s,G.L.cB,G.L.cD,c,short)}</div></div>
+   <div class="dnair"><div><div class="dnhd">The air it has to push</div><div class="dnsub">Each shape's area is its drag area. ${fmt(G.L.cB/G.L.cD,1)}× the drag of the ${esc(short)}. At ${V} ${u}, air takes ${hp(G.L.b.air)} hp from the bus and ${hp(G.L.a.air)} from the ${esc(short)}.</div><div class="roof"><span>Roof</span><div>${roofs}</div></div></div>${dnWall(s,G.L.cB,G.L.cD,c,short)}</div></div>
    <div class="dnC"><p class="dnline"><b>At ${V} ${u} ${at}, in top gear, the bus turns ${R10(rB)} rpm and feels ${dnFeel(lB)}.</b> The ${esc(d.s)} turned ${R10(rD)} and felt ${dnFeel(lD)}. The bus needs ${hp(G.nb)} hp and the engine can make ${hp(avB)} there, so ${pct(lB)}. The ${esc(short)} needs ${hp(G.na)} and can make ${hp(avD)}, so ${pct(lD)}. That makes the bus ${fmt(ratio,1)}× as loaded. ${fixLine}</p>
    <p class="dnline"><b>On a 6% grade at ${V}:</b> the bus ${say(H.b,'b')}. The ${esc(short)} ${say(H.a,'a')}. ${hillLine}</p>
    ${ref===sp.length-1?'':`<p class="dnline"><b>At ${top.v} ${u}:</b> air takes over. On a flat road the bus would be at ${(()=>{const t=dnAt(s,d,Wb,Wd,fromU(top.v),0);return `${t.b?pct(t.b.l):'its limit'} against ${t.a?pct(t.a.l):'its limit'} for the ${esc(short)}, needing ${fmt(Math.round(t.nb))} hp to its ${fmt(Math.round(t.na))}`;})()}.</p>`}
@@ -1837,7 +1842,7 @@ B.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)retu
   if(a==='rm'){S.set.splice(i,1);delete LV[s.id];}
   if(a==='base'){S.set.splice(i,1);S.set.unshift(s);renderAll();scrollToCol(0);toast(`${s.name||'That setup'} is now the baseline (A). The others compare to it.`);return;}
   renderAll();});
-$('#donors').addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)return;const P=t.closest('[data-i]'),s=P&&S.set[+P.dataset.i];if(!s)return;const a=t.dataset.act,l=+t.dataset.l;
+$('#dngrid').addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)return;const P=t.closest('[data-i]'),s=P&&S.set[+P.dataset.i];if(!s)return;const a=t.dataset.act,l=+t.dataset.l;
   if(a==='dnl')s.dnL=l;else if(a==='dnp')s.dn=t.dataset.id;else if(a==='dng')s.dnG=l;else if(a==='dnv')s.dnV=l;else if(a==='dnr'){s.roof=l;return renderAll();}else return;update();});
 function addSetup(){if(WPN){W=WPN;WPN=null;$('#sheet').hidden=false;fitSheet();drawWiz();return;}const last=S.set[S.set.length-1];const c=mkSetup(last?{g:last.bus.g,y:last.bus.y,e:last.bus.e}:{});if(!last)c._need={y:1,g:1,e:1};openWiz(-1,0,c);}
 function scrollToCol(i){const c=$$('.col',B)[i];if(c)scrollTo({left:c.getBoundingClientRect().left+scrollX-12,behavior:'smooth'});}
