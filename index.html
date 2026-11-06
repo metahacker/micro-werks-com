@@ -96,7 +96,7 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 /* gallery */
 .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:44px}
 .gallery img,.gallery video{display:block;width:100%;height:100%;object-fit:cover}
-.g1{grid-column:span 7;aspect-ratio:16/10}.g2{grid-column:span 5}.g3{grid-column:span 4;aspect-ratio:1}.g4{grid-column:span 4}.g5{grid-column:span 4}.g6{grid-column:span 8;aspect-ratio:3/2;object-position:50% 100%}.g7{grid-column:span 4;aspect-ratio:3/4}
+.g1{grid-column:span 7;aspect-ratio:16/10}.g2{grid-column:span 5}.g3{grid-column:span 4;aspect-ratio:1}.g4{grid-column:span 4}.g5{grid-column:span 4}.g6{grid-column:span 12;aspect-ratio:21/9;object-position:50% 100%}
 
 /* merch */
 .merch{background:var(--cyan);color:var(--ink);border:0}
@@ -116,7 +116,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   .split.rev .media{order:0}
   .panels{grid-template-columns:1fr}
   .kits{grid-template-columns:1fr}
-  .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 12;aspect-ratio:4/3}.g7{grid-column:span 12}
+  .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 12;aspect-ratio:4/3}.g4{aspect-ratio:3/4}
 }
 @media (prefers-reduced-motion:no-preference){
   .rise{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease}
@@ -242,10 +242,9 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
       <img class="g1 rise" src="img/bay-desert.jpg" alt="Orange VW Bay Window bus on the desert floor at sunset" loading="lazy">
       <img class="g2 rise" src="img/camp-night.jpg" alt="VW buses at a campout at night" loading="lazy">
       <img class="g3 rise" src="img/walnut.jpg" alt="Walnut cabinetry inside a Vanagon" loading="lazy">
-      <img class="g4 rise" src="img/ez36.jpg" alt="Subaru EZ36 flat six engine" loading="lazy">
+      <video class="g4 rise" src="img/t3-undercarriage.mp4" poster="img/t3-undercarriage-poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="Walk-around under our Vanagon on the lift: engine, brakes, steering and suspension"></video>
       <img class="g5 rise" src="img/westy-trees.jpg" alt="Blue Vanagon Westfalia in the shop with a micro.werks plate" loading="lazy">
       <img class="g6 rise" src="img/westy-cliff.jpg" alt="Blue Vanagon Westfalia parked below a wooded hillside" loading="lazy">
-      <video class="g7 rise" src="img/t3-undercarriage.mp4" poster="img/t3-undercarriage-poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="Walk-around under our Vanagon on the lift: engine, brakes, steering and suspension"></video>
     </div>
   </div>
 </section>
