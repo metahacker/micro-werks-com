@@ -29,6 +29,8 @@ img{display:block;max-width:100%}
 /* nav */
 nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:linear-gradient(#111011ee,#11101100)}
 nav .mark{width:96px}
+.only-md{display:none}
+@media(max-width:1180px){nav .hide-md{display:none}nav .only-md{display:list-item}}
 @media(min-width:861px){nav .mark{width:190px}}
 nav ul{display:flex;gap:26px;list-style:none;font-weight:800;font-size:16px;letter-spacing:.14em;text-transform:uppercase}
 nav a{text-decoration:none;opacity:.85}
@@ -86,7 +88,7 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 
 /* kits */
 .kits{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
-.kit{background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
+.kit{scroll-margin-top:130px;background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
 .kit::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;background:var(--cyan);opacity:.08;transform:rotate(20deg)}
 .kit h3{font-size:clamp(2.4rem,4.6vw,4.2rem);margin:16px 0 14px}
 .kit ul{list-style:none;margin-top:16px}
@@ -137,8 +139,12 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
 <nav>
   <a href="#top" aria-label="micro.werks home"><img class="mark" src="img/logo.svg" alt="micro.werks"></a>
   <ul>
+    <li class="only-md"><a href="#kits">Kits</a></li>
+    <li class="hide-md"><a href="#cooling">Cooling</a></li>
+    <li class="hide-md"><a href="#suspension">Suspension</a></li>
+    <li class="hide-md"><a href="#engine">Engine</a></li>
+    <li class="hide-md"><a href="#gearbox">Gearbox</a></li>
     <li><a href="#solar">Solar</a></li>
-    <li class="hide-sm"><a href="#kits">Kits</a></li>
     <li class="hide-sm"><a href="#merch">Merch</a></li>
     <li><a class="tools" href="#tools"><svg class="tcog" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.58 3.01 10.97 0.45 13.03 0.45 13.42 3.01 15.26 3.50 16.88 1.48 18.67 2.51 17.73 4.93 19.07 6.27 21.49 5.33 22.52 7.12 20.50 8.74 20.99 10.58 23.55 10.97 23.55 13.03 20.99 13.42 20.50 15.26 22.52 16.88 21.49 18.67 19.07 17.73 17.73 19.07 18.67 21.49 16.88 22.52 15.26 20.50 13.42 20.99 13.03 23.55 10.97 23.55 10.58 20.99 8.74 20.50 7.12 22.52 5.33 21.49 6.27 19.07 4.93 17.73 2.51 18.67 1.48 16.88 3.50 15.26 3.01 13.42 0.45 13.03 0.45 10.97 3.01 10.58 3.50 8.74 1.48 7.12 2.51 5.33 4.93 6.27 6.27 4.93 5.33 2.51 7.12 1.48 8.74 3.50ZM6.1 12a5.9 5.9 0 1 0 11.8 0a5.9 5.9 0 1 0 -11.8 0ZM9.0 12a3.0 3.0 0 1 0 6.0 0a3.0 3.0 0 1 0 -6.0 0Z"/></svg>Tools</a></li>
   </ul>
@@ -217,7 +223,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
       <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
     </div>
     <div class="kits">
-      <article class="kit rise">
+      <article class="kit rise" id="cooling">
         <img class="kimg" src="img/kit-underbelly.webp" alt="Painted illustration of a vintage bus on a coastal road, cut away to show a radiator under the floor with cool air flowing in and warm air trailing out" loading="lazy">
         <span class="kicker">Cooling</span>
         <h3 class="d">Underbelly radiator kit</h3>
@@ -229,7 +235,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
           <li>Sealed scoop and road screen, with two low-profile fans pulling air down through the stack</li>
         </ul>
       </article>
-      <article class="kit rise">
+      <article class="kit rise" id="suspension">
         <img class="kimg" src="img/kit-a-arm-t3.webp" alt="Painted illustration of an orange vintage bus carving a coastal curve, cut away at the nose to show a coil spring, A-arms and an upright radiator" loading="lazy">
         <span class="kicker">Suspension</span>
         <h3 class="d">Bus A-Arm T3</h3>
@@ -237,6 +243,28 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
         <ul>
           <li>Vanagon control arms and knuckles on a bolt-in subframe</li>
           <li>Upright radiator and matched A/C condenser in the subframe</li>
+        </ul>
+      </article>
+      <article class="kit rise" id="engine">
+        <img class="kimg" src="img/kit-engine.webp" alt="Painted illustration of a flat six engine on a shop bench with stainless headers, a dual outlet muffler and a tidy braided wiring harness" loading="lazy">
+        <span class="kicker">Engine</span>
+        <h3 class="d">EZ36 flat six</h3>
+        <p>A 3.6 liter Subaru six, built to live in the back of a Bay.</p>
+        <ul>
+          <li>256 hp and 247 lb-ft stock, about 280 hp and 270 lb-ft with headers and exhaust (our estimate)</li>
+          <li>Stainless headers into a 911-style dual outlet muffler</li>
+          <li>Clean mil-spec harness with a compact interface box</li>
+        </ul>
+      </article>
+      <article class="kit rise" id="gearbox">
+        <img class="kimg" src="img/kit-gearbox.webp" alt="Painted illustration of two Subaru gearboxes on a shop bench, each with a reduction gearbox bolted on" loading="lazy">
+        <span class="kicker">Gearbox</span>
+        <h3 class="d">Subaru + RGB</h3>
+        <p>Subaru gearboxes turned around for a rear-engine bus with Reversaru reduction gearboxes.</p>
+        <ul>
+          <li>4EAT four-speed automatic or 5MT five-speed manual</li>
+          <li>RGB at 1:1 or 1.19, so a 4.11 final drive stays 4.11 or becomes 4.89</li>
+          <li>Try your setup in the <a href="gear-calculator/" target="_blank" rel="noopener" style="color:var(--cyan);font-weight:700">Bus Gear Calc</a></li>
         </ul>
       </article>
     </div>
