@@ -188,6 +188,7 @@ input[type=checkbox]{accent-color:var(--teal);width:17px;height:17px}
 .gpick{margin-top:0;padding:8px 10px;background:var(--pn);border:1px solid var(--ln);border-radius:8px}
 .gpick .ghd{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:5px}
 .gpick .glist{display:flex;flex-direction:column;gap:5px}
+.gpick .ghs{font-size:11px;font-weight:700;color:var(--tx);border-bottom:1px solid var(--ln);padding-bottom:3px;margin:9px 0 5px}.gpick .ghd+.ghs{margin-top:0}
 .gpick .gch{display:block;width:100%;text-align:left;white-space:normal;padding:6px 10px;font-weight:500;color:var(--mu);line-height:1.3}
 .gpick .gch b{color:var(--tx);font-weight:700}
 .note{font-size:12.5px;border-radius:8px;padding:7px 10px;margin:0 0 8px;background:var(--pn2);color:var(--tx);border:1px solid var(--ln)}
@@ -1663,7 +1664,11 @@ function gearChoices(d,j){const fk=d.fam;if(!fk||!FAM[fk])return [];const M=new 
   return [...M.values()].sort((a,b)=>(b.st.length>0)-(a.st.length>0)||b.r-a.r);}
 function gpickHTML(d,j){if(j==null||j<0||j>=d.gears.length)return '';const cs=gearChoices(d,j),cur=+d.gears[j],fn=(FAM[d.fam]||{}).n||'Custom gearbox';
   if(!cs.length)return `<div class="gpick"><div class="ghd">${ord(j)} gear · ${esc(fn)}</div><div class="note" style="margin:0">No known ratios for this gear. Type your own.</div></div>`;
-  return `<div class="gpick"><div class="ghd">${ord(j)} gear · ${esc(fn)}</div><div class="glist">${cs.map(c=>`<button type="button" class="chip gch${Math.abs(cur-c.r)<1e-4?' on':''}" data-gr="${c.r}" data-gj="${j}"><b>${c.r}</b> · ${esc([...c.st,...c.af].join(', '))}</button>`).join('')}</div></div>`;}
+  // Stock first, then aftermarket, each tallest to shortest. A ratio sold both ways stays with stock.
+  const uniq=A=>[...new Set(A)],af=c=>uniq(c.af.map(x=>x.replace(/^aftermarket\s*·\s*/i,''))),st=c=>uniq(c.st.map(x=>x.replace(/^stock\s+/i,''))),num=r=>Math.abs(r*100-Math.round(r*100))<1e-6?(+r).toFixed(2):String(r),
+    row=(c,txt)=>`<button type="button" class="chip gch${Math.abs(cur-c.r)<1e-4?' on':''}" data-gr="${c.r}" data-gj="${j}"><b>${num(c.r)}</b> · ${esc(txt)}</button>`,
+    S0=cs.filter(c=>c.st.length),A0=cs.filter(c=>!c.st.length),grp=(t,n,h)=>n?`<div class="ghs">${t}</div><div class="glist">${h}</div>`:'';
+  return `<div class="gpick"><div class="ghd">${ord(j)} gear · ${esc(fn)}</div>${grp('Stock',S0.length,S0.map(c=>row(c,st(c).join(', ')+(c.af.length?` · also ${af(c).join(', ')}`:''))).join(''))}${grp('Aftermarket',A0.length,A0.map(c=>row(c,af(c).join(', '))).join(''))}</div>`;}
 function showGPick(j){if(!W)return;W.gj=j;$$('.gin input',$('#shBody')).forEach(x=>x.classList.toggle('on',+x.dataset.j===j));const el=$('#shBody [data-o=gpick]');if(el)el.innerHTML=gpickHTML(W.d,j);wizLive();}
 // the picker closes after a pick, on a tap anywhere outside the gear boxes and picker, or on Enter in a gear box
 function hideGPick(){if(!W||W.gj==null)return;W.gj=null;$$('.gin input',$('#shBody')).forEach(x=>x.classList.remove('on'));const el=$('#shBody [data-o=gpick]');if(el)el.innerHTML='';wizLive();}
