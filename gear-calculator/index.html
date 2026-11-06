@@ -1308,7 +1308,7 @@ function update(){
   if(!S.set.length){renderTabs();save();return;}
   const tm=tachMax(),sm=spdMax(),base=S.set[0],KB=kpis(base);
   const rpms=[];const maxRed=Math.max(...S.set.map(s=>s.red));for(let r=1000;r<=maxRed;r+=500)rpms.push(r);
-  const spds=S.u==='kmh'?[30,50,70,90,100,110,120,130,140]:[25,35,45,55,60,65,70,75,80,85];
+  const spds=S.u==='kmh'?[20,30,50,70,90,100,110,120,130,140]:[15,25,35,45,55,60,65,70,75,80,85];
   S.set.forEach((s,i)=>{
     const C=$('#col-'+s.id);if(!C)return;const o=k=>C.querySelector(`[data-o="${k}"]`),c=col(i),n=s.gears.length;
     const {g,r,m,top}=liveOf(s),f=speedoF(s),D=diam(s),t=tireD(s.tire);if(running)logShift(s,g);const SH=shiftsOf(s);
