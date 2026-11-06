@@ -1459,7 +1459,14 @@ const yrHit=(b,y)=>b.yr&&y>=b.yr[0]&&y<=b.yr[1];
 const fullYr=t=>/^\d\d$/.test(t)?(+t>=30?1900:2000)+ +t:+t;
 let W=null;// {i: index or -1 for new, d: draft setup, step, mk, fam}
 const clone=o=>JSON.parse(JSON.stringify(o));
-function openWiz(i,step,draft){W={i,d:draft||clone(S.set[i]),step:step||0};W.fam=W.d.fam;W.mk=(FAM[W.d.fam]||{}).mk||'VW';
+// A dialog dismissed by clicking outside, ✕ or Esc keeps its draft: Add, or ✎ on that setup, brings it back. Cancel throws it away.
+let WPN=null;const WPK=new WeakMap();
+// Gear edits show live on the column, so Cancel puts the setup back as it was when the dialog opened
+function cancelWiz(){const o=W&&W.orig,i=W?W.i:-1,dirty=o&&S.set[i]&&JSON.stringify(o)!==JSON.stringify(S.set[i]);if(dirty)S.set[i]=o;closeWiz();if(dirty)renderAll();}
+function parkWiz(){if(!W)return;if(W.i<0)WPN=W;else if(S.set[W.i])WPK.set(S.set[W.i],W);closeWiz();}
+function openWiz(i,step,draft){const held=i>=0&&S.set[i]?WPK.get(S.set[i]):null;
+  if(held){WPK.delete(S.set[i]);W=held;W.i=i;if(step!=null)W.step=step;}
+  else{W={i,d:draft||clone(S.set[i]),step:step||0,orig:i>=0&&S.set[i]?clone(S.set[i]):null};W.fam=W.d.fam;W.mk=(FAM[W.d.fam]||{}).mk||'VW';}
   $('#sheet').hidden=false;fitSheet();drawWiz();}
 // Keep the sheet inside the visible area when the iPhone keyboard is up.
 function fitSheet(){const v=window.visualViewport;if(!v)return;const s=$('#sheet');s.style.setProperty('--vvh',v.height+'px');s.style.top=v.offsetTop+'px';s.style.height=v.height+'px';}
@@ -1730,12 +1737,12 @@ $('#shBody').addEventListener('input',e=>{if(!W)return;const d=W.d,k=e.target.da
   wizLive();});
 $('#shFoot').addEventListener('click',e=>{const t=e.target.closest('[data-nav]');if(!t||!W)return;const n=t.dataset.nav;
   if(W.step===0&&W.yearDraft&&W.yearDraft!==W.d.bus.y){if(!applyYear(W.yearDraft))return;}
-  if(n==='cancel')return closeWiz();if(n==='done')return commitWiz();
+  if(n==='cancel')return cancelWiz();if(n==='done')return commitWiz();
   if(+n>0&&blocked(W.d,W.step))return;W.step=Math.max(0,Math.min(LAST,W.step+ +n));if(W.step===5&&!FAM[W.fam]){W.fam=W.d.fam;}if(W.step===4&&!W.mk)W.mk='VW';drawWiz();});
 $('#shTitle').addEventListener('click',e=>{const t=e.target.closest('[data-step]');if(!t||!W||W.d._need)return;W.step=+t.dataset.step;if(W.step===5&&!FAM[W.fam])W.fam=W.d.fam;if(W.step===4&&!W.mk)W.mk='VW';drawWiz();});
-$('#shClose').onclick=closeWiz;
-$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeWiz();});
-addEventListener('keydown',e=>{if(e.key==='Escape'&&W)closeWiz();});
+$('#shClose').onclick=parkWiz;
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')parkWiz();});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&W)parkWiz();});
 
 /* ---------- board events ---------- */
 const B=$('#board');
@@ -1760,7 +1767,7 @@ B.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)retu
   if(a==='rm'){S.set.splice(i,1);delete LV[s.id];}
   if(a==='base'){S.set.splice(i,1);S.set.unshift(s);renderAll();scrollToCol(0);toast(`${s.name||'That setup'} is now the baseline (A). The others compare to it.`);return;}
   renderAll();});
-function addSetup(){const last=S.set[S.set.length-1];const c=mkSetup(last?{g:last.bus.g,y:last.bus.y,e:last.bus.e}:{});if(!last)c._need={y:1,g:1,e:1};openWiz(-1,0,c);}
+function addSetup(){if(WPN){W=WPN;WPN=null;$('#sheet').hidden=false;fitSheet();drawWiz();return;}const last=S.set[S.set.length-1];const c=mkSetup(last?{g:last.bus.g,y:last.bus.y,e:last.bus.e}:{});if(!last)c._need={y:1,g:1,e:1};openWiz(-1,0,c);}
 function scrollToCol(i){const c=$$('.col',B)[i];if(c)scrollTo({left:c.getBoundingClientRect().left+scrollX-12,behavior:'smooth'});}
 addEventListener('scroll',()=>requestAnimationFrame(markTab),{passive:true});
 const setVW=()=>document.documentElement.style.setProperty('--vpw',document.documentElement.clientWidth+'px');setVW();addEventListener('resize',setVW);
@@ -1825,7 +1832,7 @@ function save(){try{const o={...S,mph:Math.round(S.mph*10)/10};history.replaceSt
 function valid(o){return o&&o.v===3&&Array.isArray(o.set)&&o.set.every(s=>s&&s.bus&&Array.isArray(s.gears)&&s.gears.length);}
 function load(){try{if(location.hash.length>2){const o=JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1)))));if(valid(o))return o;}}catch(e){}
   return null;}
-$('#clear').onclick=()=>{if(S.set.length&&!confirm('Remove all setups and start over?'))return;stopRun();S.set=[];LV={};RUNLOG={};renderAll();};
+$('#clear').onclick=()=>{if(S.set.length&&!confirm('Remove all setups and start over?'))return;stopRun();S.set=[];WPN=null;LV={};RUNLOG={};renderAll();};
 // Copy link tries a short link first: iMessage drops the #part of a long link, which is where the setups live.
 // Safari only allows a clipboard write during the tap, so the link is handed over as a promise.
 const shortLink=()=>{save();const h=location.hash.slice(1);if(!h)return Promise.resolve(location.href);
