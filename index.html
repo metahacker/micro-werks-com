@@ -30,7 +30,7 @@ img{display:block;max-width:100%}
 nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:linear-gradient(#111011ee,#11101100)}
 nav .mark{width:96px}
 .only-md{display:none}
-@media(max-width:1180px){nav .hide-md{display:none}nav .only-md{display:list-item}}
+@media(max-width:1240px){nav .hide-md{display:none}nav .only-md{display:list-item}}
 @media(min-width:861px){nav .mark{width:190px}}
 nav ul{display:flex;gap:26px;list-style:none;font-weight:800;font-size:16px;letter-spacing:.14em;text-transform:uppercase}
 nav a{text-decoration:none;opacity:.85}
@@ -88,6 +88,16 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 
 /* kits */
 .kits{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+.solarwide{margin-top:34px;display:block}.solarwide img{display:block;width:100%;height:auto}.solarwide .fine{margin-top:12px}
+.tk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.tkc{background:var(--ink2);border:1px solid var(--line)}
+.tkc img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.tkc h3{font-size:clamp(2rem,3.4vw,3.2rem);margin:18px 20px 6px}
+.tkc p{margin:0 20px 20px;font-size:16px;color:#dcd7cf}
+.tkspec{margin-top:30px;padding:clamp(22px,3vw,36px);background:var(--ink2);border:1px solid var(--line)}
+.tkspec ul{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px;margin-top:16px}
+.tkspec li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
+@media (max-width:860px){.tk{grid-template-columns:1fr}.tkspec ul{grid-template-columns:repeat(2,1fr);gap:0 16px}}
 .kit{scroll-margin-top:130px;background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
 .kit::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;background:var(--cyan);opacity:.08;transform:rotate(20deg)}
 .kit h3{font-size:clamp(2.4rem,4.6vw,4.2rem);margin:16px 0 14px}
@@ -141,6 +151,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   <a href="#top" aria-label="micro.werks home"><img class="mark" src="img/logo.svg" alt="micro.werks"></a>
   <ul>
     <li class="only-md"><a href="#kits">Kits</a></li>
+    <li class="hide-sm"><a href="#turn-key">Turn Key</a></li>
     <li class="hide-md"><a href="#cooling">Cooling</a></li>
     <li class="hide-md"><a href="#suspension">Suspension</a></li>
     <li class="hide-md"><a href="#engine">Engine</a></li>
@@ -213,6 +224,31 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
       <p class="fine">348 watts total. Grade-A SunPower cells. Marine, walk-on construction. All three are current-matched, so they wire together cleanly.</p>
     </div>
     <div class="media rise"><img src="img/solar-westy.jpg" alt="Light blue Westfalia with solar panels on the roof, parked in the woods" loading="lazy"></div>
+  </div>
+  <div class="wrap rise solarwide">
+    <img src="img/solar-poptops.webp" alt="Painted illustration of two bay window Westfalias with their pop-tops raised and solar panels covering the whole roof" loading="lazy">
+    <p class="fine">Full-roof solar for the T2a and T2b Westfalia pop-top.</p>
+  </div>
+</section>
+
+<section class="block" id="turn-key">
+  <div class="wrap">
+    <div class="rise">
+      <span class="pill dev">In development</span>
+      <h2 class="d">Turn key.</h2>
+      <p class="lede">Complete buses, built by us and ready to go.</p>
+    </div>
+    <div class="tk">
+      <article class="tkc rise"><img src="img/tk-t2-hightop.webp" alt="Painted side view of a blue and cream T2 high-top bus with solar and a satellite antenna on the roof" loading="lazy"><h3 class="d">T2 High-top</h3><p>Bay window bus with a tall high-top roof.</p></article>
+      <article class="tkc rise"><img src="img/tk-t3-2wd.webp" alt="Painted side view of a light blue T3 Westfalia with solar and a satellite antenna on the roof" loading="lazy"><h3 class="d">T3 2WD</h3><p>Vanagon Westfalia with rear-wheel drive.</p></article>
+      <article class="tkc rise"><img src="img/tk-t3-awd.webp" alt="Painted side view of a lifted T3 all-wheel drive Westfalia on a desert track" loading="lazy"><h3 class="d">T3 AWD</h3><p>Lifted all-wheel drive Westfalia.</p></article>
+    </div>
+    <div class="tkspec rise">
+      <span class="kicker">Every build</span>
+      <ul>
+        <li>3.6 flat six</li><li>4EAT or 5MT</li><li>Limited slip differential</li><li>Starlink</li><li>Custom solar</li><li>2K inverter</li><li>LiFePO4 battery bank</li><li>12V 20K BTU A/C</li><li>12V water heater</li><li>Propane furnace</li><li>Propane cooktop</li><li>Microwave</li><li>Air fryer/oven</li><li>Shower and toilet</li>
+      </ul>
+    </div>
   </div>
 </section>
 
