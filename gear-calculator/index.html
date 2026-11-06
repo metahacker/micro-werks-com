@@ -182,7 +182,10 @@ input[type=checkbox]{accent-color:var(--teal);width:17px;height:17px}
 .gin label{display:grid;gap:2px;font-size:10.5px;color:var(--mu);text-align:center;font-weight:700}
 .gin input{background:#fff;border:1px solid var(--ln);border-radius:9px;padding:6px 2px;text-align:center;width:100%;min-width:0;font-size:14px}
 .gin input.on{border-color:var(--vw);box-shadow:0 0 0 2px var(--vw)}
-.gpick{margin-top:7px;padding:8px 10px;background:var(--pn);border:1px solid var(--ln);border-radius:8px}
+#shBody [data-o=gpick]{height:216px;margin-top:7px;overflow-y:auto;overscroll-behavior:contain}
+#shBody [data-o=gpick]:empty{display:flex;align-items:center;justify-content:center;border:1px dashed var(--ln);border-radius:8px;box-sizing:border-box;color:var(--mu);font-size:12.5px}
+#shBody [data-o=gpick]:empty:before{content:"Tap a gear to see known ratios"}
+.gpick{margin-top:0;padding:8px 10px;background:var(--pn);border:1px solid var(--ln);border-radius:8px}
 .gpick .ghd{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:5px}
 .gpick .glist{display:flex;flex-direction:column;gap:5px}
 .gpick .gch{display:block;width:100%;text-align:left;white-space:normal;padding:6px 10px;font-weight:500;color:var(--mu);line-height:1.3}
