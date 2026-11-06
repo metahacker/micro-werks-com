@@ -99,6 +99,8 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 .product .panels{margin-top:26px;gap:10px}
 .product .panel{padding:16px 12px}
 .product .panel b{font-size:clamp(1.7rem,2.3vw,2.3rem)}
+#cooling .split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+#cooling .media.plate img{aspect-ratio:auto}
 .media.plate img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;clip-path:none}
 .tk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
 .tkc{background:var(--ink2);border:1px solid var(--line)}
@@ -156,7 +158,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   .split,.split.rev{grid-template-columns:1fr}
   .split.rev .media{order:0}
   .panels{grid-template-columns:1fr}
-  .product .split,.product .split.rev{grid-template-columns:1fr}
+  .product .split,.product .split.rev,#cooling .split{grid-template-columns:1fr}
   .kits{grid-template-columns:1fr}
   .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 12;aspect-ratio:4/3}.g4{aspect-ratio:3/4}
 }
@@ -294,11 +296,12 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
       <ul class="specs">
         <li>Full-size radiator with the A/C condenser stacked on top, first in the airflow</li>
         <li>Built-in transmission and engine oil coolers</li>
-        <li>Whole stack enclosed in a bent stainless housing</li>
+        <li>Whole stack enclosed in a bent stainless housing, between the frame rails</li>
+        <li>Flows forward into a sheet metal belly pan</li>
         <li>Sealed scoop and road screen, with two low-profile fans pulling air down through the stack</li>
       </ul>
     </div>
-    <div class="media plate rise"><img src="img/kit-underbelly.webp" alt="Vintage service manual style drawing of the stainless underbelly radiator housing seen from below, with two flat fans, a screened scoop and airflow arrows" loading="lazy"></div>
+    <div class="media plate rise"><img src="img/kit-underbelly.webp" alt="Vintage service manual style drawing of the underside of a VW bus, with a stainless housing and two fans between the frame rails, flowing forward into a belly pan with a screened intake mouth" loading="lazy"></div>
   </div>
 </section>
 <section class="block product" id="suspension">
@@ -339,7 +342,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
         <li>Clean mil-spec harness with a compact interface box</li>
       </ul>
     </div>
-    <div class="media plate rise"><img src="img/kit-engine.webp" alt="Vintage service manual style drawing of a flat six engine seen from the front, with a reversed intake manifold, throttle body facing forward, alternator on a custom bracket, looping 911-style headers and a curved oval dual outlet muffler" loading="lazy"></div>
+    <div class="media plate rise"><img src="img/kit-engine.webp" alt="Vintage service manual style drawing of a flat six engine seen from the front, with a reversed intake manifold, throttle body facing forward and an alternator on a custom bracket" loading="lazy"></div>
   </div>
 </section>
 <section class="block product" id="gearbox">
