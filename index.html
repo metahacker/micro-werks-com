@@ -43,6 +43,8 @@ nav a.tools:hover .tcog{transform:rotate(90deg)}
 /* hero */
 .hero{min-height:100svh;display:grid;place-items:center;padding:110px 24px 48px;position:relative;isolation:isolate}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 38%,#55c8e81f,transparent 60%)}
+.uc{display:block;width:min(936px,92vw);height:auto;margin:0 auto clamp(16px,3vh,32px);image-rendering:pixelated}
+@media(max-width:720px){.uc{image-rendering:auto}}
 .hero .logo{width:min(1000px,88vw,92svh);margin-inline:auto;filter:drop-shadow(0 30px 60px #000a)}
 .hero .tag{margin-top:clamp(24px,4vh,48px);text-align:center;font-size:clamp(3.4rem,min(13.5vw,14.5svh),12.5rem)}
 .hero .tag span{color:var(--cyan)}
@@ -185,6 +187,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
 
 <header class="hero" id="top">
   <div>
+    <img class="uc" src="img/under-construction.gif" width="468" height="60" alt="Under construction. Best viewed in Netscape 2027.">
     <img class="logo" src="img/logo.svg" alt="micro.werks">
     <h1 class="tag d">Old buses.<br><span>New tricks.</span></h1>
     <p class="sub">VW bus engineering · San Diego, California</p>
