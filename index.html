@@ -87,7 +87,17 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 .fine{margin-top:18px;font-size:15px;color:var(--mute);max-width:56ch}
 
 /* kits */
-.kits{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+.kitsintro{padding-bottom:0}.kitsintro + section.block{border-top:0}
+.specs{list-style:none;margin-top:22px}
+.specs li{padding:11px 0;border-top:1px solid var(--line);font-size:17px;color:#dcd7cf}
+.product .split{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.product .split.rev{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
+.product h2.d{font-size:clamp(3rem,5.6vw,5.6rem)}
+.product .nb,.product .panel b{white-space:nowrap}
+.product .panels{margin-top:26px;gap:10px}
+.product .panel{padding:16px 12px}
+.product .panel b{font-size:clamp(1.7rem,2.3vw,2.3rem)}
+.media.plate img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;clip-path:none}
 .solarwide{margin-top:34px;display:block}.solarwide img{display:block;width:100%;height:auto}.solarwide .fine{margin-top:12px}
 .tk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
 .tkc{background:var(--ink2);border:1px solid var(--line)}
@@ -113,13 +123,7 @@ h2.d{font-size:clamp(3.6rem,11vw,10rem);margin:18px 0 26px}
 @media(max-width:640px){.cform{grid-template-columns:1fr}}
 .tkspec li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
 @media (max-width:860px){.tk{grid-template-columns:1fr}.tkspec ul{grid-template-columns:repeat(2,1fr);gap:0 16px}}
-.kit{scroll-margin-top:130px;background:var(--ink2);border:1px solid var(--line);padding:clamp(24px,3vw,40px);position:relative;overflow:hidden}
-.kit::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;background:var(--cyan);opacity:.08;transform:rotate(20deg)}
-.kit h3{font-size:clamp(2.4rem,4.6vw,4.2rem);margin:16px 0 14px}
-.kit ul{list-style:none;margin-top:16px}
 .alltools{display:inline-block;margin-left:18px;font-weight:800;font-size:15px;color:var(--cyan);text-decoration:none}.alltools:hover{text-decoration:underline}
-.kimg{display:block;width:100%;height:auto;margin:0 0 22px;border:1px solid var(--line)}
-.kit li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;color:#dcd7cf}
 
 /* gallery */
 .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:44px}
@@ -151,6 +155,7 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   .split,.split.rev{grid-template-columns:1fr}
   .split.rev .media{order:0}
   .panels{grid-template-columns:1fr}
+  .product .split,.product .split.rev{grid-template-columns:1fr}
   .kits{grid-template-columns:1fr}
   .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 12;aspect-ratio:4/3}.g4{aspect-ratio:3/4}
 }
@@ -269,61 +274,96 @@ footer .ig{color:var(--cyan);font-weight:800;text-decoration:none;letter-spacing
   </div>
 </section>
 
-<section class="block" id="kits">
-  <div class="wrap">
-    <div class="rise">
-      <span class="pill dev">In development</span>
-      <h2 class="d">Kits for the Bay</h2>
-      <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
-    </div>
-    <div class="kits">
-      <article class="kit rise" id="cooling">
-        <img class="kimg" src="img/kit-underbelly.webp" alt="Vintage service manual style drawing of the stainless underbelly radiator housing seen from below, with two flat fans, a screened scoop and airflow arrows" loading="lazy">
-        <span class="kicker">Cooling</span>
-        <h3 class="d">Underbelly radiator</h3>
-        <p>Cooling for 300+HP, tucked under the bus.</p>
-        <ul>
-          <li>Full-size radiator with the A/C condenser stacked on top, first in the airflow</li>
-          <li>Built-in transmission and engine oil coolers</li>
-          <li>Whole stack enclosed in a bent stainless housing</li>
-          <li>Sealed scoop and road screen, with two low-profile fans pulling air down through the stack</li>
-        </ul>
-      </article>
-      <article class="kit rise" id="suspension">
-        <img class="kimg" src="img/kit-a-arm-t3.webp" alt="Vintage service manual style drawing of the front suspension assembly with cradle, coil springs, steering rack, bevel box and an upright radiator, tires shown as dashed outlines" loading="lazy">
-        <span class="kicker">Suspension</span>
-        <h3 class="d">Bus “OEM+” A-Arm</h3>
-        <p>Bolt-on Vanagon front suspension for the Bay, with an upgraded cooling pack.</p>
-        <ul>
-          <li>Vanagon control arms and knuckles on a bolt-in subframe</li>
-          <li>Upright radiator and matched A/C condenser in the subframe</li>
-        </ul>
-      </article>
-      <article class="kit rise" id="engine">
-        <img class="kimg" src="img/kit-engine.webp" alt="Vintage service manual style drawing of a flat six engine with stainless headers, a dual outlet muffler and a neat wiring harness" loading="lazy">
-        <span class="kicker">Engine</span>
-        <h3 class="d">EZ36 flat six</h3>
-        <p>A 3.6 liter Subaru six, built to live in the back of a Bay.</p>
-        <ul>
-          <li>256 hp and 247 lb-ft stock, about 280 hp and 270 lb-ft with headers and exhaust (our estimate)</li>
-          <li>Stainless headers into a 911-style dual outlet muffler</li>
-          <li>Clean mil-spec harness with a compact interface box</li>
-        </ul>
-      </article>
-      <article class="kit rise" id="gearbox">
-        <img class="kimg" src="img/kit-gearbox.webp" alt="Vintage service manual style drawing of a Subaru automatic gearbox from the side, with the reduction gearbox cover off to show its two gears" loading="lazy">
-        <span class="kicker">Gearbox</span>
-        <h3 class="d">Subaru + RGB</h3>
-        <p>Subaru gearboxes turned around for a rear-engine bus with Reversaru reduction gearboxes.</p>
-        <ul>
-          <li>4EAT four-speed automatic or 5MT five-speed manual</li>
-          <li>RGB at 1:1 or 1.19, so a 4.11 final drive stays 4.11 or becomes 4.89</li>
-          <li>Try your setup in the <a href="gear-calculator/" target="_blank" rel="noopener" style="color:var(--cyan);font-weight:700">Bus Gear Calc</a></li>
-        </ul>
-      </article>
-    </div>
+<div id="kits">
+<section class="block kitsintro">
+  <div class="wrap rise">
+    <span class="pill dev">In development</span>
+    <h2 class="d">Kits for the Bay</h2>
+    <p class="lede">Bolt-on parts we are building for our own buses first. They come to you once they are proven on the road.</p>
   </div>
 </section>
+<section class="block product" id="cooling">
+  <div class="wrap split">
+    <div class="rise">
+      <span class="kicker">Cooling</span>
+      <h2 class="d">Underbelly radiator</h2>
+      <p class="lede">Cooling for 300+HP, tucked under the bus.</p>
+      <div class="panels">
+        <div class="panel"><b>300+HP</b><p>Cooling</p></div>
+        <div class="panel"><b>2</b><p>Low-profile fans</p></div>
+        <div class="panel"><b>Stainless</b><p>Bent housing</p></div>
+      </div>
+      <ul class="specs">
+        <li>Full-size radiator with the A/C condenser stacked on top, first in the airflow</li>
+        <li>Built-in transmission and engine oil coolers</li>
+        <li>Whole stack enclosed in a bent stainless housing</li>
+        <li>Sealed scoop and road screen, with two low-profile fans pulling air down through the stack</li>
+      </ul>
+    </div>
+    <div class="media plate rise"><img src="img/kit-underbelly.webp" alt="Vintage service manual style drawing of the stainless underbelly radiator housing seen from below, with two flat fans, a screened scoop and airflow arrows" loading="lazy"></div>
+  </div>
+</section>
+<section class="block product" id="suspension">
+  <div class="wrap split rev">
+    <div class="rise">
+      <span class="kicker">Suspension</span>
+      <h2 class="d">Bus “OEM+” <span class="nb">A-Arm</span></h2>
+      <p class="lede">Bolt-on Vanagon front suspension for the Bay, with an upgraded cooling pack.</p>
+      <div class="panels">
+        <div class="panel"><b>SLA</b><p>A-arm front suspension</p></div>
+        <div class="panel"><b>Bolt-in</b><p>Subframe</p></div>
+        <div class="panel"><b>Vanagon</b><p>Control arms and knuckles</p></div>
+      </div>
+      <ul class="specs">
+        <li>Vanagon control arms and knuckles on a bolt-in subframe</li>
+        <li>Radius rods on their own subframe section</li>
+        <li>Steering rack laid out like a Vanagon, with a bevel box</li>
+        <li>Upright radiator and matched A/C condenser in the subframe</li>
+      </ul>
+    </div>
+    <div class="media plate rise"><img src="img/kit-a-arm-t3.webp" alt="Vintage service manual style drawing of the front suspension assembly with cradle, coil springs, steering rack, bevel box and an upright radiator, tires shown as dashed outlines" loading="lazy"></div>
+  </div>
+</section>
+<section class="block product" id="engine">
+  <div class="wrap split">
+    <div class="rise">
+      <span class="kicker">Engine</span>
+      <h2 class="d">EZ36 flat six</h2>
+      <p class="lede">A 3.6 liter Subaru six, built to live in the back of a Bay.</p>
+      <div class="panels">
+        <div class="panel"><b>3.6L</b><p>Flat six</p></div>
+        <div class="panel"><b>256 hp</b><p>247 lb-ft stock</p></div>
+        <div class="panel"><b>~280 hp</b><p>About 270 lb-ft with headers and exhaust (our estimate)</p></div>
+      </div>
+      <ul class="specs">
+        <li>Stainless headers into a 911-style dual outlet muffler</li>
+        <li>Clean mil-spec harness with a compact interface box</li>
+      </ul>
+    </div>
+    <div class="media plate rise"><img src="img/kit-engine.webp" alt="Vintage service manual style drawing of a flat six engine with stainless headers, a dual outlet muffler and a neat wiring harness" loading="lazy"></div>
+  </div>
+</section>
+<section class="block product" id="gearbox">
+  <div class="wrap split rev">
+    <div class="rise">
+      <span class="kicker">Gearbox</span>
+      <h2 class="d">Subaru + RGB</h2>
+      <p class="lede">Subaru gearboxes turned around for a rear-engine bus with Reversaru reduction gearboxes.</p>
+      <div class="panels">
+        <div class="panel"><b>4EAT</b><p>Four-speed automatic</p></div>
+        <div class="panel"><b>5MT</b><p>Five-speed manual</p></div>
+        <div class="panel"><b>1.19</b><p>RGB ratio, or 1:1</p></div>
+      </div>
+      <ul class="specs">
+        <li>4EAT four-speed automatic or 5MT five-speed manual</li>
+        <li>RGB at 1:1 or 1.19, so a 4.11 final drive stays 4.11 or becomes 4.89</li>
+      </ul>
+      <a class="tkask" href="gear-calculator/" target="_blank" rel="noopener">Try your setup in the Bus Gear Calc →</a>
+    </div>
+    <div class="media plate rise"><img src="img/kit-gearbox.webp" alt="Vintage service manual style drawing of a Subaru automatic gearbox from the side, with the reduction gearbox cover off to show its two gears" loading="lazy"></div>
+  </div>
+</section>
+</div>
 
 <section class="block" id="builds">
   <div class="wrap">
