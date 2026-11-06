@@ -776,19 +776,23 @@ function mkSetup(o={}){
   if(o.roof)s.roof=o.roof;
   if(o.eng!=null){engPreset(s,o.eng);s.cust.eng=1;}
   if(o.red)s.red=o.red;
+  if(o.pk)s.pk=o.pk.slice();if(o.cond)s.cond=o.cond;
+  for(const k of ['shift','lo','hi'])if(o[k])s[k]=o[k];
   return s;}
+// The Westy: AHU mTDI, Giles pump, 520 injectors, hybrid VNT, intercooler, 3 in open exhaust. 230 lb-ft is the build target; the hp is an estimate, not a dyno number.
+const WESTY={eng:6,pk:[160,3900,230,2500],red:4800,shift:4300,lo:2000,hi:3600};
 const EX=[
  {n:'Stock T2b Late Bay vs 4EAT swap',set:[{name:'Stock \'78 2.0',g:'lbay',y:1978},{name:'4EAT + RGB',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.444}]},
  {grp:"Alex's buses"},
- {n:"'82 Westy TDI: Guard 4.13 vs stock DK",note:"A = the Transaxle Engineering DK 091 with Guard 4.13 R&P, 1.22 3rd, .85 4th on 215/70R16. B = the stock DK box on 185R14C.",
-  set:[{name:'Guard 4.13 DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',gears:[3.78,2.06,1.22,0.85],fd:4.13,vname:'DK 091 built with Guard 4.13 R&P',tire:'215/70R16',eng:6,mine:1},
-       {name:'Stock DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',eng:6}]},
+ {n:"'82 Westy TDI: Guard 4.13 vs stock DK",note:"A = the Transaxle Engineering DK 091 with Guard 4.13 R&P, 1.22 3rd, .85 4th on 215/70R16. B = the stock DK box on 185R14C. Both run the AHU mTDI: Giles pump, 520 injectors, hybrid VNT, intercooler, 3 in open exhaust. About 230 lb-ft by target, about 160 hp by estimate, not dyno numbers.",
+  set:[{name:'Guard 4.13 DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',gears:[3.78,2.06,1.22,0.85],fd:4.13,vname:'DK 091 built with Guard 4.13 R&P',tire:'215/70R16',...WESTY,mine:1},
+       {name:'Stock DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',...WESTY}]},
  {n:"'78 Riviera: 4EAT 4.11 vs 4.89 (RGB 1.19)",note:"EZ36 + 4EAT on a 4.11 final drive with 215/70R15 rear and 215/65R15 front: Reversaru RGB at 1:1 (4.11) vs the 1.19 gears (4.11 × 1.19 = 4.89). Try the Grapevine, Big Bear or Mountain Springs loaded at 65.",
-  set:[{name:'4EAT 4.11 (RGB 1:1)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,eng:53,tire:'215/70R15',front:'215/65R15'},{name:'4EAT 4.89 (RGB 1.19)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:53,tire:'215/70R15',front:'215/65R15',mine:1}]},
+  set:[{name:'4EAT 4.11 (RGB 1:1)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,eng:53,tire:'215/70R15',front:'215/65R15',cond:'tuned'},{name:'4EAT 4.89 (RGB 1.19)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:53,tire:'215/70R15',front:'215/65R15',cond:'tuned',mine:1}]},
  {n:"'78 Riviera: 4EAT RGB 1:1 vs 1.19 vs 3-gear kit",note:"EZ36 + 4EAT three ways: Reversaru RGB with 1:1 gears, RGB with 1.19 gears (4.11 becomes 4.89), and the 3-gear kit on its required 4.44.",
-  set:[{name:'4EAT + RGB 1:1',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.444,eng:53,tire:'215/70R15',front:'215/65R15'},{name:'4EAT + RGB 1.19',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:53,tire:'215/70R15',front:'215/65R15'},{name:'4EAT + 3-gear kit',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'kit',eng:53,tire:'215/70R15',front:'215/65R15'}]},
+  set:[{name:'4EAT + RGB 1:1',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.444,eng:53,tire:'215/70R15',front:'215/65R15',cond:'tuned'},{name:'4EAT + RGB 1.19',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:53,tire:'215/70R15',front:'215/65R15',cond:'tuned'},{name:'4EAT + 3-gear kit',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'kit',eng:53,tire:'215/70R15',front:'215/65R15',cond:'tuned'}]},
  {n:"'71 high-top: EZ36 + 915 vs stock 002",note:"A = EZ36 + the 1986 USDM 915/73 that CMS built (stock /73 ratios, 8:31), 215/70R15 rear and 215/65R15 front, with the high-top set to +18 in. B = the stock '71 002.",
-  set:[{name:"EZ36 + '86 915/73",g:'ebay',y:1971,box:'porsche-915-73',eng:53,tire:'215/70R15',front:'215/65R15',roof:18,mine:1},{name:"Stock '71 002",g:'ebay',y:1971}]},
+  set:[{name:"EZ36 + '86 915/73",g:'ebay',y:1971,box:'porsche-915-73',eng:53,tire:'215/70R15',front:'215/65R15',cond:'tuned',roof:18,mine:1},{name:"Stock '71 002",g:'ebay',y:1971}]},
  {n:"'69 Single Cab: Rancho 002 vs stock",note:"A = the Rancho 002: 4.86 R&P, stock 1.26 3rd, 0.89 4th, 225/75R15 rear and 205/70R15 front. B = a stock '69.",
   set:[{name:'Rancho 002',g:'ebay',y:1969,box:'bay-002-1968-71-1600',gears:[3.8,2.06,1.26,0.89],fd:4.86,vname:'Rancho 002 build',tire:'225/75R15',front:'205/70R15',eng:2,mine:1},{name:"Stock '69",g:'ebay',y:1969}]},
  {n:'All four, side by side',set:'all'},
