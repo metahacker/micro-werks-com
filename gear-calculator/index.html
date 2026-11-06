@@ -64,9 +64,9 @@ input[type=checkbox]{accent-color:var(--teal);width:17px;height:17px}
 .arrows .btn{padding:2px 11px;box-shadow:none}
 @media(max-width:700px){.arrows{display:none}.drive{grid-template-columns:auto minmax(0,1fr) auto auto;gap:8px}.drive>label[for]{display:none}.drive output{min-width:0;font-size:16px}#run{padding:6px 11px}#run .lg{display:none}.drive .chk{font-size:12.5px}.hero{min-height:120px}.hero .stars{display:none}}
 /* board */
-.board{display:grid;grid-auto-flow:column;grid-auto-columns:var(--cw);grid-template-rows:repeat(9,auto);column-gap:16px;row-gap:14px;padding:16px 14px 28px;width:max-content;min-width:var(--vpw,100vw);box-sizing:border-box}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:var(--cw);grid-template-rows:repeat(8,auto);column-gap:16px;row-gap:14px;padding:16px 14px 28px;width:max-content;min-width:var(--vpw,100vw);box-sizing:border-box}
 @media(max-width:700px){:root{--cw:calc(100vw - 38px)}}
-.col{grid-row:1/span 9;display:grid;grid-template-rows:subgrid;min-width:0}
+.col{grid-row:1/span 8;display:grid;grid-template-rows:subgrid;min-width:0}
 /* desktop: scale every column (gauges, text, charts) so the loaded setups fill ~90% of the window */
 @media(min-width:701px){.board{grid-auto-columns:calc(var(--cw)*var(--k,1));column-gap:calc(16px*var(--k,1))}.col,.addcol,.rcard{zoom:var(--k,1)}}
 @supports not (grid-template-rows:subgrid){.col{display:flex;flex-direction:column;gap:14px}}
@@ -383,6 +383,8 @@ tr.cur td.band{background:color-mix(in srgb,var(--c) 45%,#d6ebc9)}
 .cmp{zoom:var(--uz,1);max-width:calc(min(92vw,calc(1100px*var(--k,1)))/var(--uz,1))!important}
 .route{zoom:var(--rz,1);max-width:calc(92vw/var(--rz,1))!important;width:1100px;box-sizing:border-box}
 .rcards{grid-auto-columns:calc(var(--cw)*var(--k,1));column-gap:0}
+@media(min-width:701px){.route{width:auto;max-width:none!important;margin-left:0;margin-right:0;padding:0 14px}.rcards{width:var(--vpw,100vw);grid-auto-columns:minmax(0,1fr)}}
+.rout2{margin-top:14px}
 .zoomctl{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:calc(max(16px,env(safe-area-inset-bottom)) + 4px);z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px}
 .zoomctl button{all:unset;cursor:pointer;box-sizing:border-box;width:52px;height:52px;border-radius:50%;background:#1d1d1b;color:#fffaf0;font:600 30px/52px "Jost",sans-serif;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.35),inset 0 0 0 2px rgba(255,255,255,.12);-webkit-tap-highlight-color:transparent;user-select:none}
 .zoomctl button:active{transform:scale(.94)}.zoomctl button[aria-disabled=true]{opacity:.35;cursor:default}.zoomctl button[aria-disabled=true]:active{transform:none}
@@ -406,6 +408,31 @@ html{touch-action:pan-x pan-y}
 .dndial i{position:absolute;top:-4px;width:3px;height:15px;margin-left:-1px;background:#fff;border-radius:2px;box-shadow:0 0 0 1px #1d1d1b}
 .dnscale{grid-column:1/-1;position:relative;height:13px;font-size:10px;opacity:.7}.dnscale span{position:absolute}
 .seg.dnG{margin:0 0 8px}
+/* stock car comparison: full-width block at the bottom of the page */
+.dns{margin-bottom:18px}
+.dngrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:12px}
+.dngrid .sec{border:1px solid var(--ln)!important;border-radius:10px!important;container-type:inline-size}
+.dnctl{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0 0 10px}.dnctl .seg{margin:0;flex:1 1 200px}.dnctl .seg.dnG{display:flex}.dnctl .seg.dnG button{flex:1;font:600 12px/1 inherit;padding:7px 6px}
+.dnc .dnA,.dnc .dnB,.dnc .dnC{min-width:0}
+.dnA{margin-bottom:12px}
+@container (min-width:720px){.dnc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:18px;align-items:start}.dnctl,.dnC{grid-column:1/-1}.dnA{grid-column:1;grid-row:2;margin:0}.dnB{grid-column:2;grid-row:2}}
+.dnscore .w{grid-column:1/-1;font-size:11px;opacity:.82;margin-top:3px}
+.dpw{margin:0 0 8px}.dph{display:flex;gap:8px;align-items:baseline;font-size:11.5px;margin-bottom:2px}.dph b{font-size:12.5px}.dph span{color:var(--mu);font-variant-numeric:tabular-nums}.dph em{margin-left:auto;font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+.dptr{position:relative}.dpb{display:flex;gap:2px;height:20px}
+.dpb i{display:grid;place-items:center;min-width:3px;font:700 11px/1 "Jost",sans-serif;font-variant-numeric:tabular-nums;overflow:hidden}
+.dpb i:first-child{border-radius:4px 0 0 4px}.dpb i:last-child{border-radius:0 4px 4px 0}
+.dpb .t,.dpl .t{background:#c4951a;color:#1d1d1b}.dpb .a,.dpl .a{background:#2a74b8;color:#fff}.dpb .h,.dpl .h{background:#c8502a;color:#fff}
+.dpb .s,.dpl .s{background:repeating-linear-gradient(135deg,#fff 0 3px,#d9d5ca 3px 5px);color:var(--tx);box-shadow:inset 0 0 0 1px var(--ln)}
+.dptr u{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2.5px solid #1d1d1b;text-decoration:none}
+.dpl{margin:0 0 4px}.dpl i{border-radius:3px}
+.dnk>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center}
+.dg{display:block}.gds{display:grid;gap:4px}.gd{display:flex;gap:2px;justify-content:flex-end}
+.gd i{display:grid;place-items:center;width:15px;height:15px;border-radius:50%;background:rgba(0,0,0,.07);color:var(--mu);font:700 9px/1 "Jost",sans-serif}.gd i.on{color:#fff}
+.dnair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,250px);gap:10px;align-items:center;margin-top:9px;padding:8px 10px;background:#fbfaf6;border:1px solid var(--ln);border-radius:8px}
+.dnair .dnsub{margin-bottom:6px}.dnwall{display:block;width:100%;height:auto}.dnwall .w{font:600 9.5px "Jost",sans-serif;fill:#65625b}
+.roof{display:flex;flex-wrap:wrap;align-items:center;gap:4px}.roof span{font-size:11px;font-weight:700;margin-right:3px}.roof .chip.on{background:color-mix(in srgb,var(--c) 30%,#fff)}
+@media(max-width:420px){.dnair{grid-template-columns:1fr}.dnwall{max-width:240px}}
+@container (max-width:380px){.dnk>div{grid-template-columns:minmax(0,1fr)}.dnk .dg,.dnk .gds{justify-self:start}.gd{justify-content:flex-start}}
 .dnhd{font-size:12.5px;font-weight:700;margin:0 0 2px}
 .dnsub{font-size:11px;color:var(--mu);margin:0 0 7px}
 .dnrow{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:1px solid transparent;border-radius:8px;padding:4px 5px;margin:0 -5px;cursor:pointer}
@@ -478,6 +505,8 @@ html{touch-action:pan-x pan-y}
 <main class="board" id="board"></main>
 <div class="pin"><section class="route" id="route" hidden></section></div>
 <div class="rcards" id="rcards"></div>
+<div class="pin"><section class="route rout2" id="routeOut" hidden></section></div>
+<div class="pin"><section class="route dns" id="donors" hidden></section></div>
 <div class="pin"><div class="foot">Speed = rpm × tire circumference ÷ (gear × R&amp;P × hub reduction × RGB / drop box), less converter slip. Ratios come from the vetted Bus Gear reference. Every number is editable. Your setups live in the page link: bookmark it to keep them, or Copy link to share.</div></div>
 <div class="zoomctl" aria-label="Zoom"><button id="zIn" aria-label="Zoom in">+</button><button id="zR" class="zr" aria-label="Reset zoom">100%</button><button id="zOut" aria-label="Zoom out">−</button></div>
 <div class="sheet" id="sheet" hidden><div class="sheetIn" role="dialog" aria-modal="true">
@@ -694,6 +723,8 @@ GENS.forEach(g=>{const ys=g.rows.flatMap(r=>r.y);g.y=[Math.min(...ys),Math.max(.
 const ALLYEARS=(()=>{const a=Math.min(...GENS.map(g=>g.y[0])),b=Math.max(...GENS.map(g=>g.y[1])),o=[];for(let y=a;y<=b;y++)o.push(y);return o})();
 const gensFor=y=>GENS.filter(g=>g.rows.some(r=>y>=r.y[0]&&y<=r.y[1]));
 const GEN=Object.fromEntries(GENS.map(g=>[g.k,g])),DGN={split:'T1 Split',bay:'T2 Bay',vanagon:'T25 / T3 Vanagon'};
+// Roof height the setup adds, in inches. Drag area grows with height on a 76 in tall bus.
+const ROOFS=[0,12,18,24],busCdA=s=>{const b=busOf(s).dg==='bay'?1.52:1.42;return +(b*(1+(s.roof||0)/76)).toFixed(2);};
 function busOf(s){const G=GEN[s.bus.g]||GEN.lbay;const rows=G.rows.filter(r=>s.bus.y>=r.y[0]&&s.bus.y<=r.y[1]);
   const row=rows.find(r=>r.e===s.bus.e)||rows[0]||G.rows[0];return {G,row,rows,dg:row.dg||G.dg};}
 const yearsOf=G=>{const o=[];for(let y=G.y[0];y<=G.y[1];y++)o.push(y);return o};
@@ -712,7 +743,7 @@ const FREV={'4eat':['rgb','kit','chain'],'4eatold':['rgb','kit','chain'],'5eat':
 const RUNL='▶ Run<span class="lg"> the gears</span>';
 let S,LV={},running=null,RUNLOG={};
 // Shifts made during "Run the gears", kept as markers until the next run or until that setup changes.
-const sigOf=s=>JSON.stringify([s.gears,s.fd,s.hub,s.rgb,s.slip,s.tire,s.roll,s.shift,s.red,s.lo,s.hi,S&&S.rm]);
+const sigOf=s=>JSON.stringify([s.gears,s.fd,s.hub,s.rgb,s.slip,s.tire,s.roll,s.shift,s.red,s.lo,s.hi,s.roof,S&&S.rm]);
 function logShift(s,g){const L=RUNLOG[s.id];if(!L||L.sig!==sigOf(s))return;const last=L.sh.length?L.sh[L.sh.length-1].to-1:0;
   for(let j=last;j<g;j++){const sr=shiftRpm(s,j),m=mph(s,j,sr);L.sh.push({to:j+2,m,r:sr,drop:rpmAt(s,j+1,m)});}}
 const shiftsOf=s=>{const L=RUNLOG[s.id];return L&&L.sig===sigOf(s)?L.sh:[]};
@@ -742,6 +773,7 @@ function mkSetup(o={}){
   if(o.vname)s.vname=o.vname;
   if(o.tire){s.tire=o.tire;s.cust.tire=1;}
   if(o.front)s.front=o.front;
+  if(o.roof)s.roof=o.roof;
   if(o.eng!=null){engPreset(s,o.eng);s.cust.eng=1;}
   if(o.red)s.red=o.red;
   return s;}
@@ -749,21 +781,21 @@ const EX=[
  {n:'Stock T2b Late Bay vs 4EAT swap',set:[{name:'Stock \'78 2.0',g:'lbay',y:1978},{name:'4EAT + RGB',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.444}]},
  {grp:"Alex's buses"},
  {n:"'82 Westy TDI: Guard 4.13 vs stock DK",note:"A = the Transaxle Engineering DK 091 with Guard 4.13 R&P, 1.22 3rd, .85 4th on 215/70R16. B = the stock DK box on 185R14C.",
-  set:[{name:'Guard 4.13 DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',gears:[3.78,2.06,1.22,0.85],fd:4.13,vname:'DK 091 built with Guard 4.13 R&P',tire:'215/70R16',eng:6},
+  set:[{name:'Guard 4.13 DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',gears:[3.78,2.06,1.22,0.85],fd:4.13,vname:'DK 091 built with Guard 4.13 R&P',tire:'215/70R16',eng:6,mine:1},
        {name:'Stock DK',g:'van',y:1982,e:'1970 cc air-cooled Type 4',box:'vanagon-091-dk-1979-82',eng:6}]},
- {n:"'78 Riviera: 4EAT 4.11 vs 4.89 (RGB 1.19)",note:"EZ36 + 4EAT on a 4.11 final drive: Reversaru RGB at 1:1 (4.11) vs the 1.19 gears (4.11 × 1.19 = 4.89). Try the Grapevine, Big Bear or Mountain Springs loaded at 65.",
-  set:[{name:'4EAT 4.11 (RGB 1:1)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,eng:10},{name:'4EAT 4.89 (RGB 1.19)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:10}]},
+ {n:"'78 Riviera: 4EAT 4.11 vs 4.89 (RGB 1.19)",note:"EZ36 + 4EAT on a 4.11 final drive with 215/70R15 rear and 215/65R15 front: Reversaru RGB at 1:1 (4.11) vs the 1.19 gears (4.11 × 1.19 = 4.89). Try the Grapevine, Big Bear or Mountain Springs loaded at 65.",
+  set:[{name:'4EAT 4.11 (RGB 1:1)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,eng:53,tire:'215/70R15',front:'215/65R15'},{name:'4EAT 4.89 (RGB 1.19)',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:53,tire:'215/70R15',front:'215/65R15',mine:1}]},
  {n:"'78 Riviera: 4EAT RGB 1:1 vs 1.19 vs 3-gear kit",note:"EZ36 + 4EAT three ways: Reversaru RGB with 1:1 gears, RGB with 1.19 gears (4.11 becomes 4.89), and the 3-gear kit on its required 4.44.",
-  set:[{name:'4EAT + RGB 1:1',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.444,eng:10},{name:'4EAT + RGB 1.19',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:10},{name:'4EAT + 3-gear kit',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'kit',eng:10}]},
- {n:"'71 high-top: EZ36 + 915 vs stock 002",note:"A = EZ36 + the 1986 USDM 915/73 that CMS built (stock /73 ratios, 8:31). Tires set to 185R14C; change them to yours. B = the stock '71 002.",
-  set:[{name:"EZ36 + '86 915/73",g:'ebay',y:1971,box:'porsche-915-73',eng:10},{name:"Stock '71 002",g:'ebay',y:1971}]},
+  set:[{name:'4EAT + RGB 1:1',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.444,eng:53,tire:'215/70R15',front:'215/65R15'},{name:'4EAT + RGB 1.19',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'rgb',fd:4.111,rgb:1.19,eng:53,tire:'215/70R15',front:'215/65R15'},{name:'4EAT + 3-gear kit',g:'lbay',y:1978,box:'subaru-4eat-tz1',rev:'kit',eng:53,tire:'215/70R15',front:'215/65R15'}]},
+ {n:"'71 high-top: EZ36 + 915 vs stock 002",note:"A = EZ36 + the 1986 USDM 915/73 that CMS built (stock /73 ratios, 8:31), 215/70R15 rear and 215/65R15 front, with the high-top set to +18 in. B = the stock '71 002.",
+  set:[{name:"EZ36 + '86 915/73",g:'ebay',y:1971,box:'porsche-915-73',eng:53,tire:'215/70R15',front:'215/65R15',roof:18,mine:1},{name:"Stock '71 002",g:'ebay',y:1971}]},
  {n:"'69 Single Cab: Rancho 002 vs stock",note:"A = the Rancho 002: 4.86 R&P, stock 1.26 3rd, 0.89 4th, 225/75R15 rear and 205/70R15 front. B = a stock '69.",
-  set:[{name:'Rancho 002',g:'ebay',y:1969,box:'bay-002-1968-71-1600',gears:[3.8,2.06,1.26,0.89],fd:4.86,vname:'Rancho 002 build',tire:'225/75R15',front:'205/70R15',eng:2},{name:"Stock '69",g:'ebay',y:1969}]},
+  set:[{name:'Rancho 002',g:'ebay',y:1969,box:'bay-002-1968-71-1600',gears:[3.8,2.06,1.26,0.89],fd:4.86,vname:'Rancho 002 build',tire:'225/75R15',front:'205/70R15',eng:2,mine:1},{name:"Stock '69",g:'ebay',y:1969}]},
  {n:'All four, side by side',set:'all'},
  {grp:'Stock buses'},
  {n:'T1 vs T2b vs T25 / T3 vs Syncro',set:[{g:'split',y:1966},{g:'lbay',y:1978},{g:'van',y:1986},{g:'syn',y:1987}]}];
 function loadEx(k){const X=EX[k];stopRun();let set=X.set;
-  if(set==='all')set=EX.filter(x=>x.n&&/^'\d/.test(x.n)).map(x=>x.set[0]);
+  if(set==='all')set=EX.flatMap(x=>Array.isArray(x.set)?x.set.filter(q=>q.mine):[]);
   S={v:3,u:S?S.u:'mph',mph:70,auto:true,mode:'cruise',set:set.map(mkSetup)};LV={};renderAll();
   scrollTo({left:0,behavior:'smooth'});if(X.note)toast(X.note);}
 
@@ -809,7 +841,7 @@ function shiftRpm(s,j){const md=S.rm||'commute';if(md==='race')return s.red;
 // Realistic top speed on the flat (sea level, light load): engine power vs rolling + air drag, capped by redline.
 const VTOP={};
 function vTop(s){const k=sigOf(s)+s.eng+(s.cond||'')+(s.pk||'');if(VTOP[k])return VTOP[k];const p=engP(s),{dg,G}=busOf(s),D=diam(s);if(!D)return 999;
-  const m=(KG[dg]||1400)+(G.k==='syn'?110:0)+LOADS[0][1],r=D*0.0254/2,n=s.gears.length,auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eff=auto?0.80:0.86,cda=dg==='vanagon'?1.42:dg==='bay'?1.52:1.42;
+  const m=(KG[dg]||1400)+(G.k==='syn'?110:0)+LOADS[0][1],r=D*0.0254/2,n=s.gears.length,auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eff=auto?0.80:0.86,cda=busCdA(s);
   const rpmOf=(v,i)=>v/(2*Math.PI*r)*60*ovr(s,i)*(1+(s.slip||0)/100);
   const ok=v=>{for(let i=0;i<n;i++){const rp=rpmOf(v,i);if(rp>s.red||rp<1000)continue;if(tqAt(p,rp)*1.3558*condF(s)*ovr(s,i)*eff/r>=m*9.81*0.014+0.5*1.225*cda*v*v)return true;}return false;};
   let best=5;for(let v=5;v<80;v+=0.25)if(ok(v))best=v;return VTOP[k]=best/0.44704;}
@@ -935,7 +967,7 @@ function busArtSVG(kind,c){
 // atomic starburst ornament
 function starburst(r,c,n=8){let p='';for(let i=0;i<n;i++){const a=i*Math.PI*2/n,l=i%2?r*.55:r;p+=`<line x1="${r}" y1="${r}" x2="${(r+Math.cos(a)*l).toFixed(1)}" y2="${(r+Math.sin(a)*l).toFixed(1)}" stroke="${c}" stroke-width="2.4" stroke-linecap="round"/>`;}
   return `<svg width="${r*2}" height="${r*2}" viewBox="0 0 ${r*2} ${r*2}" aria-hidden="true">${p}<circle cx="${r}" cy="${r}" r="${r*.16}" fill="${c}"/></svg>`;}
-const artFor=s=>ART[s.bus.g]||'bay';
+const artFor=s=>{const a=ART[s.bus.g]||'bay';return s.roof&&(a==='bay'||a==='lbay')?'bayHigh':a;};
 
 /* ---------- column markup ---------- */
 const famOf=s=>FAM[s.fam];
@@ -944,9 +976,10 @@ function codesOf(b){if(!b)return [];const m=b.n.match(/\(codes? ([^)]*)\)/);if(m
 const plainName=b=>b.n.replace(/\s*\(codes? [^)]*\)/,'');
 function famCodes(f){const c=[...new Set(f.v.flatMap(id=>codesOf(BOX[id])))];return c.length?`<span class="codes">${c.slice(0,12).map(esc).join(' · ')}${c.length>12?` +${c.length-12}`:''}</span>`:'';}
 function verLabel(b){if(!b)return '';const m=b.n.match(/\(codes? ([^)]*)\)/);return (m?m[1]:b.c.replace(/ \(.*\)/,''))+' · '+b.y;}
+const busLine=s=>`${esc(busLabel(s))}${s.roof?`<br><small>High-top, roof +${s.roof} in</small>`:''}`;
 function setupHTML(s){const f=famOf(s),b=BOX[s.box],{row}=busOf(s);
   const line=(step,k,v)=>`<button class="sline" data-act="wiz" data-step="${step}"><span class="k">${k}</span><span class="v">${v}</span><span class="ed">✎</span></button>`;
-  return `${line(0,'Bus',esc(busLabel(s)))}
+  return `${line(0,'Bus',busLine(s))}
    ${line(1,'Engine',`${esc(engLabel(s))}${(s.cond||'stock')!=='stock'?` · ${condOf(s)[1]}`:''}${powerTxt(s)?`<br><span class="pwrl" style="color:var(--mu);font-weight:500;white-space:nowrap;font-size:.86em">${powerTxt(s)}</span>`:''}<br><small>${[`redline ${fmt(s.red)}`,`shift ${fmt(s.shift)}`,`cruise ${fmt(s.lo)}–${fmt(s.hi)}`].map(nw).join(' · ')}</small>`)}
    ${line(3,'Gearbox',`${f?esc((f.mk==='VW'?'VW ':f.mk==='Builders'?'':f.mk+' ')+f.n):'Custom ratios'} · ${esc(s.mod?(s.vname||'custom ratios'):verLabel(b))}<br><small>${s.gears.join(' · ')} · R&amp;P ${r2(s.fd*(s.rgb||1))}${s.rgb!=1?` (${r2(s.fd)} × RGB ${s.rgb})`:''}${s.hub!=1?` · hub ${s.hub}`:''}${s.rev&&REV[s.rev]?` · ${REV[s.rev].n}`:''}</small>`)}
    ${line(7,'Tires',`${esc(s.tire)}${s.front&&s.front!==s.tire?` rear · ${esc(s.front)} front`:''}${(()=>{const t=tireD(s.tire);return t?`<br><small>${fmt(t.d,1)} in tall · ${fmt(63360/(Math.PI*t.d))} rev/mile</small>`:''})()}`)}
@@ -962,9 +995,8 @@ function colHTML(s,i){
   ${sec('head','',`<div class="busart">${busArt(artFor(s),c)}<span class="sun">${starburst(15,'#fffaf0')}</span></div><div class="hd">${tag}<input class="nm" data-k="name" value="${esc(s.name)}" placeholder="Setup ${L}" aria-label="Setup name">
     ${i?`<button class="ib" data-act="base" title="Make this the baseline (moves it first)">⇤</button>`:''}<button class="ib" data-act="dup" title="Duplicate">⧉</button><button class="ib" data-act="rm" title="Remove">✕</button></div>
     ${setupHTML(s)}<div class="sub">${i?`Compared with ${letter(0)}`:'Baseline: the others compare to this one'}</div>`)}
-  ${sec('dash','',`<div class="gauges"><svg data-o="spd" viewBox="9 9 182 180" overflow="visible"></svg><svg data-o="tach" viewBox="9 9 182 180" overflow="visible"></svg></div><div class="readout" data-o="ro"></div><div class="gears" data-o="gb"></div><div class="ghint" data-o="gh"></div><div class="dctl"><div class="drow"><span class="dl">Target cruise</span><input type="range" class="spdS" min="0" max="100" step="0.5" aria-label="Target cruise speed for every setup"><output class="spdO"></output></div><div class="drow rrow"><button class="btn pri runB">${RUNL}</button><span class="seg rmS">${RMODES.map(([k,l])=>`<button data-rm="${k}" class="${(S.rm||'commute')===k?'on':''}">${l}</button>`).join('')}</span></div></div>`)}
   ${sec('glance','At a glance',`<div class="sum" data-o="kpi"></div>`)}
-  ${sec('donor','Compare to stock car',`<div data-o="dn"></div>`,dnTag(s))}
+  ${sec('dash','',`<div class="gauges"><svg data-o="spd" viewBox="9 9 182 180" overflow="visible"></svg><svg data-o="tach" viewBox="9 9 182 180" overflow="visible"></svg></div><div class="readout" data-o="ro"></div><div class="gears" data-o="gb"></div><div class="ghint" data-o="gh"></div><div class="dctl"><div class="drow"><span class="dl">Target cruise</span><input type="range" class="spdS" min="0" max="100" step="0.5" aria-label="Target cruise speed for every setup"><output class="spdO"></output></div><div class="drow rrow"><button class="btn pri runB">${RUNL}</button><span class="seg rmS">${RMODES.map(([k,l])=>`<button data-rm="${k}" class="${(S.rm||'commute')===k?'on':''}">${l}</button>`).join('')}</span></div></div>`)}
   ${sec('trace','Gears & cruise',`<svg class="tracer" data-o="tr" viewBox="0 0 360 200"></svg><div class="cruise" data-o="cr"></div><div class="legend" data-o="tl"></div>`,'drag to set speed')}
   ${sec('t1','Speed in each gear',`<div data-o="t1"></div>`,uL())}
   ${sec('t2','RPM at road speed',`<div data-o="t2"></div>`,'true '+uL())}
@@ -989,7 +1021,8 @@ function setZoom(nz){const oz=uzoom();nz=Math.min(maxZ(),Math.max(minZ(),nz));if
   const sx=scrollX,sy=scrollY;sizeCols();zoomLabel();if(S.set.length)update();if(S.set.length>1)cmpRender();scrollTo(sx*nz/oz,sy*nz/oz);}
 function zoomLabel(){const z=uzoom(),l=document.getElementById('zR'),ph=innerWidth<=700,n=[3,2].find(k=>Math.abs(fitN(k)-z)<0.002);
   if(l)l.textContent=ph&&n?n+' across':ph&&Math.abs(z-1)<0.002?'1 across':Math.round(z*100)+'%';const a=document.getElementById('zIn'),b=document.getElementById('zOut');if(a)a.setAttribute('aria-disabled',z>=maxZ()-0.001);if(b)b.setAttribute('aria-disabled',z<=minZ()+0.001);}
-addEventListener('resize',()=>{if(S&&S.set&&S.set.length>1)cmpRender();});
+addEventListener('resize',()=>{if(S&&S.set&&S.set.length>1)cmpRender();clearTimeout(rzT);rzT=setTimeout(()=>{if(S&&S.set&&S.set.length)routeRender();},200);});
+let rzT=0;
 addEventListener('resize',()=>{const k0=document.documentElement.style.getPropertyValue('--k');sizeCols();if(document.documentElement.style.getPropertyValue('--k')!==k0)requestAnimationFrame(()=>update&&S.set.length&&update());});
 // Side-by-side: one row per measure, every setup placed on the same scale so differences read at a glance.
 function cmpRender(){return;const el=$('#cmp');if(!el)return;if(S.set.length<2){el.hidden=true;return;}el.hidden=false;
@@ -1022,6 +1055,7 @@ function cmpRender(){return;const el=$('#cmp');if(!el)return;if(S.set.length<2){
   h+=`</svg><div class="cmptab"><table><thead><tr><th></th>${S.set.map((s,i)=>`<th><i class="tg" style="background:${col(i)}">${letter(i)}</i></th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr><td>${r.k}</td>${r.v.map(v=>`<td>${v==null?'—':Array.isArray(v)?(v[0]===v[1]?r.fmt(v[0]):`${r.fmt(v[0])}–${r.fmt(v[1])}`):r.fmt(v)}${r.u&&!['hp','lb-ft'].includes(r.u)&&r.u!==u?'':''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   el.innerHTML=h;}
 function renderAll(){sizeCols();
+  {const DN=$('#donors');DN.hidden=!S.set.length;DN.innerHTML=S.set.length?donorsHTML():'';}
   $('#board').classList.toggle('is-empty',!S.set.length);
   if(!S.set.length){$('#board').innerHTML=`<div class="empty"><div class="parade">${['split','bay','lbay','t3','syncro'].map((k,i)=>busArt(k,COLS[i])).join('')}</div><h2>Compare bus gearing, side by side</h2><p>Pick a bus, then its gearbox, gears and tires. Add as many setups as you like and scroll sideways to compare them.</p><button class="btn pri big" data-act="add">＋ Add your first setup</button><p class="hint">Or load one from Examples at the top.</p></div>`;
     $$('#units button').forEach(b=>b.classList.toggle('on',b.dataset.u===S.u));$$('.autoC').forEach(x=>x.checked=S.auto);update();cmpRender();routeRender();return;}
@@ -1078,7 +1112,7 @@ function segsOf(){const R=ROUTES[RT.r],s0=RT.r==='custom'?[[+RT.cl||1,+RT.cg||0]
 function simDrive(s){
   const {seg,e0}=segsOf();
   const p=engP(s),{dg,G}=busOf(s),m=(KG[dg]||1400)+(G.k==='syn'?110:0)+LOADS[RT.load][1],D=diam(s);if(!D)return null;
-  const r=D*0.0254/2,n=s.gears.length,auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eff=auto?0.80:0.86,cda=dg==='vanagon'?1.42:dg==='bay'?1.52:1.42;
+  const r=D*0.0254/2,n=s.gears.length,auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,eff=auto?0.80:0.86,cda=busCdA(s);
   const ov=i=>ovr(s,i),rpmOf=(v,i)=>v/(2*Math.PI*r)*60*ov(i)*(1+(s.slip||0)/100);
   const L=seg.reduce((a,x)=>a+x[0],0)*1609.34,vT=RT.v*0.44704,red=s.red;
   const segAt=x=>{let a=0;for(let k=0;k<seg.length;k++){a+=seg[k][0]*1609.34;if(x<a)return k}return seg.length-1},gradeAt=x=>seg[segAt(x)][1]/100;
@@ -1170,15 +1204,14 @@ function routeHTML(){if(!LOADS[RT.load])RT.load=1;RT.hold=0;
     <div class="tp"><span class="tpl">Trip</span><div class="chips">${chips('dn',[[0,'Up only'],[1,'Up and back down']],RT.dn||0)}</div></div>
     <div class="tp"><span class="tpl">Load</span><div class="chips">${chips('load',LOADS.map((l,i)=>[i,l[0]]),RT.load)}</div></div>
    </div>
-   <div class="rnote">Assumes ${dgW()} plus load, a boxy bus's drag, and engine output at the setting above. Real buses vary; if yours does worse, set the engine to Tired or pick Loaded camper.${RT.dn||ROUTES[RT.r].seg.some(q=>q[1]<0)?' Downhill, each setup holds the highest gear where engine braking does most of the work, or else the lowest gear under its shift point. The brakes do the rest.':''} ${esc(ROUTES[RT.r].sub)}${ROUTES[RT.r].sub?' · ':''}${esc(ROUTES[RT.r].note)}</div>
-   <svg class="rchart" id="rchart" viewBox="0 0 720 300" preserveAspectRatio="none"></svg>
-   <div class="rins" id="rins"></div>`;}
-function routeRender(){const el=$('#route');if(!el)return;if(!S.set.length){el.hidden=true;$('#rcards').innerHTML='';return;}el.hidden=false;
+   <div class="rnote">Assumes ${dgW()} plus load, a boxy bus's drag, and engine output at the setting above. Real buses vary; if yours does worse, set the engine to Tired or pick Loaded camper.${RT.dn||ROUTES[RT.r].seg.some(q=>q[1]<0)?' Downhill, each setup holds the highest gear where engine braking does most of the work, or else the lowest gear under its shift point. The brakes do the rest.':''} ${esc(ROUTES[RT.r].sub)}${ROUTES[RT.r].sub?' · ':''}${esc(ROUTES[RT.r].note)}</div>`;}
+function routeRender(){const el=$('#route'),out=$('#routeOut');if(!el)return;if(!S.set.length){el.hidden=true;out.hidden=true;$('#rcards').innerHTML='';return;}el.hidden=false;out.hidden=false;
+  out.innerHTML='<svg class="rchart" id="rchart" viewBox="0 0 720 300" preserveAspectRatio="none"></svg><div class="rins" id="rins"></div>';
   const sx=[...el.querySelectorAll('.agrid')].map(g=>g.scrollLeft);el.innerHTML=routeHTML();
   // keep each row where it was scrolled; first time in, bring the selected track into view
   el.querySelectorAll('.agrid').forEach((g,k)=>{if(sx.length)g.scrollLeft=sx[k];else{const o=g.querySelector('.trk.on');if(o)g.scrollLeft=Math.max(0,o.offsetLeft-g.offsetLeft-12);}});
   const res=S.set.map(s=>simDrive(s));const ok=res.filter(Boolean);if(!ok.length)return;
-  const NS=S.set.length,SB=14*NS+6,mi=ok[0].mi,W=720,H=360+SB,pl=40,pr=12,pt=10,pb=24+SB,vmin=Math.min(...ok.map(r=>r.minV)),vmax=Math.max(RT.v,...ok.map(r=>Math.max(...r.pts.map(p=>p.v)))),sp=[Math.max(0,Math.floor((vmin-6)/5)*5),Math.ceil((vmax+4)/5)*5],stp=sp[1]-sp[0]>40?10:5,
+  const NS=S.set.length,SB=14*NS+6,mi=ok[0].mi,W=innerWidth<=700?720:Math.round(Math.max(720,Math.min(1500,(innerWidth-28)/(parseFloat(document.documentElement.style.getPropertyValue('--rz'))||1)))),H=360+SB,pl=40,pr=12,pt=10,pb=24+SB,vmin=Math.min(...ok.map(r=>r.minV)),vmax=Math.max(RT.v,...ok.map(r=>Math.max(...r.pts.map(p=>p.v)))),sp=[Math.max(0,Math.floor((vmin-6)/5)*5),Math.ceil((vmax+4)/5)*5],stp=sp[1]-sp[0]>40?10:5,
    X=x=>pl+(W-pl-pr)*x/mi,Y=v=>pt+(H-pt-pb)*(1-(v-sp[0])/(sp[1]-sp[0]));
   const e=ok[0].pts,emin=Math.min(...e.map(p=>p.e)),emax=Math.max(...e.map(p=>p.e),emin+500),EY=z=>H-pb-(H-pt-pb)*0.42*(z-emin)/(emax-emin);h0();function h0(){}
   let h=`<path d="M${X(0)},${H-pb} ${e.map(p=>`L${X(p.x).toFixed(1)},${EY(p.e).toFixed(1)}`).join(' ')} L${X(mi)},${H-pb}Z" fill="#e6dfcf"/>`;
@@ -1300,7 +1333,8 @@ o('gh').textContent=lv(s).man!=null?`Holding ${ord(lv(s).man)}. Drag the dot to 
      <div class="kpi"><div class="k">1st runs to</div><div class="v">${sp(K.first)} <small>${uL()}</small></div>${dl(U(KB.first),U(K.first),'up')}</div>
      <div class="kpi"><div class="k">Crawl ratio</div><div class="v">${fmt(K.crawl,1)}<small>:1</small></div>${dl(KB.crawl,K.crawl,'up',1)}</div>`;
     // tracer
-    drawTracer(s,i,o('tr'),{g,r,m},tm,sm);o('cr').innerHTML=cruiseHTML(s,i);o('dn').innerHTML=donorHTML(s,i);
+    drawTracer(s,i,o('tr'),{g,r,m},tm,sm);o('cr').innerHTML=cruiseHTML(s,i);
+    {const P=$('#dn-'+s.id);if(P){const b=P.querySelector('[data-o="dn"]'),h=donorHTML(s,i);if(b._h!==h){b.innerHTML=h;b._h=h;}P.querySelector('h3 span').textContent=s.name||busLabel(s);}}
     o('tl').innerHTML=`<span><i style="background:${c}"></i>usable range, ${fmt(Math.max(1400,s.lo*0.7))} rpm to shift at ${fmt(s.shift)} · faint = on to redline</span>${i?`<span><i style="background:#9a907c;height:2px"></i>${letter(0)}'s gears</span>`:''}<span><i style="background:rgba(61,139,71,.35);height:8px"></i>cruise band in top</span>`;
     // tables (rows shared by every column so they line up)
     const gh2=`<tr><th></th>${s.gears.map((x,j)=>`<th>${j+1}<small>${x}</small></th>`).join('')}</tr>`;
@@ -1388,7 +1422,7 @@ const DNDS={o:'Cd from the maker\'s spec sheet, frontal area 0.84 × width × he
 // engine hp to hold a speed on a flat road with no wind: same rolling (0.014) and sea-level air as the hill climb
 const dnHp=(lb,cda,eff,mph)=>{const v=mph*0.44704,k=v/745.7/eff;return {roll:lb/2.20462*9.81*0.014*k,air:0.5*1.225*cda*v*v*k};};
 // road load for bus and car at a speed. tb and ta are engine hp.
-function dnLoad(s,d,Wb,Wd,m){const {dg}=busOf(s),cB=dg==='bay'?1.52:1.42,cD=DND[d.id][0],auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,b=dnHp(Wb,cB,auto?0.80:0.86,m),a=dnHp(Wd,cD,dnMan(d)?0.86:0.80,m);return {b,a,tb:b.roll+b.air,ta:a.roll+a.air,cB,cD};}
+function dnLoad(s,d,Wb,Wd,m){const cB=busCdA(s),cD=DND[d.id][0],auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,b=dnHp(Wb,cB,auto?0.80:0.86,m),a=dnHp(Wd,cD,dnMan(d)?0.86:0.80,m);return {b,a,tb:b.roll+b.air,ta:a.roll+a.air,cB,cD};}
 // Third gear down, as an overall ratio. Same sources as the donor notes.
 const DN3={gti337:1.152*3.875,gti20:1.15*3.944,tt225:1.088*4.2,aazj:1.286*3.667,aazg:1.286*3.667,golf1y:1.286*3.667,vento1y:1.286*3.667};
 const dn3=d=>DN3[d.id]||d.fd*(d.tr==='4AT'?1.441:d.tr==='4EAT'?1.545:d.tr==='5EAT'?1.471:d.f==='tdi'?1.36:d.f==='18t'?(/^(jet01g|nb00g)/.test(d.id)?1.308:1.429):d.top===0.738?1.366:1.448);
@@ -1404,46 +1438,76 @@ function dnAt(s,d,Wb,Wd,m,gr){const L=dnLoad(s,d,Wb,Wd,m),v=m*0.44704,auto=BOX[s
   return {b:dnHold(gB,nb,r=>dnAv(pB,fB,r),s.red||6000),a:dnHold(gD,na,avD,redD),six:six?{g4:one(all[2]),g5:one(all[1]),g6:one(all[0])}:null,nb,na,L};}
 // Steepest grade held in top gear at this speed
 function dnTopGrade(hp,need,lb,e,m){const v=m*0.44704;return Math.max(0,(hp-need)*745.7*e/(lb/2.20462*9.81*v)*100);}
-const dnFeel=l=>l<0.4?'effortless':l<0.6?'relaxed':l<0.75?'steady, with the engine pulling':l<0.9?'working, with little left':'flat out';
+const dnFeel=l=>l>1?'past what top gear can do':l<0.4?'effortless':l<0.6?'relaxed':l<0.75?'steady, with the engine pulling':l<0.9?'working, with little left':'flat out';
 function dnScore(r,rpm,s){if(r<0.9&&rpm>(s.hi||4000))return ['Short: strong but busy','Plenty of reserve, at high rpm.'];if(r<0.9)return ['Easier than factory','More reserve than the car had.'];if(r<=1.15)return ['Factory feel','About how the engineers set it up.'];if(r<=1.4)return ['Close to factory','A little less reserve than the car.'];if(r<=1.75)return ['Working harder','Expect more throttle and earlier downshifts.'];return ['Geared too tall','Top gear is mostly for flat roads.'];}
 function dnPick(s,d){const {cars,rest,exact}=dnRank(s),Wb=busLb(s),row=(x,top)=>{const dw=dnLb(x)/Wb-1,p=Math.round(Math.abs(dw)*100);
     return `<button class="dnp${x.id===d.id?' on':''}" data-act="dnp" data-id="${x.id}"><b>${esc(x.n)}${top?'<small>closest</small>':''}</b><em>${fmt(Math.round(dnLb(x)/10)*10)} lb</em><span>${esc(x.y)} · ${x.tr} · ${esc(x.en)}</span><span>${p?`${p}% ${dw>0?'heavier':'lighter'} than bus`:'same as bus'}</span></button>`;};
   return `<div class="dnh">${exact||!['tdi','18t'].includes(dnFam(s.eng))?'Stock cars with this engine, closest weight first':'No stock car here has exactly this engine. Cars with the same engine family, closest weight first'}</div><div class="dnpick">${cars.map((x,j)=>row(x,!j)).join('')}</div>${rest.length?`<details class="dnmore"${rest.some(x=>x.id===d.id)?' open':''}><summary>Other cars with related engines</summary><div class="dnpick">${rest.map(x=>row(x)).join('')}</div></details>`:''}`;}
+function donorsHTML(){return `<div class="rhead"><div class="kick">Stock car</div><h2>Compared to the stock car.</h2><p>How hard your bus works against the car its engine came from. Pick a car, a load, a grade and a speed.</p></div>
+  <div class="dngrid">${S.set.map((s,i)=>{const c=col(i);return `<section class="sec donor" id="dn-${s.id}" data-i="${i}" style="--c:${c}"><h3><i class="tg" style="background:${c}">${letter(i)}</i><span>${esc(s.name||busLabel(s))}</span><span class="x">${dnTag(s)}</span></h3><div data-o="dn"></div></section>`;}).join('')}</div>`;}
+// Small pictures for the four stat boxes. Bus in its setup color, car in the same tan as the speed rows.
+const DNCAR='#9a907c';
+function dnRing(lb,ld,c){const arc=(r,l,k)=>{const C=2*Math.PI*r,on=Math.min(1,Math.max(0,l))*C;return `<circle cx="26" cy="26" r="${r}" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="6"/><circle cx="26" cy="26" r="${r}" fill="none" stroke="${k}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${on.toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 26 26)"/>`;};
+  return `<svg class="dg" viewBox="0 0 52 52" width="52" height="52" aria-hidden="true">${arc(22,lb,c)}${arc(13,ld,DNCAR)}</svg>`;}
+function dnMini(a,b,c){const mx=Math.max(a,b,1),bar=(v,y,k)=>`<rect x="0" y="${y}" width="64" height="9" rx="4.5" fill="rgba(0,0,0,.08)"/><rect x="0" y="${y}" width="${Math.max(v?9:0,v/mx*64).toFixed(1)}" height="9" rx="4.5" fill="${k}"/>`;
+  return `<svg class="dg" viewBox="0 0 64 24" width="64" height="24" aria-hidden="true">${bar(a,0,c)}${bar(b,15,DNCAR)}</svg>`;}
+function dnRamp(a,b,c){const y=g=>Math.min(38,Math.max(1,g*2.6)),t=g=>`0,42 66,42 66,${(42-y(g)).toFixed(1)}`;
+  return `<svg class="dg" viewBox="0 0 66 44" width="66" height="44" aria-hidden="true"><polygon points="${t(Math.max(a,b))}" fill="rgba(0,0,0,.06)"/><polygon points="${t(a)}" fill="${c}" opacity=".85"/><line x1="0" y1="42" x2="66" y2="${(42-y(b)).toFixed(1)}" stroke="${DNCAR}" stroke-width="2.5" stroke-linecap="round"/></svg>`;}
+function dnGearDots(n,hit,c){let h='';for(let i=0;i<n;i++)h+=`<i${i===hit?` class="on" style="background:${c}"`:''}>${i+1}</i>`;return `<span class="gd">${h}</span>`;}
+// Front view of each vehicle, each shape's area drawn in proportion to its drag area
+function dnWall(s,cB,cD,c,short){const u=49.7/1.52,w=44,gy=92,hB=cB*u,base=dnBaseCd(s)*u,hD=cD*u/0.9325,x1=26,x2=128,by=gy-hB,bb=gy-Math.min(base,hB),cy=gy-hD;
+  const wind=Math.min(16,base*.34),roof=hB>base+.5?`<rect x="${x1+5}" y="${by.toFixed(1)}" width="${w-10}" height="${(bb-by+4).toFixed(1)}" rx="8" fill="${c}" opacity=".45"/>`:'';
+  return `<svg class="dnwall" viewBox="0 0 200 106" aria-hidden="true">${roof}<rect x="${x1}" y="${bb.toFixed(1)}" width="${w}" height="${(gy-bb-3).toFixed(1)}" rx="9" fill="${c}"/><rect x="${x1+5}" y="${(bb+5).toFixed(1)}" width="${w-10}" height="${wind.toFixed(1)}" rx="3" fill="#fff" opacity=".82"/><circle cx="${x1+9}" cy="${(gy-13).toFixed(1)}" r="3.4" fill="#fff"/><circle cx="${x1+w-9}" cy="${(gy-13).toFixed(1)}" r="3.4" fill="#fff"/>
+   <path d="M${x2} ${gy-3}V${(gy-hD*.55).toFixed(1)}L${x2+w*.15} ${cy.toFixed(1)}H${x2+w*.85}L${x2+w} ${(gy-hD*.55).toFixed(1)}V${gy-3}Z" fill="${DNCAR}" stroke="${DNCAR}" stroke-width="3" stroke-linejoin="round"/><path d="M${x2+w*.22} ${(cy+3).toFixed(1)}H${x2+w*.78}L${x2+w*.87} ${(gy-hD*.56).toFixed(1)}H${x2+w*.13}Z" fill="#fff" opacity=".82"/>
+   <line x1="4" x2="196" y1="${gy}" y2="${gy}" stroke="#1d1d1b" stroke-width="1.5"/><text x="${x1+w/2}" y="103" text-anchor="middle" class="w">Bus ${cB} m²</text><text x="${x2+w/2}" y="103" text-anchor="middle" class="w">${esc(short)} ${cD} m²</text></svg>`;}
+const dnBaseCd=s=>busOf(s).dg==='bay'?1.52:1.42;
 function donorHTML(s,i){const d=dnOf(s),c=col(i);
   if(!d)return dnFam(s.eng)?`<p class="dnnone">No factory donor specs for this engine yet.</p>`:`<p class="dnnone">Stock car comparison covers Subaru engines, VW and Audi 1.8T engines, VW TDI engines and the 1.9 D. Pick one under Engine (✎ above) to compare the bus with the car it came from.</p>`;
   const n=s.gears.length,f=condF(s),p=dnBusP(s,d),Wb=busLb(s),Wd=dnLb(d),Db=diam(s),td=tireD(d.tire);
   if(!Db||!td)return '<p class="dnnone">Enter a tire size to compare.</p>';
   const sp=S.u==='kmh'?[90,100,110,120,130]:[55,60,65,70,80],GR=[0,3,6],gr=GR[s.dnG||0],ref=s.dnV==null?2:s.dnV,V=sp[ref],m=fromU(V),u=uL(),dg=dnGears(d),short=d.s.split(' ')[0];
   const rows=sp.map((v,j)=>({v,j,...dnAt(s,d,Wb,Wd,fromU(v),gr)}));
-  const F=dnAt(s,d,Wb,Wd,m,0),H=dnAt(s,d,Wb,Wd,m,6),rB=rpmAt(s,n-1,m),six=dg===6,rD=dnRpm(d,m)*(six?dnNext(d)/d.top:1),pD=dnCurve(d),avB=dnAv(p,f,rB),avD=dnAv(pD,1,rD),lB=F.nb/avB,lD=F.na/avD,ratio=lB/lD,[title,sub]=dnScore(ratio,rB,s);
+  // F is flat road, G is the grade picked on the tab. Score, load and spare hp all use G, in top gear.
+  const F=dnAt(s,d,Wb,Wd,m,0),G=dnAt(s,d,Wb,Wd,m,gr),H=dnAt(s,d,Wb,Wd,m,6),rB=rpmAt(s,n-1,m),six=dg===6,rD=dnRpm(d,m)*(six?dnNext(d)/d.top:1),pD=dnCurve(d),avB=dnAv(p,f,rB),avD=dnAv(pD,1,rD),lB=G.nb/avB,lD=G.na/avD,ratio=lB/lD,[title,sub]=dnScore(ratio,rB,s);
   const auto=BOX[s.box]&&BOX[s.box].t==='auto'&&!s.mod,tgB=dnTopGrade(avB,F.nb,Wb,auto?0.80:0.86,m),tgD=dnTopGrade(avD,F.na,Wd,dnMan(d)?0.86:0.80,m);
-  // rpm where the bus's top gear would match the car's engine load at this speed
-  let rM=null;for(let r=1200;r<=(s.red||6000);r+=25){if(F.nb/dnAv(p,f,r)<=lD){rM=r;break;}}
-  const fdNow=s.fd*(s.hub||1)*(s.rgb||1),fdM=rM?fdNow*rM/rB:0,R10=x=>fmt(Math.round(x/10)*10),pct=x=>`${Math.round(x*100)}%`;
+  // rpm where the bus's top gear would match the car's engine load at this speed and grade
+  let rM=null;for(let r=1200;r<=(s.red||6000);r+=25){if(G.nb/dnAv(p,f,r)<=lD){rM=r;break;}}
+  const fdNow=s.fd*(s.hub||1)*(s.rgb||1),fdM=rM?fdNow*rM/rB:0,R10=x=>fmt(Math.round(x/10)*10),pct=x=>`${Math.round(x*100)}%`,hp=x=>fmt(Math.round(x));
+  const where=gr?`${gr}% grade`:'flat road',at=gr?`on a ${gr}% grade`:'on a flat road';
   const Q6=(h,cl)=>h.l==null?`<div class="dnq d no ${cl}"><span class="dnl">${esc(short)} ${ord(h.i)}</span><span class="dnt"></span><span class="rp">${R10(h.r)}</span><b>won't</b></div>`:Q(esc(short),`d ${cl}`,h,'#9a907c');
   const Q=(lbl,cl,h,clr)=>h?`<div class="dnq ${cl}"><span class="dnl">${lbl} ${ord(h.i)}</span><span class="dnt"><i style="width:${Math.min(100,h.l*100).toFixed(1)}%;background:${clr}"></i></span><span class="rp">${R10(h.r)}</span><b>${pct(h.l)}</b></div>`:`<div class="dnq ${cl} no"><span class="dnl">${lbl}</span><span class="dnt"></span><span class="rp"></span><b>won't</b></div>`;
   const dial=Math.max(0,Math.min(100,ratio<=1?(ratio-0.6)/0.4*35:35+(ratio-1)/1.2*65));
   const tD=six?4:dg-1,say=(h,who)=>h?(h.i===(who==='b'?n-1:tD)?`stays in ${ord(h.i)} at ${R10(h.r)} rpm, ${pct(h.l)} load`:`drops to ${ord(h.i)} at ${R10(h.r)} rpm, ${pct(h.l)} load`):'cannot hold the speed';
-  const top=rows[rows.length-1],tb=top.b,ta=top.a;
+  const top=rows[rows.length-1];
   const hillB=H.b?n-1-H.b.i:9,hillD=H.a?tD-H.a.i:9,hillLine=!H.b?`It will slow down on that grade, so plan on a lower speed.`:hillB<=hillD?`Same number of downshifts as the factory setup or fewer.`:`${hillB-hillD===1?'One more downshift':`${hillB-hillD} more downshifts`} than the factory setup needed: you will hear it, but it goes.`;
   const fixLine=ratio<=1.15?'':rM?`To match the ${esc(short)}'s load at ${V} in top, the bus would turn about ${fmt(Math.round(rM/50)*50)}, roughly a ${fmt(fdM,2)} overall final drive against your ${fmt(fdNow,2)}.`:`No final drive gets the bus to the ${esc(short)}'s load at ${V}: there isn't enough engine for that much air.`;
-  return `<div class="seg dnL">${LOADS.map(([l],j)=>`<button data-act="dnl" data-l="${j}" class="${(s.dnL||0)===j?'on':''}">${l==='Normal'?'Bus + driver':l}</button>`).join('')}</div>
-   ${dnPick(s,d)}
-   <div class="dnscore"><div class="x">${fmt(ratio,1)}<small>×</small></div><div class="l">${title}</div><div class="q">${sub}</div><div class="dndial"><i style="left:${dial.toFixed(1)}%"></i></div><div class="dnscale"><span>easier</span><span style="left:35%;transform:translateX(-50%)">factory</span><span style="right:0">harder</span></div></div>
+  const use=(x,who)=>x<=1?`${who} ${pct(x)}`:`${who} past its top-gear limit`;
+  // where the power goes, bus and car on one hp scale
+  const mx=Math.max(avB,avD,G.nb,G.na),hillB2=G.nb-G.L.tb,hillD2=G.na-G.L.ta,pseg=(cl,v,lb)=>v>0.05?`<i class="${cl}" style="flex:${v.toFixed(2)} 0 0" title="${lb}: ${hp(v)} hp">${v/mx>0.07?hp(v):''}</i>`:'';
+  const pbar=(who,need,L,hl,av,rp)=>{const sp2=Math.max(0,av-need),end=Math.max(need,av)/mx*100;return `<div class="dpw"><div class="dph"><b>${who}</b><span>${R10(rp)} rpm</span><em>${need>av?`needs ${hp(need)}, has ${hp(av)} hp`:`${hp(need)} of ${hp(av)} hp`}</em></div><div class="dptr"><div class="dpb" style="width:${end.toFixed(1)}%">${pseg('t',L.roll,'Tires')}${pseg('a',L.air,'Air')}${pseg('h',hl,'Hill')}${pseg('s',sp2,'Spare')}</div>${need>av?`<u style="left:${(av/mx*100).toFixed(1)}%" title="Most the engine makes at ${R10(rp)} rpm: ${hp(av)} hp"></u>`:''}</div></div>`;};
+  const roofs=ROOFS.map(r=>`<button class="chip sm${(s.roof||0)===r?' on':''}" data-act="dnr" data-l="${r}">${r?`+${r} in`:'Stock'}</button>`).join('');
+  return `<div class="dnc"><div class="dnctl"><div class="seg dnL">${LOADS.map(([l],j)=>`<button data-act="dnl" data-l="${j}" class="${(s.dnL||0)===j?'on':''}">${l==='Normal'?'Bus + driver':l}</button>`).join('')}</div>
+    <div class="seg dnG">${['Flat','3% grade','6% grade'].map((l,j)=>`<button data-act="dng" data-l="${j}" class="${(s.dnG||0)===j?'on':''}">${l}</button>`).join('')}</div></div>
+   <div class="dnA">${dnPick(s,d)}
    <div class="dnhd">How hard the engine works, top gear down</div>
    <div class="dnsub">% of what the engine can make at that rpm, counting weight, air and grade. Tap a speed to score it.</div>
-   <div class="seg dnG">${['Flat','3% grade','6% grade'].map((l,j)=>`<button data-act="dng" data-l="${j}" class="${(s.dnG||0)===j?'on':''}">${l}</button>`).join('')}</div>
    ${rows.map(r=>`<button class="dnrow${r.j===ref?' on':''}" data-act="dnv" data-l="${r.j}"><div class="dnv">${r.v} <small>${u}</small></div>${r.six?Q6(r.six.g4,'')+Q6(r.six.g5,'')+Q6(r.six.g6,'gh'):Q(esc(short),'d',r.a,'#9a907c')}${Q('Bus','b',r.b,c)}</button>`).join('')}
-   <div class="dnleg"><span>Dashed line: 85%, where a gear stops feeling easy and it shifts down. The column before the % is rpm.</span></div>
-   <div class="dnk"><div><div class="k">Load at ${V}</div><div class="v">${pct(lB)}</div><div class="d same">${esc(short)}: ${pct(lD)}</div></div>
-     <div><div class="k">Spare hp at ${V}</div><div class="v">${fmt(Math.round(Math.max(0,avB-F.nb)))}</div><div class="d same">${esc(short)}: ${fmt(Math.round(Math.max(0,avD-F.na)))}</div></div>
-     <div><div class="k">Steepest grade in top</div><div class="v">${fmt(tgB,1)}<small>%</small></div><div class="d same">${esc(short)}: ${fmt(tgD,1)}%</div></div>
-     <div><div class="k">6% grade at ${V}</div><div class="v">${H.b?ord(H.b.i):'No'}</div><div class="d same">${esc(short)}: ${H.a?ord(H.a.i):'no'}</div></div></div>
-   <p class="dnline"><b>At ${V} ${u} the bus turns ${R10(rB)} rpm and feels ${dnFeel(lB)}.</b> The ${esc(d.s)} turned ${R10(rD)} and felt ${dnFeel(lD)}. Your engine is doing ${fmt(ratio,1)} times the work relative to what it can make there. ${fixLine}</p>
+   <div class="dnleg"><span>Dashed line: 85%, where a gear stops feeling easy and it shifts down. The column before the % is rpm.</span></div></div>
+   <div class="dnB"><div class="dnscore"><div class="x">${fmt(ratio,1)}<small>×</small></div><div class="l">${title}</div><div class="q">${sub}</div><div class="dndial"><i style="left:${dial.toFixed(1)}%"></i></div><div class="dnscale"><span>easier</span><span style="left:35%;transform:translateX(-50%)">factory</span><span style="right:0">harder</span></div><div class="w">${V} ${u}, ${where}, top gear. ${use(lB,'Bus')}, ${use(lD,esc(short))}.</div></div>
+   <div class="dnhd">Where the power goes</div>
+   <div class="dnsub">Engine hp in top gear at ${V} ${u}, ${where}. Each bar ends at what the engine can make at that rpm.</div>
+   ${pbar('Bus',G.nb,G.L.b,hillB2,avB,rB)}${pbar(esc(short),G.na,G.L.a,hillD2,avD,rD)}
+   <div class="dnleg dpl"><span><i class="t"></i>Tires</span><span><i class="a"></i>Air</span>${gr?'<span><i class="h"></i>Hill</span>':''}<span><i class="s"></i>Spare</span></div>
+   <div class="dnk"><div><div><div class="k">Load · ${where}</div><div class="v">${pct(lB)}</div><div class="d same">${esc(short)}: ${pct(lD)}</div></div>${dnRing(lB,lD,c)}</div>
+     <div><div><div class="k">Spare hp · ${where}</div><div class="v">${hp(Math.max(0,avB-G.nb))}</div><div class="d same">${esc(short)}: ${hp(Math.max(0,avD-G.na))}</div></div>${dnMini(Math.max(0,avB-G.nb),Math.max(0,avD-G.na),c)}</div>
+     <div><div><div class="k">Steepest grade in top</div><div class="v">${fmt(tgB,1)}<small>%</small></div><div class="d same">${esc(short)}: ${fmt(tgD,1)}%</div></div>${dnRamp(tgB,tgD,c)}</div>
+     <div><div><div class="k">6% grade at ${V}</div><div class="v">${H.b?ord(H.b.i):'No'}</div><div class="d same">${esc(short)}: ${H.a?ord(H.a.i):'no'}</div></div><div class="gds">${dnGearDots(n,H.b?H.b.i:-1,c)}${dnGearDots(dg,H.a?H.a.i:-1,DNCAR)}</div></div></div>
+   <div class="dnair"><div><div class="dnhd">The air it has to push</div><div class="dnsub">Each shape's area is its drag area. ${fmt(G.L.cB/G.L.cD,1)}× the drag of the ${esc(short)}. At ${V} ${u}, air takes ${hp(G.L.b.air)} hp from the bus and ${hp(G.L.a.air)} from the ${esc(short)}.</div><div class="roof"><span>Roof</span>${roofs}</div></div>${dnWall(s,G.L.cB,G.L.cD,c,short)}</div></div>
+   <div class="dnC"><p class="dnline"><b>At ${V} ${u} ${at}, in top gear, the bus turns ${R10(rB)} rpm and feels ${dnFeel(lB)}.</b> The ${esc(d.s)} turned ${R10(rD)} and felt ${dnFeel(lD)}. The bus needs ${hp(G.nb)} hp and the engine can make ${hp(avB)} there, so ${pct(lB)}. The ${esc(short)} needs ${hp(G.na)} and can make ${hp(avD)}, so ${pct(lD)}. That makes the bus ${fmt(ratio,1)}× as loaded. ${fixLine}</p>
    <p class="dnline"><b>On a 6% grade at ${V}:</b> the bus ${say(H.b,'b')}. The ${esc(short)} ${say(H.a,'a')}. ${hillLine}</p>
    ${ref===sp.length-1?'':`<p class="dnline"><b>At ${top.v} ${u}:</b> air takes over. On a flat road the bus would be at ${(()=>{const t=dnAt(s,d,Wb,Wd,fromU(top.v),0);return `${t.b?pct(t.b.l):'its limit'} against ${t.a?pct(t.a.l):'its limit'} for the ${esc(short)}, needing ${fmt(Math.round(t.nb))} hp to its ${fmt(Math.round(t.na))}`;})()}.</p>`}
-   <p class="dntiny">Bus ${R10(Wb)} lb, ${fmt(Wb/(p[0]*f),1)} lb per hp, drag area ${F.L.cB} m². ${esc(short)} ${R10(Wd)} lb, ${fmt(Wd/d.hp[0],1)} lb per hp, drag area ${F.L.cD} m². Sea level, no wind, converter locked.${six?` The ${esc(short)}'s 6th is ghosted and left out of the score: it is the overdrive, so the car is scored in 5th.`:''}</p>
-   <details class="dnsrc"><summary>Donor specs and sources</summary><p>${esc(d.n)} ${esc(d.y)}, ${esc(d.en)}, ${d.tr}: top ${d.top}, final drive ${d.fd}, ${esc(d.tire)} (${fmt(td.d,1)} in), curb ${fmt(d.lb[0])}${d.lb[1]!==d.lb[0]?`–${fmt(d.lb[1])}`:''} lb, ${d.hp[0]} hp at ${fmt(d.hp[1])}, ${d.tq[0]} lb-ft at ${fmt(d.tq[1])}${d.red?`, redline ${fmt(d.red)}`:''}. Drag area ${DND[d.id][0]} m²: ${DNDS[DND[d.id][1]]}.${d.note?` ${esc(d.note)}`:''} Bus weight is this calc's bus weight plus a 200 lb driver, or about 935 lb of people, water and gear when loaded as a camper. The car gets the middle of its curb range plus a 200 lb driver.</p><p>Sources: ${d.src.map((x,j)=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t||'source '+(j+1))}</a>`).join(' · ')}</p></details>`;}
+   <p class="dntiny">Bus ${R10(Wb)} lb, ${fmt(Wb/(p[0]*f),1)} lb per hp, drag area ${F.L.cB} m²${s.roof?`, with the roof ${s.roof} in taller`:''}. ${esc(short)} ${R10(Wd)} lb, ${fmt(Wd/d.hp[0],1)} lb per hp, drag area ${F.L.cD} m². Sea level, no wind, converter locked. The score, load and spare hp are in top gear at the grade you picked. The speed rows show the gear each one would really use.${six?` The ${esc(short)}'s 6th is ghosted and left out of the score: it is the overdrive, so the car is scored in 5th.`:''}</p>
+   <details class="dnsrc"><summary>Donor specs and sources</summary><p>${esc(d.n)} ${esc(d.y)}, ${esc(d.en)}, ${d.tr}: top ${d.top}, final drive ${d.fd}, ${esc(d.tire)} (${fmt(td.d,1)} in), curb ${fmt(d.lb[0])}${d.lb[1]!==d.lb[0]?`–${fmt(d.lb[1])}`:''} lb, ${d.hp[0]} hp at ${fmt(d.hp[1])}, ${d.tq[0]} lb-ft at ${fmt(d.tq[1])}${d.red?`, redline ${fmt(d.red)}`:''}. Drag area ${DND[d.id][0]} m²: ${DNDS[DND[d.id][1]]}.${d.note?` ${esc(d.note)}`:''} Bus weight is this calc's bus weight plus a 200 lb driver, or about 935 lb of people, water and gear when loaded as a camper. The car gets the middle of its curb range plus a 200 lb driver.</p><p>Sources: ${d.src.map((x,j)=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t||'source '+(j+1))}</a>`).join(' · ')}</p></details></div></div>`;}
 
 function renderTabs(){
   $('#tabs').innerHTML=(S.set.length?'':'<span class="hint">No setups yet</span>')+S.set.map((s,i)=>`<button class="tab" data-tab="${i}"><i class="tg" style="background:${col(i)}">${letter(i)}</i><b>${esc(s.name||famLabel(s)[0])}</b></button>`).join('')+`<button class="tab add" data-act="add">＋ Add</button>${S.set.length>1?'<span class="arrows"><button class="btn" data-scroll="-1" aria-label="Scroll left">‹</button><button class="btn" data-scroll="1" aria-label="Scroll right">›</button></span>':''}`;
@@ -1580,7 +1644,8 @@ function drawWiz(){
     const y=W.yearDraft||(need.y?null:d.bus.y);
     h+=`<div class="grp">What year is the bus?</div>
      <input class="in yearin" onfocus="this.select()" data-k="year" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="e.g. 78" value="${y||''}">
-     <div class="hint" data-o="yh" style="margin-top:7px">${ALLYEARS[0]} to ${ALLYEARS[ALLYEARS.length-1]}.</div><div id="gtiles">${y?genTiles(y,d,c):''}</div>`;}
+     <div class="hint" data-o="yh" style="margin-top:7px">${ALLYEARS[0]} to ${ALLYEARS[ALLYEARS.length-1]}.</div><div id="gtiles">${y?genTiles(y,d,c):''}</div>
+     ${y?`<div class="grp">Roof</div><div class="chips">${ROOFS.map(r=>`<button class="chip sm${(d.roof||0)===r?' on':''}" data-roof="${r}">${r?`+${r} in`:'Stock'}</button>`).join('')}</div><div class="hint" style="margin-top:6px">A high-top adds drag: on the hill climb and the stock car comparison.</div>`:''}`;}
   else if(W.step===1){
     const swapK=d.swap!=null?d.swap:(d.eng!=null&&d.eng!==row.eng?d.eng:null);
     h+=`<div class="grp">Engines for a ${busLabel(d)}</div>${rows.map(r=>`<button class="vrow${r===row&&d.swap==null&&!need.e&&(d.eng==null||d.eng===r.eng)?' on':''}" data-erow="${esc(r.e)}"><b>${esc(r.e)} <span class="badge stock">Stock</span></b><span>${r.y[0]===r.y[1]?r.y[0]:r.y[0]+'–'+r.y[1]}</span></button>`).join('')}`;
@@ -1689,6 +1754,7 @@ $('#shBody').addEventListener('click',e=>{if(W&&e.target.dataset.k==='gear'){sho
   const N=d._need,done=k=>{if(N){delete N[k];if(!Object.keys(N).length)delete d._need;}};
   if(ds.gen){if(W.yearDraft&&!applyYear(W.yearDraft))return;done('y');d.bus.g=ds.gen;done('g');const rs=busOf(d).rows;if(!rs.some(r=>r.e===d.bus.e))d.bus.e=rs[0].e;applyStock(d);W.step=1;}
   else if(ds.erow!=null){d.bus.e=ds.erow;d.swap=null;delete d.pk;done('e');applyStock(d);engPreset(d,busOf(d).row.eng);d.cust.eng=0;W.swapOpen=false;W.step=2;}
+  else if(ds.roof!=null){d.roof=+ds.roof;}
   else if(ds.swapopen){W.swapOpen=!W.swapOpen;}
   else if(ds.cond){d.cond=ds.cond;}
   else if(ds.pkreset){delete d.pk;}
@@ -1762,15 +1828,13 @@ B.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)retu
   if(a==='add'||a==='addstock')return addSetup(a==='addstock');
   const i=colOf(t);if(i==null)return;const s=S.set[i];
   if(a==='wiz')return openWiz(i,+t.dataset.step);
-  if(a==='dnl'){s.dnL=+t.dataset.l;return update();}
-  if(a==='dnp'){s.dn=t.dataset.id;return update();}
-  if(a==='dng'){s.dnG=+t.dataset.l;return update();}
-  if(a==='dnv'){s.dnV=+t.dataset.l;return update();}
   if(a==='gear'){stopRun();const g=+t.dataset.g,l=lv(s);l.man=l.man===g&&S.auto?null:g;S.mode='cruise';return update();}
   if(a==='dup'){const c=clone(s);c.id=uid();c.name=s.name?s.name+' copy':'';S.set.splice(i+1,0,c);renderAll();scrollToCol(i+1);return;}
   if(a==='rm'){S.set.splice(i,1);delete LV[s.id];}
   if(a==='base'){S.set.splice(i,1);S.set.unshift(s);renderAll();scrollToCol(0);toast(`${s.name||'That setup'} is now the baseline (A). The others compare to it.`);return;}
   renderAll();});
+$('#donors').addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)return;const P=t.closest('[data-i]'),s=P&&S.set[+P.dataset.i];if(!s)return;const a=t.dataset.act,l=+t.dataset.l;
+  if(a==='dnl')s.dnL=l;else if(a==='dnp')s.dn=t.dataset.id;else if(a==='dng')s.dnG=l;else if(a==='dnv')s.dnV=l;else if(a==='dnr'){s.roof=l;return renderAll();}else return;update();});
 function addSetup(){if(WPN){W=WPN;WPN=null;$('#sheet').hidden=false;fitSheet();drawWiz();return;}const last=S.set[S.set.length-1];const c=mkSetup(last?{g:last.bus.g,y:last.bus.y,e:last.bus.e}:{});if(!last)c._need={y:1,g:1,e:1};openWiz(-1,0,c);}
 function scrollToCol(i){const c=$$('.col',B)[i];if(c)scrollTo({left:c.getBoundingClientRect().left+scrollX-12,behavior:'smooth'});}
 addEventListener('scroll',()=>requestAnimationFrame(markTab),{passive:true});
