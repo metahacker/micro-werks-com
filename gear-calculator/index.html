@@ -450,6 +450,10 @@ html{touch-action:pan-x pan-y}
 .mwbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#111011;color:#f4f1ea;padding:14px 24px;font:800 13px/1 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}
 .mwbar a{color:inherit;text-decoration:none;opacity:.85}
 .mwbar a:hover{opacity:1;color:#55c8e8}
+.mwbar a.tools{display:inline-flex;align-items:center;gap:.42em}
+.mwbar a.tools .tcog{width:1.32em;height:1.32em;flex:none;transition:transform .5s ease}
+.mwbar a.tools:hover .tcog{transform:rotate(90deg)}
+@media(prefers-reduced-motion:reduce){.mwbar a.tools .tcog{transition:none}}
 .mwbar .mw{display:flex;align-items:center;opacity:1}
 .mwbar .mw img{width:96px;height:auto;display:block}
 .mwbar nav{display:flex;gap:22px;align-items:center}
@@ -457,7 +461,7 @@ html{touch-action:pan-x pan-y}
 .mwfoot a{color:#1d1d1b;font-weight:600}
 @media(max-width:860px){.mwbar{font-size:11px}.mwbar nav{gap:14px}.mwbar .hide-sm{display:none}}
 </style></head><body>
-<div class="pin"><div class="mwbar"><a class="mw" href="/" aria-label="micro.werks home"><img src="/img/logo.svg" alt="micro.werks"></a><nav><a href="/tools/">Tools</a><a href="/#solar">Solar</a><a class="hide-sm" href="/#kits">Kits</a><a class="hide-sm" href="/#merch">Merch</a></nav></div></div>
+<div class="pin"><div class="mwbar"><a class="mw" href="/" aria-label="micro.werks home"><img src="/img/logo.svg" alt="micro.werks"></a><nav><a href="/#solar">Solar</a><a class="hide-sm" href="/#kits">Kits</a><a class="hide-sm" href="/#merch">Merch</a><a class="tools" href="/tools/"><svg class="tcog" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.58 3.01 10.97 0.45 13.03 0.45 13.42 3.01 15.26 3.50 16.88 1.48 18.67 2.51 17.73 4.93 19.07 6.27 21.49 5.33 22.52 7.12 20.50 8.74 20.99 10.58 23.55 10.97 23.55 13.03 20.99 13.42 20.50 15.26 22.52 16.88 21.49 18.67 19.07 17.73 17.73 19.07 18.67 21.49 16.88 22.52 15.26 20.50 13.42 20.99 13.03 23.55 10.97 23.55 10.58 20.99 8.74 20.50 7.12 22.52 5.33 21.49 6.27 19.07 4.93 17.73 2.51 18.67 1.48 16.88 3.50 15.26 3.01 13.42 0.45 13.03 0.45 10.97 3.01 10.58 3.50 8.74 1.48 7.12 2.51 5.33 4.93 6.27 6.27 4.93 5.33 2.51 7.12 1.48 8.74 3.50ZM6.1 12a5.9 5.9 0 1 0 11.8 0a5.9 5.9 0 1 0 -11.8 0ZM9.0 12a3.0 3.0 0 1 0 6.0 0a3.0 3.0 0 1 0 -6.0 0Z"/></svg>Tools</a></nav></div></div>
 <div class="pin"><div class="hero"><img src="hero-1031zc.jpg" alt="" onerror="this.remove()"><div class="inner"><div class="kick">Volkswagen Transporter · 1950–2013</div><h1>Bus gear calc.</h1><p>Gearing for every VW bus, side by side.</p></div><span class="stars" id="heroStars"></span></div></div>
 <header class="top pin">
   <div class="bar">
